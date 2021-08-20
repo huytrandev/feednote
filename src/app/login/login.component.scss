@@ -1,0 +1,51 @@
+.login-wrapper {
+  min-height: 100vh;
+}
+.box {
+  position: relative;
+  top: 0;
+  opacity: 1;
+  float: left;
+  padding: 60px 50px 40px 50px;
+  width: 100%;
+  background: #fff;
+  border-radius: 7px;
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  z-index: 5;
+  max-width: 330px;
+}
+.login-wrapper .login-form {
+  min-width: 100%;
+  max-width: 300px;
+  width: 100%;
+}
+.login-wrapper .login-full-width,
+.login-wrapper .btn-login {
+  width: 100%;
+}
+.login-wrapper .mat-card {
+  padding: 45px 45px 55px;
+}
+.login-wrapper .btn-login {
+  font-size: 1.1rem;
+  line-height: 40px;
+  margin-top: 10px;
+}
+.login-wrapper mat-form-field {
+  margin: 5px auto;
+}
+.login-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0.8375em 0;
+}
+.left .describe {
+  width: 65%;
+}
+.left .logo-brand {
+  margin-bottom: 20px;
+}
+.left .logo-brand span {
+  font-weight: 700;
+  font-size: 2rem;
+}
