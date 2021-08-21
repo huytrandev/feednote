@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,11 +10,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   loginError: boolean = false;
+  loading: boolean = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
-    this.buildLoginForm(); 
+    this.buildLoginForm();
   }
 
   get f() {
@@ -30,7 +32,14 @@ export class LoginComponent implements OnInit {
   submit(): void {
     if (this.loginForm.invalid) return;
 
-    console.log(this.loginForm.value);
-    this.loginForm.reset();
+    this.loading = true;
+
+    setTimeout(() => {
+      console.log(this.loginForm.value);
+      this.router.navigate(['/veterinary']);
+      this.loginForm.reset();
+      this.loading = false;
+
+    }, 2500);
   }
 }
