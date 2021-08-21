@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { StatisticComponent } from './statistic/statistic.component';
+import { VeterinaryComponent } from './veterinary.component';
 
-const routes: Routes = [];
+import { MaterialModule } from '../material/material.module';
+import { VeterinaryRoutingModule } from './veterinary-routing.module';
 
 @NgModule({
-  declarations: [],
-  imports: [RouterModule.forChild(routes)],
+  declarations: [StatisticComponent, VeterinaryComponent],
+  imports: [CommonModule, MaterialModule, VeterinaryRoutingModule],
 })
 export class VeterinaryModule {}
