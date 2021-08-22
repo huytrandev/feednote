@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StatisticComponent } from './statistic/statistic.component';
-import { VeterinaryComponent } from './veterinary.component';
+import { StatisticComponent } from './statistic/statistic.component';;
 
 import { MaterialModule } from '../material/material.module';
 import { VeterinaryRoutingModule } from './veterinary-routing.module';
 
 @NgModule({
-  declarations: [StatisticComponent, VeterinaryComponent],
+  declarations: [StatisticComponent],
   imports: [CommonModule, MaterialModule, VeterinaryRoutingModule],
 })
 export class VeterinaryModule {}

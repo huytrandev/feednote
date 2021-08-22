@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { MainComponent } from './main/main.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -8,14 +10,22 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'admin',
-    loadChildren: () =>
-      import('./admin/admin.module').then((m) => m.AdminModule),
-  },
-  {
-    path: 'veterinary',
-    loadChildren: () =>
-      import('./veterinary/veterinary.module').then((m) => m.VeterinaryModule),
+    path: '',
+    component: MainComponent,
+    children: [
+      {
+        path: 'admin',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+      },
+      {
+        path: 'veterinary',
+        loadChildren: () => import('./veterinary/veterinary.module').then(m => m.VeterinaryModule)
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
+      },
+    ]
   },
   {
     path: '**',

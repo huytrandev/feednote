@@ -2,24 +2,24 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-veterinary',
-  templateUrl: './veterinary.component.html',
-  styleUrls: ['./veterinary.component.scss'],
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss'],
 })
-export class VeterinaryComponent implements OnInit {
+export class MainComponent implements OnInit {
   mobileQuery!: MediaQueryList;
   fillerNav = [
     {
-      path: 'manager',
+      path: 'veterinary/manager',
       icon: 'edit_note',
-      title: 'Note'
+      title: 'Note',
     },
     {
-      path: 'statistic',
+      path: 'veterinary/statistic',
       icon: 'show_chart',
-      title: 'Statistic'
-    }
-  ]
+      title: 'Statistic',
+    },
+  ];
   loading: boolean = true;
   currentYear = new Date().getFullYear();
 

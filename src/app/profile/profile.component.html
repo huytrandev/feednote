@@ -1,0 +1,170 @@
+<div
+  class="wrapper"
+  fxLayout="row"
+  fxLayout.lt-lg="column"
+  fxLayoutAlign="space-between start"
+  fxLayoutGap="30px"
+>
+  <!-- Form for update user info -->
+  <div class="update-user" fxFlex="60%" fxLayout="center center">
+    <mat-card fxLayout="center center">
+      <div class="update-user__banner">
+        <span>Edit Profile</span>
+      </div>
+
+      <mat-tab-group dynamicHeight>
+        <mat-tab label="Informations">
+          <ng-template matTabContent>
+            <div class="update-user__form">
+              <form [formGroup]="form">
+                <!-- Name -->
+                <mat-form-field>
+                  <mat-label>Name</mat-label>
+                  <input type="text" matInput formControlName="name" />
+                  <mat-error *ngIf="f.name.errors?.required"
+                    >Name is required.</mat-error
+                  >
+                  <mat-error *ngIf="f.name.errors?.minlength"
+                    >Name has to be at least 3 characters.</mat-error
+                  >
+                </mat-form-field>
+
+                <!-- Phone -->
+                <mat-form-field>
+                  <mat-label>Phone</mat-label>
+                  <input type="text" matInput formControlName="phone" />
+                  <mat-error *ngIf="f.phone.errors?.required"
+                    >Phone is required.</mat-error
+                  >
+                  <mat-error *ngIf="f.phone.errors?.pattern"
+                    >Phone number is not in the correct format.</mat-error
+                  >
+                </mat-form-field>
+
+                <!-- Phone -->
+                <mat-form-field>
+                  <mat-label>Email</mat-label>
+                  <input type="email" matInput formControlName="mail" />
+                  <mat-error *ngIf="f.mail.errors?.required"
+                    >Email is required.</mat-error
+                  >
+                  <mat-error *ngIf="f.mail.errors?.email"
+                    >Email is not in the correct format.</mat-error
+                  >
+                </mat-form-field>
+
+                <!-- Address -->
+                <mat-form-field>
+                  <mat-label>Address</mat-label>
+                  <input type="text" matInput formControlName="address" />
+                </mat-form-field>
+
+                <!-- Button group -->
+                <div class="button-group">
+                  <button
+                    mat-raised-button
+                    class="app-button app-button-brown"
+                    type="submit"
+                  >
+                    Update Profile
+                  </button>
+                  <button
+                    mat-raised-button
+                    class="app-button app-button-cancel"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </ng-template>
+        </mat-tab>
+
+        <mat-tab label="Change password">
+          <ng-template matTabContent>
+            <div class="update-user__form">
+              <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
+                <!-- Current password -->
+                <mat-form-field>
+                  <mat-label>Current Password</mat-label>
+                  <input type="password" matInput formControlName="currentPassword" />
+                  <mat-error *ngIf="f2.currentPassword.errors?.required">Password is required.</mat-error>
+                  <mat-error *ngIf="f2.currentPassword.errors?.minlength">Password must be at least 5 characters.</mat-error>
+                </mat-form-field>
+
+                <!-- New password -->
+                <mat-form-field>
+                  <mat-label>New Password</mat-label>
+                  <input type="password" matInput formControlName="newPassword" />
+                  <mat-error *ngIf="f2.newPassword.errors?.required">New password is required.</mat-error>
+                  <mat-error *ngIf="f2.newPassword.errors?.minlength">New password must be at least 5 characters.</mat-error>
+                </mat-form-field>
+
+                <!-- Confirm password -->
+                <mat-form-field>
+                  <mat-label>Confirm Password</mat-label>
+                  <input type="password" matInput formControlName="confirmPassword" />
+                  <mat-error *ngIf="f2.confirmPassword.errors?.required">Confirm password is required.</mat-error>
+                  <mat-error *ngIf="f2.confirmPassword.errors?.minlength">Confirm password must be at least 5 characters.</mat-error>
+                  <mat-error *ngIf="f2.confirmPassword.errors?.mustMatch">Confirm password is not match.</mat-error>
+                </mat-form-field>
+
+                <!-- Button group -->
+                <div class="button-group">
+                  <button
+                    mat-raised-button
+                    class="app-button app-button-brown"
+                    type="submit"
+                  >
+                    Change Password
+                  </button>
+                  <button
+                    mat-raised-button
+                    class="app-button app-button-cancel"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+
+  <!-- User info card -->
+  <div class="user-info" fxFlex="40%" fxLayout="center center">
+    <mat-card>
+      <div class="user-info__avatar">
+        <img src="assets/images/avatar.png" alt="User avatar" />
+      </div>
+      <div class="user-info__description">
+        <p class="user-info__role">{{ user.role }}</p>
+        <p class="user-info__name">{{ user.name }}</p>
+        <div class="user-info__contact">
+          <p class="user-info__username">
+            <span>Username</span>
+            <span>{{ user.username }}</span>
+          </p>
+          <p class="user-info__phone">
+            <span>Phone</span>
+            <span>{{ user.phone }}</span>
+          </p>
+          <p class="user-info__mail">
+            <span>Email</span>
+            <span>{{ user.mail }}</span>
+          </p>
+          <p class="user-info__address">
+            <span>Address</span>
+            <span>{{ user.address }}</span>
+          </p>
+          <p class="user-info__joined">
+            <span>Joined at</span>
+            <span>{{ user.createdAt | date: "mediumDate" }}</span>
+          </p>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
