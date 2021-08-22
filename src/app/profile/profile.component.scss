@@ -1,0 +1,145 @@
+@import "../../assets/scss/variable";
+
+mat-card {
+  width: 100%;
+  border-radius: $border-radius !important;
+}
+.wrapper {
+  margin-top: 55px;
+  height: 100%;
+  margin-bottom: 50px;
+}
+.update-user {
+  width: 100%;
+
+  & mat-tab-group {
+    margin-top: 40px;
+  }
+
+  &__banner {
+    width: 100%;
+    background: $brown-primary;
+    height: 50px;
+    position: absolute;
+    top: -20px;
+    width: 95%;
+    border-radius: $border-radius;
+    box-shadow: 0 8px 15px 0 rgb(0 0 0 / 25%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+  }
+
+  &__banner span {
+    margin-left: 20px;
+    font-size: 1.1rem;
+  }
+
+  &__form {
+    margin-top: 20px;
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  &__form form {
+    width: 80%;
+  }
+
+  &__form mat-form-field {
+    width: 100%;
+    margin: 5px auto;
+  }
+}
+
+.user-info {
+  width: 100%;
+  min-height: 350px;
+  position: relative;
+
+  &__avatar {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__avatar img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    box-shadow: 0 8px 15px 0 rgb(0 0 0 / 25%);
+  }
+
+  &__description {
+    margin-top: 90px;
+    margin-bottom: 20px !important;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__role {
+    text-align: center;
+    color: #888;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05rem;
+  }
+
+  &__name {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.02rem;
+    text-transform: capitalize;
+  }
+
+  &__contact {
+    width: 100%;
+    height: 150px;
+    margin-top: 20px;
+    color: #666;
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  &__contact mat-icon {
+    margin-right: 10px;
+  }
+  &__contact p {
+    display: inline-flex;
+    width: 100%;
+  }
+  &__contact span:nth-child(1) {
+    display: block;
+    width: 120px;
+  }
+  &__contact span:nth-child(2) {
+    font-weight: 500;
+    display: block;
+    min-width: 250px;
+    word-break: break-all;
+  }
+}
+
+.button-group {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.button-group button:not(:last-child) {
+  margin-right: 20px;
+}
+
+@media screen and (max-width: 1280px) {
+  .user-info {
+    margin-top: 30px;
+  }
+}

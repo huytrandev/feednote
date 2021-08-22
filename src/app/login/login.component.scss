@@ -2,6 +2,7 @@
 
 .login-wrapper {
   min-height: 100vh;
+  background-color: #f0f2f5;
 }
 .box {
   position: relative;
@@ -51,19 +52,8 @@
   font-weight: 700;
   font-size: 2rem;
 }
-
 mat-progress-bar {
   position: absolute;
   top: 0;
-}
-::ng-deep .mat-focused .mat-form-field-label {
-  color: $brown-primary !important;
-}
-
-// ::ng-deep.mat-form-field-underline {
-//   background-color: $brown-primary !important;
-// }
-
-::ng-deep.mat-form-field-ripple {
-  background-color: $brown-primary !important;
+  z-index: 3;
 }
