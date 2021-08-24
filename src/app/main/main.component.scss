@@ -74,6 +74,9 @@ mat-toolbar .avatar span {
   font-size: 1rem;
   display: block;
 }
+.user-name {
+  text-transform: capitalize;
+}
 mat-toolbar {
   background-color: #fff;
 }

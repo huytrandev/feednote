@@ -52,6 +52,17 @@
   font-weight: 700;
   font-size: 2rem;
 }
+.text-error {
+  color: #F64336;
+  position: relative;
+  border-radius: $border-radius;
+  // border: 1px solid;
+  font-weight: 500;
+  background-color: #f643361c;
+  padding: 12px;
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 10%);
+  margin-bottom: 10px;
+}
 mat-progress-bar {
   position: absolute;
   top: 0;
