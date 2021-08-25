@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
+import { environment as env } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http
-      .post<any>(`${environment.apiUrl}/api/auth/login`, { username, password })
+      .post<any>(`${env.apiUrl}/api/auth/login`, { username, password })
       .pipe(
         map((response) => {
           if (!response.status) {
@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    location.reload();
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }

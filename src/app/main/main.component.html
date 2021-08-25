@@ -10,7 +10,7 @@
     </button>
     <h1 class="app-name">FeedNote</h1>
     <span class="app-spacer"></span>
-    <div class="avatar" [routerLink]="['profile']">
+    <div class="avatar" [routerLink]="['profile', currentUser._id]">
       <img src="assets/images/avatar.png" alt="" />
       <span class="user-name">{{ currentUser.name }}</span>
     </div>
@@ -25,10 +25,10 @@
     </button>
     <mat-menu #notifications="matMenu">
       <button mat-menu-item>
-        <span>Notification 1</span>
+        <span>Thông báo 1</span>
       </button>
       <button mat-menu-item>
-        <span>Notification 1</span>
+        <span>Thông báo 1</span>
       </button>
     </mat-menu>
     <button
@@ -39,14 +39,14 @@
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <div mat-menu-item class="menu-avatar" [routerLink]="['profile']">
+      <div mat-menu-item class="menu-avatar" [routerLink]="['profile', currentUser._id]">
         <img src="assets/images/avatar.png" alt="" />
         <span class="user-name">{{ currentUser.name }}</span>
       </div>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
-        <span>Logout</span>
+        <span>Đăng xuất</span>
       </button>
     </mat-menu>
   </mat-toolbar>

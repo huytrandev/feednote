@@ -8,12 +8,14 @@ import { MaterialModule } from './material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
+import { SharedModule } from './_shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, MainComponent, ProfileComponent],
@@ -25,7 +27,8 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule,
   ],
   providers: [
     {
