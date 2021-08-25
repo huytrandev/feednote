@@ -1,32 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MustMatch } from '../helpers/must-match.validator';
-
-const USER = {
-  username: 'hyouwhy',
-  name: 'Huy Tran',
-  role: 'administrator',
-  phone: '0865791317',
-  mail: 'tranthanhhuy2207@gmail.com',
-  address: 'Binh Minh, Vinh Long',
-  createAt: '2020-12-10T18:49:04.000Z',
-};
-
-interface UserDto {
-  username: string;
-  name: string;
-  role: string;
-  phone: string;
-  mail: string;
-  address: string;
-  createdAt: Date;
-}
+import { AreaService } from '../_services/area.service';
+import { AuthService } from '../_services/auth.service';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -34,81 +18,81 @@ interface UserDto {
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  form!: FormGroup;
-  changePasswordForm!: FormGroup;
+  loading: boolean = true;
+  updateInfoForm: FormGroup;
+  changePasswordForm: FormGroup;
+  user: any;
+  userId: string;
+  areas: any = [];
 
-  name!: FormControl;
-
-  addresses!: any;
-  user!: UserDto;
-  validationType: any = {
-    name: [Validators.required, Validators.minLength(3)],
-    phone: [
-      Validators.required,
-      Validators.pattern(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g),
-    ],
-    mail: [Validators.required, Validators.email],
-    address: [Validators.required],
-    currentPassword: [Validators.required, Validators.minLength(6)],
-    newPassword: [Validators.required],
-    confirmPassword: [Validators.required],
-  };
-
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private areaSerive: AreaService,
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) {
+    this.userId = this.route.snapshot.params.id;
+  }
 
   ngOnInit(): void {
     this.getUser();
-    this.buildForm();
+    this.getArea();
+    this.buildUpdateUserInfoForm();
     this.buildChangePasswordForm();
   }
 
-  getUser(): void {
-    const createdAt = new Date(USER.createAt);
-    this.user = { ...USER, createdAt: createdAt };
-  }
-
-  get f() {
-    return this.form.controls;
+  get f1() {
+    return this.updateInfoForm.controls;
   }
 
   get f2() {
     return this.changePasswordForm.controls;
   }
 
-  removeValidators(form: FormGroup): void {
-    for (const key in form.controls) {
-      form.get(key)?.clearValidators();
-      form.get(key)?.updateValueAndValidity();
-    }
+  getUser(): void {
+    this.userService.getUserById(this.userId).subscribe((data) => {
+      const createdAt = new Date(data.data.createdAt);
+      let roleName = '';
+      switch (data.data.role) {
+        case 'admin':
+          roleName = 'Quản trị viên';
+          break;
+        case 'manager':
+          roleName = 'Cán bộ thú y';
+          break;
+        case 'breeder':
+          roleName = 'Nông dân';
+          break;
+      }
+
+      console.log(roleName);
+      this.user = { ...data.data, createdAt, roleName };
+      this.setValueForForm({ ...this.user });
+      this.loading = false;
+    });
   }
 
-  addValidators(form: FormGroup): void {
-    for (const key in form.controls) {
-      form.get(key)?.setValidators(this.validationType[key]);
-      form.get(key)?.updateValueAndValidity();
-    }
+  getArea() {
+    this.areaSerive.getAll().subscribe((res) => {
+      this.areas = res.data.items;
+    });
   }
 
-  buildForm(): void {
-    this.form = this.fb.group({
-      name: [this.user.name, [Validators.required, Validators.minLength(3)]],
-      phone: [
-        this.user.phone,
-        [
-          Validators.required,
-          Validators.pattern(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g),
-        ],
-      ],
-      mail: [this.user.mail, [Validators.required, Validators.email]],
-      address: [this.user.address, [Validators.required]],
+  buildUpdateUserInfoForm(): void {
+    this.updateInfoForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      phone: ['', [Validators.required, Validators.pattern('[- +()0-9]{10}')]],
+      email: ['', [Validators.required, Validators.email]],
+      idArea: ['', [Validators.required]],
     });
   }
 
   buildChangePasswordForm(): void {
     this.changePasswordForm = this.fb.group(
       {
-        currentPassword: ['', [Validators.required, Validators.minLength(6)]],
-        newPassword: ['', [Validators.required]],
+        currentPassword: ['', [Validators.required, Validators.minLength(3)]],
+        newPassword: ['', [Validators.required, Validators.minLength(3)]],
         confirmPassword: ['', [Validators.required]],
       },
       {
@@ -117,20 +101,24 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  submit(): void {
-    if (!this.form.valid) return;
+  setValueForForm(user: any) {
+    for (let propertyName in this.updateInfoForm.controls) {
+      this.updateInfoForm.controls[propertyName].setValue(user[propertyName]);
+    }
+  }
 
-    console.log(this.form.value);
-    this.buildForm();
-    this.removeValidators(this.form);
-    this.addValidators(this.form);
+  onUpdateUserInfo(): void {
+    if (!this.updateInfoForm.valid) return;
+
+    console.log(this.updateInfoForm.value);
+  }
+
+  resetUserInfo(): void {
+    this.setValueForForm(this.user);
   }
 
   changePassword(): void {
     if (!this.changePasswordForm.valid) return;
-
     console.log(this.changePasswordForm.value);
-    this.buildChangePasswordForm();
-    this.removeValidators(this.changePasswordForm);
   }
 }

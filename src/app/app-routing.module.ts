@@ -24,9 +24,13 @@ const routes: Routes = [
         loadChildren: () => import('./veterinary/veterinary.module').then(m => m.VeterinaryModule)
       },
       {
-        path: 'profile',
+        path: 'profile/:id',
         component: ProfileComponent
       },
+      {
+        path: 'food',
+        loadChildren: () => import('./food/food.module').then(m => m.FoodModule)
+      }
     ]
   },
   {

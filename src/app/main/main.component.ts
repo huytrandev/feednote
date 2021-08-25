@@ -12,15 +12,15 @@ export class MainComponent implements OnInit {
   mobileQuery!: MediaQueryList;
   fillerNav = [
     {
-      path: 'veterinary/manager',
-      icon: 'edit_note',
-      title: 'Note',
+      path: 'food',
+      icon: 'grass',
+      title: 'Danh mục thức ăn',
     },
     {
       path: 'veterinary/statistic',
       icon: 'show_chart',
-      title: 'Statistic',
-    },
+      title: 'Thống kê',
+    }  
   ];
   loading: boolean = true;
   currentYear = new Date().getFullYear();
@@ -31,7 +31,7 @@ export class MainComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
-    this.authService.currentUser.subscribe(x => this.currentUser = x);
+    this.currentUser = this.authService.currentUserValue;
   }
 
   ngOnInit(): void {}
