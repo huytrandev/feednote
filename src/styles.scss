@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 // @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 @import "./assets/scss/variable";
 // @import '~@angular/material/theming';
 // $custom-typography: mat-typography-config(
@@ -55,4 +55,16 @@ mat-progress-bar {
   &-cancel {
     background-color: #f5f5f5 !important;
   }
+}
+
+.green-snackbar {
+  background: #66BB6A;
+  color: #fff;
+  font-weight: 500;
+}
+
+.red-snackbar {
+  background: #EF5350;
+  color: #fff;
+  font-weight: 500;
 }

@@ -73,8 +73,9 @@
                     mat-raised-button
                     class="app-button app-button-brown"
                     type="submit"
-                    [disabled]="!updateInfoForm.valid || !updateInfoForm.dirty"
+                    [disabled]="!updateInfoForm.valid || !updateInfoForm.dirty || submitted"
                   >
+                    <mat-spinner diameter=16 style="display: inline-flex; margin-right: 10px;" *ngIf="submitted"></mat-spinner>
                     Cập nhật
                   </button>
                   <button

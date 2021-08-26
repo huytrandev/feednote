@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   logout() {
-    location.reload();
+    this.router.navigate(['/login']);
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
