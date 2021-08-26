@@ -15,8 +15,31 @@ export class UserService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getUserById(id: string) {
-    const token = this.authService.currentUserValue.token;
-    return this.http.get<any>(`${env.apiUrl}/api/user/${id}`, { headers: this.headers });
+  getUserInfoById(id: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/user/${id}`, {
+      headers: this.headers,
+    });
+  }
+
+  getAdminInfoById(id: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/admin/user/${id}`, {
+      headers: this.headers,
+    });
+  }
+
+  getVeterinaryInfoById(id: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/manager/user/${id}`, {
+      headers: this.headers,
+    });
+  }
+
+  updateUserInfo(input: any) {
+    return this.http.put<any>(
+      `${env.apiUrl}/api/auth/update`,
+      JSON.stringify(input),
+      {
+        headers: this.headers,
+      }
+    );
   }
 }
