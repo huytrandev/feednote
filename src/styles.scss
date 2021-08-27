@@ -30,6 +30,7 @@ mat-toolbar {
 mat-progress-bar {
   position: absolute;
 }
+mat-
 .mat-menu-panel {
   border-radius: $border-radius !important;
 }
@@ -40,8 +41,8 @@ mat-progress-bar {
 // Customize class
 .app-button {
   border-radius: $border-radius !important;
-  font-weight: 400;
   text-transform: capitalize;
+  height: fit-content;
 
   &-brown {
     background-color: $brown-primary !important;
@@ -52,19 +53,33 @@ mat-progress-bar {
     border-radius: 30px;
   }
 
+  &-green {
+    background-color: $green !important;
+    color: #fff;
+  }
+
+  &-red {
+    background-color: $red !important;
+    color: #fff;
+  }
+
   &-cancel {
     background-color: #f5f5f5 !important;
   }
 }
 
 .green-snackbar {
-  background: #66BB6A;
+  background: $green;
   color: #fff;
   font-weight: 500;
 }
 
 .red-snackbar {
-  background: #EF5350;
+  background: $red;
   color: #fff;
   font-weight: 500;
+}
+
+.app-spacer {
+  flex: 1 1 auto;
 }

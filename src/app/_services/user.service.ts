@@ -8,12 +8,14 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class UserService {
-  headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'x-session-key': this.authService.currentUserValue.token,
-  });
+  private headers: HttpHeaders;
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-session-key': this.authService.currentUserValue.token,
+    });
+  }
 
   getUserInfoById(id: string) {
     return this.http.get<any>(`${env.apiUrl}/api/user/${id}`, {
