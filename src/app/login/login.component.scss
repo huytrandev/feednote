@@ -53,14 +53,14 @@
   font-size: 2rem;
 }
 .text-error {
-  color: #F64336;
+  color: $red;
+  border: 1px solid $red;
   position: relative;
   border-radius: $border-radius;
   // border: 1px solid;
   font-weight: 500;
-  background-color: #f643361c;
+  background-color: #dc262627;
   padding: 12px;
-  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 10%);
   margin-bottom: 10px;
 }
 mat-progress-bar {

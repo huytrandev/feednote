@@ -23,7 +23,7 @@
                 (ngSubmit)="onUpdateUserInfo()"
               >
                 <!-- Name -->
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Họ tên</mat-label>
                   <input type="text" matInput formControlName="name" />
                   <mat-error *ngIf="f1.name.errors?.required"
@@ -35,7 +35,7 @@
                 </mat-form-field>
 
                 <!-- Phone -->
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Số điện thoại</mat-label>
                   <input type="text" matInput formControlName="phone" />
                   <mat-error *ngIf="f1.phone.errors?.required"
@@ -47,7 +47,7 @@
                 </mat-form-field>
 
                 <!-- Phone -->
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Email</mat-label>
                   <input type="email" matInput formControlName="email" />
                   <mat-error *ngIf="f1.email.errors?.required"
@@ -59,7 +59,7 @@
                 </mat-form-field>
 
                 <!-- Address -->
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Địa chỉ</mat-label>
                   <mat-select [(value)]="user.idArea" formControlName="idArea">
                     <mat-option *ngFor="let area of areas" [value]="area._id">
@@ -88,7 +88,7 @@
                   </button>
                   <button
                     mat-raised-button
-                    class="app-button app-button-cancel"
+                    class="app-button app-button-grey"
                     type="button"
                     (click)="resetUserInfo()"
                   >
@@ -108,7 +108,7 @@
                 (ngSubmit)="changePassword()"
               >
                 <!-- New password -->
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Mật khẩu mới</mat-label>
                   <input
                     type="password"
@@ -124,7 +124,7 @@
                 </mat-form-field>
 
                 <!-- Confirm password -->
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Nhập lại mật khẩu</mat-label>
                   <input
                     type="password"
@@ -164,7 +164,7 @@
                   <button
                     mat-raised-button
                     type="reset"
-                    class="app-button app-button-cancel"
+                    class="app-button app-button-grey"
                   >
                     Huỷ bỏ
                   </button>
