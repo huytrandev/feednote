@@ -30,7 +30,7 @@ mat-toolbar {
 mat-progress-bar {
   position: absolute;
 }
-mat-
+
 .mat-menu-panel {
   border-radius: $border-radius !important;
 }
@@ -63,8 +63,8 @@ mat-
     color: #fff;
   }
 
-  &-cancel {
-    background-color: #f5f5f5 !important;
+  &-grey {
+    background-color: $grey !important;
   }
 }
 

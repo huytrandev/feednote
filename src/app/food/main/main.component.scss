@@ -4,16 +4,36 @@ table {
   width: 100%;
 }
 
+mat-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
 .table-container {
   position: relative;
   min-height: 200px;
   max-height: 500px;
   overflow: auto;
   border: 1px solid #d9d9d9;
-  padding: 20px;
+  padding: 10px;
   background: #fff;
   border-radius: $border-radius;
   box-shadow: 0 0 7px rgba($color: #000000, $alpha: 0.15);
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mat-form-field {

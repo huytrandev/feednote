@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MustMatch } from '../helpers/must-match.validator';
 import { AreaService } from '../_services/area.service';
@@ -30,11 +29,11 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private router: Router
   ) {
     this.userId = this.route.snapshot.params.id;
     this.currentUser = this.authService.currentUserValue;
-    
   }
 
   ngOnInit(): void {
@@ -156,15 +155,25 @@ export class ProfileComponent implements OnInit {
     this.userService
       .updateUserInfo(this.updateInfoForm.value)
       .subscribe((data) => {
-        const resData = {...data};
+        const resData = { ...data };
         if (resData.status === true) {
-          this.snackbarService.openSnackBar('Cập nhật thành công', 'success', 2500);
+          this.snackbarService.openSnackBar(
+            'Cập nhật thành công',
+            'success',
+            2500
+          );
           this.submitted = false;
+          setTimeout(() => {
+            this.reloadComponent();
+          }, 2500);
         } else {
-          this.snackbarService.openSnackBar('Cập nhật không thành công', 'danger', 2500);
+          this.snackbarService.openSnackBar(
+            'Cập nhật không thành công',
+            'danger',
+            2500
+          );
           this.resetUserInfo();
         }
-        
       });
   }
 
@@ -176,19 +185,36 @@ export class ProfileComponent implements OnInit {
     if (!this.changePasswordForm.valid) return;
 
     this.submitted = true;
-    this.authService.changePassword(this.changePasswordForm.controls.newPassword.value).subscribe(data => {
-      const resData = {...data};
-      if (resData.status === true) {
-        this.snackbarService.openSnackBar('Đổi mật khẩu thành công. Vui lòng đăng nhập lại', 'success', 2500);
-        this.submitted = false;
-        setTimeout(() => {
-          this.authService.logout();
-        }, 3000);
-      } else {
-        this.snackbarService.openSnackBar('Đổi mật không thành công', 'danger', 2500);
-        this.changePasswordForm.reset();
-      }
-    })
+    this.authService
+      .changePassword(this.changePasswordForm.controls.newPassword.value)
+      .subscribe((data) => {
+        const resData = { ...data };
+        if (resData.status === true) {
+          this.snackbarService.openSnackBar(
+            'Đổi mật khẩu thành công. Vui lòng đăng nhập lại',
+            'success',
+            2500
+          );
+          this.submitted = false;
+          setTimeout(() => {
+            this.authService.logout();
+          }, 2500);
+        } else {
+          this.snackbarService.openSnackBar(
+            'Đổi mật không thành công',
+            'danger',
+            2500
+          );
+          this.changePasswordForm.reset();
+        }
+      });
     console.log(this.changePasswordForm.value);
+  }
+
+  reloadComponent() {
+    let currentUrl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currentUrl]);
   }
 }
