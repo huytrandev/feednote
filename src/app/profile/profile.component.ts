@@ -134,7 +134,6 @@ export class ProfileComponent implements OnInit {
   buildChangePasswordForm(): void {
     this.changePasswordForm = this.fb.group(
       {
-        currentPassword: ['', [Validators.required, Validators.minLength(3)]],
         newPassword: ['', [Validators.required, Validators.minLength(3)]],
         confirmPassword: ['', [Validators.required]],
       },
@@ -175,6 +174,21 @@ export class ProfileComponent implements OnInit {
 
   changePassword(): void {
     if (!this.changePasswordForm.valid) return;
+
+    this.submitted = true;
+    this.authService.changePassword(this.changePasswordForm.controls.newPassword.value).subscribe(data => {
+      const resData = {...data};
+      if (resData.status === true) {
+        this.snackbarService.openSnackBar('Đổi mật khẩu thành công. Vui lòng đăng nhập lại', 'success', 2500);
+        this.submitted = false;
+        setTimeout(() => {
+          this.authService.logout();
+        }, 3000);
+      } else {
+        this.snackbarService.openSnackBar('Đổi mật không thành công', 'danger', 2500);
+        this.changePasswordForm.reset();
+      }
+    })
     console.log(this.changePasswordForm.value);
   }
 }

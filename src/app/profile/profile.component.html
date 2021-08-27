@@ -73,9 +73,17 @@
                     mat-raised-button
                     class="app-button app-button-brown"
                     type="submit"
-                    [disabled]="!updateInfoForm.valid || !updateInfoForm.dirty || submitted"
+                    [disabled]="
+                      !updateInfoForm.valid ||
+                      !updateInfoForm.dirty ||
+                      submitted
+                    "
                   >
-                    <mat-spinner diameter=16 style="display: inline-flex; margin-right: 10px;" *ngIf="submitted"></mat-spinner>
+                    <mat-spinner
+                      diameter="16"
+                      style="display: inline-flex; margin-right: 10px"
+                      *ngIf="submitted"
+                    ></mat-spinner>
                     Cập nhật
                   </button>
                   <button
@@ -99,22 +107,6 @@
                 [formGroup]="changePasswordForm"
                 (ngSubmit)="changePassword()"
               >
-                <!-- Current password -->
-                <mat-form-field>
-                  <mat-label>Mật khẩu hiện tại</mat-label>
-                  <input
-                    type="password"
-                    matInput
-                    formControlName="currentPassword"
-                  />
-                  <mat-error *ngIf="f2.currentPassword.errors?.required"
-                    >Mật khẩu không được trống.</mat-error
-                  >
-                  <mat-error *ngIf="f2.currentPassword.errors?.minlength"
-                    >Mật khẩu phải có ít nhất 3 ký tự.</mat-error
-                  >
-                </mat-form-field>
-
                 <!-- New password -->
                 <mat-form-field>
                   <mat-label>Mật khẩu mới</mat-label>
@@ -157,9 +149,16 @@
                     class="app-button app-button-brown"
                     type="submit"
                     [disabled]="
-                      !changePasswordForm.valid || !changePasswordForm.dirty
+                      !changePasswordForm.valid ||
+                      !changePasswordForm.dirty ||
+                      submitted
                     "
                   >
+                    <mat-spinner
+                      diameter="16"
+                      style="display: inline-flex; margin-right: 10px"
+                      *ngIf="submitted"
+                    ></mat-spinner>
                     Đổi mật khẩu
                   </button>
                   <button

@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaderResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -29,7 +33,7 @@ export class AuthService {
       .post<any>(`${env.apiUrl}/api/auth/login`, { username, password })
       .pipe(
         map((response) => {
-          if (!response.status) {
+          if (response.status === false) {
             return response;
           }
 
@@ -45,5 +49,19 @@ export class AuthService {
     this.router.navigate(['/login']);
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    console.clear();
+  }
+
+  changePassword(password: string) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-session-key': this.currentUserValue.token,
+    });
+
+    return this.http.put<any>(
+      `${env.apiUrl}/api/auth/changePassword`,
+      { password: password },
+      { headers: headers }
+    );
   }
 }
