@@ -49,7 +49,6 @@ export class AuthService {
     this.router.navigate(['/login']);
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-    console.clear();
   }
 
   changePassword(password: string) {

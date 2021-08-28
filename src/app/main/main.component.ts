@@ -12,15 +12,29 @@ export class MainComponent implements OnInit {
   mobileQuery!: MediaQueryList;
   fillerNav = [
     {
+      path: '/not',
+      title: 'Hộ nông dân',
+    },
+    {
+      path: '/not',
+      title: 'Giống bò',
+    },
+    {
       path: 'food',
-      icon: 'grass',
-      title: 'Danh mục thức ăn',
+      title: 'Nguồn thức ăn',
+    },
+    {
+      path: '/not',
+      title: 'Khẩu phần ăn chuẩn',
+    },
+    {
+      path: '/not',
+      title: 'Nhu cầu dinh dưỡng',
     },
     {
       path: 'veterinary/statistic',
-      icon: 'show_chart',
       title: 'Thống kê',
-    }  
+    }
   ];
   loading: boolean = true;
   currentYear = new Date().getFullYear();

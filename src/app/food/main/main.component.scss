@@ -23,30 +23,16 @@ mat-progress-bar {
   box-shadow: 0 0 7px rgba($color: #000000, $alpha: 0.15);
 }
 
-.example-loading-shade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .mat-form-field {
-  width: 30%;
+  width: 40%;
 }
 .mat-column-id {
   width: 70px !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 20% !important;
+  flex: 0 0 70px !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
-
   word-break: break-word;
 
   -ms-hyphens: auto;
@@ -57,23 +43,8 @@ mat-progress-bar {
 .mat-column-name {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 20% !important;
-  width: 20% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-.mat-column-ingredient {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 calc(100% - 60% - 70px) !important;
-  width: calc(100% - 60% - 70px) !important;
+  flex: 0 0 30% !important;
+  width: 30% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -87,8 +58,8 @@ mat-progress-bar {
 .mat-column-idArea {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 25% !important;
-  width: 25% !important;
+  flex: 0 0 calc(100% - 30% - 200px) !important;
+  width: calc(100% - 30% - 200px) !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -102,8 +73,8 @@ mat-progress-bar {
 .mat-column-unit {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 15% !important;
-  width: 15% !important;
+  flex: 0 0 100px !important;
+  width: 100px !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -114,9 +85,29 @@ mat-progress-bar {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+.mat-column-actions {
+  width: 100px;
+}
 
 .table-search-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.menu {
+  max-height: 170px !important;
+  min-width: 150px !important;
+}
+.title-menu,
+.content-menu {
+  display: block;
+}
+.title-menu {
+  font-weight: 500;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+.content-menu {
+  margin-left: 20px;
 }

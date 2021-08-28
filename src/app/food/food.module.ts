@@ -4,9 +4,10 @@ import { MainComponent } from './main/main.component';
 import { FoodRoutingModule } from './food-routing.module';
 import { SharedModule } from '../_shared/shared.module';
 import { MaterialModule } from '../material/material.module';
+import { DialogFormComponent } from './dialog-form/dialog-form.component';
 
 @NgModule({
-  declarations: [MainComponent],
+  declarations: [MainComponent, DialogFormComponent],
   imports: [CommonModule, FoodRoutingModule, SharedModule, MaterialModule],
 })
 export class FoodModule {}

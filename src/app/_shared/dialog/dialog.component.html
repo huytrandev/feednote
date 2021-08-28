@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>
+  <div class="dialog-title">
+    Xác nhận xoá
+    <button mat-icon-button (click)="onClose()">
+      <mat-icon class="material-icons-round">close</mat-icon>
+    </button>
+  </div>
+</h2>
+<div mat-dialog-content>
+  <p>Bạn sẽ không thể khôi phục sau hành động này. Tiếp tục xoá?</p>
+</div>
+<div mat-dialog-actions class="button-group">
+  <button
+    mat-raised-button
+    class="app-button app-button-red"
+    (click)="onDelete()"
+    style="margin-right: 10px"
+  >
+    Xoá
+  </button>
+  <button
+    mat-raised-button
+    class="app-button app-button-grey"
+    (click)="onClose()"
+  >
+    Huỷ bỏ
+  </button>
+</div>

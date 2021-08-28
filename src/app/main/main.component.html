@@ -19,7 +19,7 @@
       class="nav-icon favorite-icon"
       [matMenuTriggerFor]="notifications"
     >
-      <mat-icon matBadge="2" matBadgeColor="warn" matBadgeSize="small"
+      <mat-icon class="material-icons-round" matBadge="2" matBadgeColor="warn" matBadgeSize="small"
         >notifications</mat-icon
       >
     </button>
@@ -69,7 +69,7 @@
           routerLinkActive="active"
           *ngFor="let nav of fillerNav"
         >
-          <mat-icon>{{ nav.icon }}</mat-icon>
+          <!-- <mat-icon class="material-icons-round">{{ nav.icon }}</mat-icon> -->
           {{ nav.title }}
         </a>
       </mat-nav-list>
