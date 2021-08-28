@@ -53,10 +53,15 @@ export class ProfileComponent implements OnInit {
 
   getUser(): void {
     if (this.currentUser.role === 'admin') {
-      this.userService.getAdminInfoById(this.userId).subscribe((data) => {
-        const createdAt = new Date(data.data.createdAt);
+      this.userService.getAdminInfoById(this.userId).subscribe((res) => {
+        const { data, status } = res;
+        if (status === false) {
+          return this.authService.logout();
+        }
+
+        const createdAt = new Date(data.createdAt);
         let roleName = '';
-        switch (data.data.role) {
+        switch (data.role) {
           case 'admin':
             roleName = 'Quản trị viên';
             break;
@@ -68,15 +73,20 @@ export class ProfileComponent implements OnInit {
             break;
         }
 
-        this.user = { ...data.data, createdAt, roleName };
+        this.user = { ...data, createdAt, roleName };
         this.setValueForForm({ ...this.user });
         this.loading = false;
       });
     } else if (this.currentUser.role === 'manager') {
-      this.userService.getVeterinaryInfoById(this.userId).subscribe((data) => {
-        const createdAt = new Date(data.data.createdAt);
+      this.userService.getVeterinaryInfoById(this.userId).subscribe((res) => {
+        const { data, status } = res;
+        if (status === false) {
+          return this.authService.logout();
+        }
+
+        const createdAt = new Date(data.createdAt);
         let roleName = '';
-        switch (data.data.role) {
+        switch (data.role) {
           case 'admin':
             roleName = 'Quản trị viên';
             break;
@@ -88,15 +98,19 @@ export class ProfileComponent implements OnInit {
             break;
         }
 
-        this.user = { ...data.data, createdAt, roleName };
+        this.user = { ...data, createdAt, roleName };
         this.setValueForForm({ ...this.user });
         this.loading = false;
       });
-    } else {
-      this.userService.getUserInfoById(this.userId).subscribe((data) => {
-        const createdAt = new Date(data.data.createdAt);
+    } else if (this.currentUser.role === 'breeder') {
+      this.userService.getUserInfoById(this.userId).subscribe((res) => {
+        const { data, status } = res;
+        if (status === false) {
+          return this.authService.logout();
+        }
+        const createdAt = new Date(data.createdAt);
         let roleName = '';
-        switch (data.data.role) {
+        switch (data.role) {
           case 'admin':
             roleName = 'Quản trị viên';
             break;
@@ -108,7 +122,7 @@ export class ProfileComponent implements OnInit {
             break;
         }
 
-        this.user = { ...data.data, createdAt, roleName };
+        this.user = { ...data, createdAt, roleName };
         this.setValueForForm({ ...this.user });
         this.loading = false;
       });

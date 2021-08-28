@@ -8,10 +8,9 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AreaService {
-  headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'x-session-key': this.authService.currentUserValue.token,
-  });
+  headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('x-session-key', this.authService.currentUserValue.token);
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

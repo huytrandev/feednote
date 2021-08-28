@@ -17,9 +17,10 @@ export class FoodService {
 
   getAll(filter?: FilterDto) {
     const params = new HttpParams()
-      .set('skip', filter?.skip || '')
-      .set('limit', filter?.limit || '')
-      .set('search', filter?.search || '');
+      .set('skip', filter?.skip?.toString() || '')
+      .set('limit', filter?.limit?.toString() || '')
+      .set('search', filter?.search?.toString() || '')
+      .set('sort', filter?.sort?.toString() || '');
 
     const options = {
       headers: this.headers,

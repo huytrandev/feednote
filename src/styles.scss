@@ -68,6 +68,38 @@ mat-progress-bar {
   }
 }
 
+.color {
+  &-red {
+    color: $red !important;
+  }
+
+  &-orange {
+    color: $orange !important;
+  }
+
+  &-yellow {
+    color: $yellow !important;
+  }
+
+  &-white {
+    color: #fff !important;
+  }
+}
+
+.bg {
+  &-red {
+    background: $red !important;
+  }
+
+  &-orange {
+    background: $orange !important;
+  }
+
+  &-yellow {
+    background: $yellow !important;
+  }
+}
+
 .green-snackbar {
   background: $green;
   color: #fff;
