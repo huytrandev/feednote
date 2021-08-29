@@ -38,11 +38,21 @@ mat-progress-bar {
   background-color: $brown-primary !important;
 }
 
+table tr {
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #f7f7f7;
+  }
+}
+
+
 // Customize class
 .app-button {
   border-radius: $border-radius !important;
   text-transform: capitalize;
   height: fit-content;
+  text-transform: none !important;
 
   &-brown {
     background-color: $brown-primary !important;
@@ -98,6 +108,41 @@ mat-progress-bar {
   &-yellow {
     background: $yellow !important;
   }
+}
+
+.font {
+  &-weight {
+    &-bold {
+      font-weight: 500;
+    }
+    &-light {
+      font-weight: 300;
+    }
+  }
+
+  &-italic {
+    font-style: italic;
+  }
+}
+
+.text {
+  &-uppercase {
+    text-transform: uppercase;
+  }
+  &-capital {
+    text-transform: capitalize;
+  }
+  &-muted {
+    color: #777;
+  }
+}
+
+.rounded {
+  border-radius: $border-radius;
+}
+
+.border {
+  border: 1px solid #d9d9d9;
 }
 
 .green-snackbar {
