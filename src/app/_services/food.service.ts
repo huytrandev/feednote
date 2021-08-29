@@ -29,4 +29,22 @@ export class FoodService {
 
     return this.http.get<any>(`${env.apiUrl}/api/food`, options);
   }
+
+  create(food: any) {
+    return this.http.post<any>(`${env.apiUrl}/api/food`, food, {
+      headers: this.headers,
+    });
+  }
+
+  update(id: string, food: any) {
+    return this.http.put<any>(`${env.apiUrl}/api/food/${id}`, food, {
+      headers: this.headers,
+    });
+  }
+
+  delete(id: string) {
+    return this.http.delete<any>(`${env.apiUrl}/api/food/${id}`, {
+      headers: this.headers,
+    });
+  }
 }

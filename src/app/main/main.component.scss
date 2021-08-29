@@ -101,9 +101,13 @@ mat-nav-list .active {
   box-shadow: 0 8px 15px 0 rgb(0 0 0 / 25%);
   color: #fff;
   border-radius: $border-radius;
+
+  & .mat-list-item-content {
+    transform: translateX(20px);
+  }
 }
-mat-nav-list mat-icon {
-  margin-right: 20px;
+fa-icon {
+  margin-right: 12px;
 }
 mat-progress-bar {
   position: absolute;

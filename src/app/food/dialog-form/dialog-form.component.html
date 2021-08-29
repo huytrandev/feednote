@@ -1,40 +1,64 @@
 <h2 mat-dialog-title>
   <div class="dialog-title">
     {{ title }}
-    <button mat-icon-button (click)="onClose()">
+    <button mat-icon-button [autofocus]="false" (click)="onClose()">
       <mat-icon class="material-icons-round">close</mat-icon>
     </button>
   </div>
 </h2>
 <div mat-dialog-content>
   <app-loading *ngIf="loading"></app-loading>
-  <form *ngIf="!loading">
+  <form *ngIf="!loading" [formGroup]="form">
     <!-- Name -->
     <mat-form-field appearance="outline">
       <mat-label>Tên</mat-label>
-      <input type="text" matInput [autofocus]="true" />
+      <input type="text" matInput formControlName="name" />
+
+      <mat-error *ngIf="f.name.errors?.required"
+        >Tên thức ăn không được trống.</mat-error
+      >
     </mat-form-field>
 
     <!-- Ingredients -->
     <mat-form-field appearance="outline">
       <mat-label>Thành phần</mat-label>
-      <textarea matInput rows="5" style="resize: none"></textarea>
+      <textarea
+        matInput
+        rows="5"
+        style="resize: none"
+        formControlName="ingredient"
+      ></textarea>
+
+      <mat-error *ngIf="f.ingredient.errors?.required"
+        >Tên thức ăn không được trống.</mat-error
+      >
+      <mat-error *ngIf="f.ingredient.errors?.minlength"
+        >Tên thức ăn ít nhất 5 ký tự.</mat-error
+      >
     </mat-form-field>
 
     <!-- Area -->
     <mat-form-field appearance="outline">
       <mat-label>Địa phương</mat-label>
-      <mat-select>
+      <mat-select formControlName="idArea">
         <mat-option *ngFor="let area of areas" [value]="area._id">
           {{ area.name }}
         </mat-option>
       </mat-select>
+
+      <mat-error *ngIf="f.idArea.errors?.required"
+        >Vui lòng chọn địa phương.</mat-error
+      >
     </mat-form-field>
 
     <!-- unit -->
     <mat-form-field appearance="outline">
       <mat-label>Đơn vị</mat-label>
-      <input type="text" matInput [autofocus]="true" />
+      <input type="text" matInput [autofocus]="true" formControlName="unit" />
+
+      <mat-error *ngIf="f.unit.errors?.required"
+        >Đơn vị không được trống.</mat-error
+      >
     </mat-form-field>
   </form>
 </div>
@@ -44,8 +68,20 @@
     class="app-button app-button-brown"
     (click)="onSave()"
     style="margin-right: 10px"
+    [disabled]="!form.valid || !form.dirty || submitted"
   >
+    <mat-spinner
+      diameter="16"
+      style="display: inline-flex; margin-right: 10px"
+      *ngIf="submitted"
+    ></mat-spinner>
     Lưu lại
   </button>
-  <button mat-raised-button class="app-button app-button-grey">Huỷ bỏ</button>
+  <button
+    mat-raised-button
+    class="app-button app-button-grey"
+    (click)="onCancel()"
+  >
+    Huỷ bỏ
+  </button>
 </div>

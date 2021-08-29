@@ -34,7 +34,7 @@
         </div>
         <mat-form-field class="login-full-width" appearance="outline">
           <mat-label>Tên tài khoản</mat-label>
-          <input matInput type="text" formControlName="username" />
+          <input matInput type="text" formControlName="username" autocomplete="username" />
 
           <mat-error *ngIf="f.username.errors?.required"
             >Tên tài khoản không được trống.</mat-error
@@ -49,7 +49,7 @@
           <input
             matInput
             type="password"
-            type="password"
+            autocomplete="current-password"
             formControlName="password"
           />
 

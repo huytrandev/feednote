@@ -8,7 +8,6 @@ import { MaterialModule } from './material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -28,7 +27,7 @@ import { SharedModule } from './_shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    SharedModule,
+    SharedModule
   ],
   providers: [
     {

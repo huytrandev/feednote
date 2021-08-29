@@ -17,10 +17,10 @@ export class DialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onDelete(): void {
-
+    this.dialogRef.close({ action: 'delete' });
   }
 
   onClose(): void {
-    this.dialogRef.close({ event: 'Cancel' });
+    this.dialogRef.close({ action: 'cancel' });
   }
 }

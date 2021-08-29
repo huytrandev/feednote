@@ -3,8 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { FilterDto } from 'src/app/_models/filter';
 import { FoodService } from 'src/app/_services/food.service';
+import { SnackbarService } from 'src/app/_services/snackbar.service';
 import { DialogComponent } from 'src/app/_shared/dialog/dialog.component';
 import { DialogFormComponent } from '../dialog-form/dialog-form.component';
 
@@ -23,14 +25,20 @@ export class MainComponent implements OnInit, AfterViewInit {
   resultLength = 0;
   paramsGetFoods = {} as FilterDto;
   defaultPageSize = 5;
+  defaultSort = 'createdAt desc';
   totalCount: number;
 
-  constructor(private foodService: FoodService, public dialog: MatDialog) {}
+  constructor(
+    private foodService: FoodService,
+    public dialog: MatDialog,
+    private router: Router,
+    private snackbar: SnackbarService
+  ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.setParams(0, this.defaultPageSize, '', '');
+    this.setParams(0, this.defaultPageSize, '', this.defaultSort);
     this.getFoods();
   }
 
@@ -62,7 +70,7 @@ export class MainComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.setParams(0, 0, input, '');
+    this.setParams(0, 0, input, this.defaultSort);
     this.loading = true;
     this.getFoods();
   }
@@ -74,7 +82,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     const skip = limit * this.paginator.pageIndex;
 
     if (direction === '') {
-      this.setParams(skip, limit, '', '');
+      this.setParams(skip, limit, '', this.defaultSort);
     } else {
       const sortQuery = `${active} ${direction}`;
       this.setParams(skip, limit, '', sortQuery);
@@ -87,24 +95,83 @@ export class MainComponent implements OnInit, AfterViewInit {
   onPagination(e: any) {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
-    this.setParams(skip, limit, '', '');
+    this.setParams(skip, limit, '', this.defaultSort);
     this.loading = true;
     this.getFoods();
   }
 
-  openDialog(type: string, obj?: any) {
+  openDialog(action: string, obj: any) {
     const dialogRef = this.dialog.open(DialogFormComponent, {
       width: '500px',
       minHeight: '200px',
       data: {
-        type,
+        action,
+        obj,
       },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action, data } = result;
+      if (action === 'add') {
+        this.loading = true;
+        this.foodService.create(data).subscribe((res) => {
+          const { status } = res;
+          if (status === true) {
+            this.snackbar.openSnackBar(
+              'Thêm thức ăn thành công',
+              'success',
+              2000
+            );
+            this.getFoods();
+          } else {
+            this.snackbar.openSnackBar(
+              'Thêm thức ăn thất bại',
+              'danger',
+              2000
+            );
+          }
+        });
+      } else if (action === 'edit') {
+        this.loading = true;
+        const { _id } = obj;
+        this.foodService.update(_id, data).subscribe(res => {
+          const { status } = res;
+          if (status === true) {
+            this.snackbar.openSnackBar('Cập nhật thức ăn thành công', 'success', 2000);
+            this.getFoods();
+          } else {
+            this.snackbar.openSnackBar('Cập nhật thức ăn thất bại', 'danger', 2000);
+          }
+        })
+      }
     });
   }
 
-  delete() {
-    this.dialog.open(DialogComponent, {
+  delete(element: any) {
+    const dialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
+    });
+
+    const { _id } = element;
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action } = result;
+      if (action === 'delete') {
+        this.loading = true;
+        this.foodService.delete(_id).subscribe((res) => {
+          const { status } = res;
+          if (status === true) {
+            this.snackbar.openSnackBar('Xoá thức ăn thành công', 'success', 2000);
+            this.getFoods();
+          } else {
+            this.snackbar.openSnackBar(
+              'Xoá thức ăn thất bại',
+              'danger',
+              2000
+            );
+          }
+        });
+      }
     });
   }
 }
