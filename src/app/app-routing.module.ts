@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './_helpers/auth.guard';
 
@@ -46,11 +47,15 @@ const routes: Routes = [
         loadChildren: () =>
           import('./breeder/breeder.module').then((m) => m.BreederModule),
       },
+      {
+        path: 'not-found',
+        component: NotFoundComponent
+      },
     ],
   },
   {
     path: '**',
-    redirectTo: 'login',
+    redirectTo: 'not-found',
     pathMatch: 'full',
   },
 ];

@@ -30,6 +30,12 @@ export class CowBreedService {
     return this.http.get<any>(`${env.apiUrl}/api/cowBreed`, options);
   }
 
+  getById(id: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/cowBreed/${id}`, {
+      headers: this.headers,
+    });
+  }
+
   create(cowBreed: any) {
     return this.http.post<any>(`${env.apiUrl}/api/cowBreed`, cowBreed, {
       headers: this.headers,
