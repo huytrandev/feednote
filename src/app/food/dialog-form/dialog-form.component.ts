@@ -80,7 +80,12 @@ export class DialogFormComponent implements OnInit {
   }
 
   onCancel() {
-    this.form.reset();
+    if (this.action === 'add') {
+
+      this.form.reset();
+    } else if (this.action === 'edit') {
+      this.buidForm();
+    }
   }
 
   getArea() {

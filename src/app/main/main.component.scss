@@ -27,7 +27,7 @@ h1.app-name {
   flex: 1 0 auto;
 }
 mat-toolbar .nav-icon {
-  transition: all 350ms ease;
+  transition: all 300ms ease;
   &:hover {
     background: #e7e7e7;
   }
@@ -37,7 +37,7 @@ mat-toolbar .avatar {
   align-items: center;
   padding: 5px 7px 5px 5px;
   border-radius: 30px;
-  transition: all 350ms ease;
+  transition: all 300ms ease;
   cursor: pointer;
 
   &:hover {
@@ -87,10 +87,10 @@ mat-sidenav-content {
 mat-nav-list {
   margin-left: 15px;
   margin-right: 15px;
-  transition: all 350ms ease;
+  transition: all 300ms ease;
 }
 mat-nav-list a {
-  transition: all 350ms ease;
+  transition: all 300ms ease;
   border-radius: $border-radius;
 }
 mat-nav-list a:not(:last-child) {
@@ -105,9 +105,6 @@ mat-nav-list .active {
   & .mat-list-item-content {
     transform: translateX(20px);
   }
-}
-fa-icon {
-  margin-right: 12px;
 }
 mat-progress-bar {
   position: absolute;

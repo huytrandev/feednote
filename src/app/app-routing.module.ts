@@ -8,7 +8,7 @@ import { AuthGuard } from './_helpers/auth.guard';
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: '',
@@ -17,21 +17,36 @@ const routes: Routes = [
     children: [
       {
         path: 'admin',
-        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+        loadChildren: () =>
+          import('./admin/admin.module').then((m) => m.AdminModule),
       },
       {
         path: 'veterinary',
-        loadChildren: () => import('./veterinary/veterinary.module').then(m => m.VeterinaryModule)
+        loadChildren: () =>
+          import('./veterinary/veterinary.module').then(
+            (m) => m.VeterinaryModule
+          ),
       },
       {
         path: 'profile/:id',
-        component: ProfileComponent
+        component: ProfileComponent,
       },
       {
-        path: 'food',
-        loadChildren: () => import('./food/food.module').then(m => m.FoodModule)
-      }
-    ]
+        path: 'foods',
+        loadChildren: () =>
+          import('./food/food.module').then((m) => m.FoodModule),
+      },
+      {
+        path: 'cow-breeds',
+        loadChildren: () =>
+          import('./cow-breed/cow-breed.module').then((m) => m.CowBreedModule),
+      },
+      {
+        path: 'breeders',
+        loadChildren: () =>
+          import('./breeder/breeder.module').then((m) => m.BreederModule),
+      },
+    ],
   },
   {
     path: '**',

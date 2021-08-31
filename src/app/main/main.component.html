@@ -19,7 +19,7 @@
       class="nav-icon favorite-icon"
       [matMenuTriggerFor]="notifications"
     >
-      <mat-icon class="material-icons-round" matBadge="2" matBadgeColor="warn" matBadgeSize="small"
+      <mat-icon class="material-icons-outlined app-icon" matBadge="2" matBadgeColor="warn" matBadgeSize="small"
         >notifications</mat-icon
       >
     </button>
@@ -36,7 +36,7 @@
       class="nav-icon favorite-icon"
       [matMenuTriggerFor]="menu"
     >
-      <mat-icon>arrow_drop_down</mat-icon>
+      <mat-icon class="app-icon">arrow_drop_down</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
       <div mat-menu-item class="menu-avatar" [routerLink]="['profile', currentUser._id]">
@@ -45,7 +45,7 @@
       </div>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
+        <mat-icon class="material-icons-outlined app-icon">logout</mat-icon>
         <span>Đăng xuất</span>
       </button>
     </mat-menu>
