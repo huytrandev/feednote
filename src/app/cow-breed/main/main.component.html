@@ -49,12 +49,12 @@
       <ng-container *ngIf="true" matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef colspan="2"></th>
         <td mat-cell *matCellDef="let row">
-          <button mat-icon-button matTooltip="Cập nhật">
+          <button mat-icon-button matTooltip="Cập nhật" (click)="$event.stopPropagation();">
             <mat-icon class="material-icons-outlined app-icon"
               >drive_file_rename_outline</mat-icon
             >
           </button>
-          <button mat-icon-button matTooltip="Xoá">
+          <button mat-icon-button matTooltip="Xoá" (click)="$event.stopPropagation();">
             <mat-icon class="material-icons-outlined color-red app-icon"
               >delete_outline</mat-icon
             >

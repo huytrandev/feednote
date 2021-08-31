@@ -72,13 +72,13 @@
           <button
             mat-icon-button
             matTooltip="Cập nhật"
-            (click)="openDialog('edit', row)"
+            (click)="$event.stopPropagation(); openDialog('edit', row)"
           >
             <mat-icon class="material-icons-outlined app-icon"
               >drive_file_rename_outline</mat-icon
             >
           </button>
-          <button mat-icon-button matTooltip="Xoá" (click)="delete(row)">
+          <button mat-icon-button matTooltip="Xoá" (click)="$event.stopPropagation(); delete(row)">
             <mat-icon class="material-icons-outlined color-red app-icon"
               >delete_outline</mat-icon
             >
@@ -99,7 +99,7 @@
             "
           >
             <div class="app-element-content">
-              <p class="font-weight-bold" style="margin-top: 10px;;">Thành phần</p>
+              <p class="font-weight-bold" style="margin-top: 10px;">Thành phần</p>
               <p>{{element.ingredient}}</p>
             </div>
           </div>
