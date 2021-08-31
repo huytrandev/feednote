@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { MustMatch } from '../helpers/must-match.validator';
+import { MustMatch } from '../_helpers/must-match.validator';
 import { AreaService } from '../_services/area.service';
 import { AuthService } from '../_services/auth.service';
 import { SnackbarService } from '../_services/snackbar.service';
@@ -13,7 +15,8 @@ import { UserService } from '../_services/user.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
+  protected ngUnsubscribe: Subject<void> = new Subject<void>();
   loading: boolean = true;
   updateInfoForm: FormGroup;
   changePasswordForm: FormGroup;
@@ -43,6 +46,11 @@ export class ProfileComponent implements OnInit {
     this.buildChangePasswordForm();
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   get f1() {
     return this.updateInfoForm.controls;
   }
@@ -53,86 +61,98 @@ export class ProfileComponent implements OnInit {
 
   getUser(): void {
     if (this.currentUser.role === 'admin') {
-      this.userService.getAdminInfoById(this.userId).subscribe((res) => {
-        const { data, status } = res;
-        if (status === false) {
-          return this.authService.logout();
-        }
+      this.userService
+        .getAdminInfoById(this.userId)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((res) => {
+          const { data, status } = res;
+          if (status === false) {
+            return this.authService.logout();
+          }
 
-        const createdAt = new Date(data.createdAt);
-        let roleName = '';
-        switch (data.role) {
-          case 'admin':
-            roleName = 'Quản trị viên';
-            break;
-          case 'manager':
-            roleName = 'Cán bộ thú y';
-            break;
-          case 'breeder':
-            roleName = 'Nông dân';
-            break;
-        }
+          const createdAt = new Date(data.createdAt);
+          let roleName = '';
+          switch (data.role) {
+            case 'admin':
+              roleName = 'Quản trị viên';
+              break;
+            case 'manager':
+              roleName = 'Cán bộ thú y';
+              break;
+            case 'breeder':
+              roleName = 'Nông dân';
+              break;
+          }
 
-        this.user = { ...data, createdAt, roleName };
-        this.setValueForForm({ ...this.user });
-        this.loading = false;
-      });
+          this.user = { ...data, createdAt, roleName };
+          this.setValueForForm({ ...this.user });
+          this.loading = false;
+        });
     } else if (this.currentUser.role === 'manager') {
-      this.userService.getVeterinaryInfoById(this.userId).subscribe((res) => {
-        const { data, status } = res;
-        if (status === false) {
-          return this.authService.logout();
-        }
+      this.userService
+        .getVeterinaryInfoById(this.userId)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((res) => {
+          const { data, status } = res;
+          if (status === false) {
+            return this.authService.logout();
+          }
 
-        const createdAt = new Date(data.createdAt);
-        let roleName = '';
-        switch (data.role) {
-          case 'admin':
-            roleName = 'Quản trị viên';
-            break;
-          case 'manager':
-            roleName = 'Cán bộ thú y';
-            break;
-          case 'breeder':
-            roleName = 'Nông dân';
-            break;
-        }
+          const createdAt = new Date(data.createdAt);
+          let roleName = '';
+          switch (data.role) {
+            case 'admin':
+              roleName = 'Quản trị viên';
+              break;
+            case 'manager':
+              roleName = 'Cán bộ thú y';
+              break;
+            case 'breeder':
+              roleName = 'Nông dân';
+              break;
+          }
 
-        this.user = { ...data, createdAt, roleName };
-        this.setValueForForm({ ...this.user });
-        this.loading = false;
-      });
+          this.user = { ...data, createdAt, roleName };
+          this.setValueForForm({ ...this.user });
+          this.loading = false;
+        });
     } else if (this.currentUser.role === 'breeder') {
-      this.userService.getUserInfoById(this.userId).subscribe((res) => {
-        const { data, status } = res;
-        if (status === false) {
-          return this.authService.logout();
-        }
-        const createdAt = new Date(data.createdAt);
-        let roleName = '';
-        switch (data.role) {
-          case 'admin':
-            roleName = 'Quản trị viên';
-            break;
-          case 'manager':
-            roleName = 'Cán bộ thú y';
-            break;
-          case 'breeder':
-            roleName = 'Nông dân';
-            break;
-        }
+      this.userService
+        .getUserInfoById(this.userId)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((res) => {
+          const { data, status } = res;
+          if (status === false) {
+            return this.authService.logout();
+          }
+          const createdAt = new Date(data.createdAt);
+          let roleName = '';
+          switch (data.role) {
+            case 'admin':
+              roleName = 'Quản trị viên';
+              break;
+            case 'manager':
+              roleName = 'Cán bộ thú y';
+              break;
+            case 'breeder':
+              roleName = 'Nông dân';
+              break;
+          }
 
-        this.user = { ...data, createdAt, roleName };
-        this.setValueForForm({ ...this.user });
-        this.loading = false;
-      });
+          this.user = { ...data, createdAt, roleName };
+          this.setValueForForm({ ...this.user });
+          this.loading = false;
+        });
     }
   }
 
   getArea() {
-    this.areaSerive.getAll().subscribe((res) => {
-      this.areas = res.data.items;
-    });
+    this.areaSerive
+      .getAll()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        this.areas = res.data.items;
+      });
   }
 
   buildUpdateUserInfoForm(): void {

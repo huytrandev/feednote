@@ -4,24 +4,16 @@
     class="app-progress"
     mode="indeterminate"
   ></mat-progress-bar>
+
   <div class="table-search-container">
-    <button
-      mat-raised-button
-      class="app-button app-button-green"
-      (click)="openDialog('add', {})"
-    >
+    <button mat-raised-button class="app-button app-button-green">
       <mat-icon>add</mat-icon>
       Thêm
     </button>
+
     <mat-form-field appearance="outline">
       <mat-label>Tìm kiếm</mat-label>
-      <input
-        type="search"
-        matInput
-        #input
-        (input)="onSearch($event)"
-        placeholder="Ví dụ: Lúa"
-      />
+      <input type="search" matInput #input placeholder="Ví dụ: Bò vàng" />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
   </div>
@@ -32,12 +24,10 @@
       [dataSource]="dataTableSource"
       matSort
       multiTemplateDataRows
-      (matSortChange)="onSort($event)"
     >
-      <!-- ID Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>STT</th>
-        <td mat-cell *matCellDef="let row; let i = dataIndex">
+        <td mat-cell *matCellDef="let element; let i = dataIndex">
           {{
             this.paginator.pageIndex == 0
               ? i + 1
@@ -46,39 +36,25 @@
         </td>
       </ng-container>
 
-      <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên</th>
-        <td mat-cell *matCellDef="let row">
-          {{ row.name }}
-        </td>
+        <th mat-header-cell *matHeaderCellDef>Tên</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
 
-      <!-- Area Column -->
-      <ng-container matColumnDef="areaName">
-        <th mat-header-cell *matHeaderCellDef>Địa phương</th>
-        <td mat-cell *matCellDef="let row">{{ row.areaName }}</td>
+      <ng-container matColumnDef="farmingTime">
+        <th mat-header-cell *matHeaderCellDef>Thời gian nuôi</th>
+        <td mat-cell *matCellDef="let element">{{ element.farmingTime }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="unit">
-        <th mat-header-cell *matHeaderCellDef>Đơn vị</th>
-        <td mat-cell *matCellDef="let row">{{ row.unit }}</td>
-      </ng-container>
-
-      <!-- Actions -->
       <ng-container *ngIf="true" matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef colspan="2"></th>
         <td mat-cell *matCellDef="let row">
-          <button
-            mat-icon-button
-            matTooltip="Cập nhật"
-            (click)="openDialog('edit', row)"
-          >
+          <button mat-icon-button matTooltip="Cập nhật">
             <mat-icon class="material-icons-outlined app-icon"
               >drive_file_rename_outline</mat-icon
             >
           </button>
-          <button mat-icon-button matTooltip="Xoá" (click)="delete(row)">
+          <button mat-icon-button matTooltip="Xoá">
             <mat-icon class="material-icons-outlined color-red app-icon"
               >delete_outline</mat-icon
             >
@@ -98,9 +74,11 @@
               element == expandedElement ? 'expanded' : 'collapsed'
             "
           >
-            <div class="app-element-content">
-              <p class="font-weight-bold" style="margin-top: 10px;;">Thành phần</p>
-              <p>{{element.ingredient}}</p>
+            <div class="element-content" *ngFor="let period of element.periods">
+              <p><span class="font-weight-bold">Giai đoạn: </span>{{period.name}}</p>
+              <p><span class="font-weight-bold">Ngày bắt đầu: </span>{{period.startDay}} ngày tuổi</p>
+              <p><span class="font-weight-bold">Ngày kết thúc: </span>{{period.endDay}} ngày tuổi</p>
+              <p><span class="font-weight-bold">Cân nặng tiêu chuẩn: </span>{{period.weight}} kg</p>
             </div>
           </div>
         </td>
@@ -132,7 +110,6 @@
       [length]="totalCount"
       [pageSizeOptions]="[5, 10, 50, 100]"
       [pageSize]="defaultPageSize"
-      (page)="onPagination($event)"
       aria-label="Select page"
       class="mat-paginator-sticky"
     ></mat-paginator>

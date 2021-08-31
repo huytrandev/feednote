@@ -42,12 +42,15 @@ export class AuthService {
   }
 
   logout() {
-    this.http.get<any>(`${env.apiUrl}/api/auth/logout`, {
-      headers: this.currentUserValue.token,
-    });
-    this.router.navigate(['/login']);
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    location.reload();
+  }
+
+  revokeToken() {
+    return this.http.get<any>(`${env.apiUrl}/api/auth/logout`, {
+      headers: this.currentUserValue.token,
+    });
   }
 
   changePassword(password: string) {

@@ -12,7 +12,7 @@
     <!-- Name -->
     <mat-form-field appearance="outline">
       <mat-label>Tên</mat-label>
-      <input type="text" matInput formControlName="name" />
+      <input type="text" matInput formControlName="name" placeholder="Ví dụ: Củ sắn" />
 
       <mat-error *ngIf="f.name.errors?.required"
         >Tên thức ăn không được trống.</mat-error
@@ -21,7 +21,7 @@
 
     <!-- Ingredients -->
     <mat-form-field appearance="outline">
-      <mat-label>Thành phần</mat-label>
+      <mat-label placeholder="Ví dụ: Tinh bột">Thành phần</mat-label>
       <textarea
         matInput
         rows="5"
@@ -54,7 +54,7 @@
     <!-- unit -->
     <mat-form-field appearance="outline">
       <mat-label>Đơn vị</mat-label>
-      <input type="text" matInput [autofocus]="true" formControlName="unit" />
+      <input type="text" matInput [autofocus]="true" formControlName="unit" placeholder="Ví dụ: kg" />
 
       <mat-error *ngIf="f.unit.errors?.required"
         >Đơn vị không được trống.</mat-error

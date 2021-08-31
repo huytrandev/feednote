@@ -12,15 +12,15 @@ export class MainComponent implements OnInit {
   mobileQuery!: MediaQueryList;
   fillerNav = [
     {
-      path: '/not',
-      title: 'Hộ nông dân',
+      path: '/breeders',
+      title: 'Hộ chăn nuôi',
     },
     {
-      path: '/not',
+      path: '/cow-breeds',
       title: 'Giống bò',
     },
     {
-      path: 'food',
+      path: 'foods',
       title: 'Nguồn thức ăn',
     },
     {
@@ -55,6 +55,7 @@ export class MainComponent implements OnInit {
   }
 
   logout(): void {
+    // this.authService.revokeToken();
     this.authService.logout();
   }
 }
