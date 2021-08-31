@@ -5,13 +5,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -25,17 +18,7 @@ import { SnackbarService } from 'src/app/_services/snackbar.service';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ),
-    ]),
-  ],
+  styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -54,7 +37,6 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   paramsGetCowBreeds = {} as FilterDto;
   defaultSort = 'createdAt desc';
   totalCount: number;
-  expandedElement: any | null;
 
   constructor(
     private snackbar: SnackbarService,
@@ -70,9 +52,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // This aborts all HTTP requests.
     this.ngUnsubscribe.next();
-    // This completes the subject properlly.
     this.ngUnsubscribe.complete();
   }
 
@@ -96,4 +76,46 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = false;
       });
   }
+
+  onSearch(e: any) {
+    const input = e.target.value;
+
+    if (input === '' || input.length === 0) {
+      this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+      this.loading = true;
+      this.getCowBreeds();
+      return;
+    }
+
+    this.setParams(0, this.defaultPageSize, input, this.defaultSort);
+    this.loading = true;
+    this.getCowBreeds();
+  }
+
+  onSort(e: any) {
+    const { active, direction } = e;
+
+    const limit = this.paginator.pageSize;
+    const skip = limit * this.paginator.pageIndex;
+
+    if (direction === '') {
+      this.setParams(skip, limit, '', this.defaultSort);
+    } else {
+      const sortQuery = `${active} ${direction}`;
+      this.setParams(skip, limit, '', sortQuery);
+    }
+
+    this.loading = true;
+    this.getCowBreeds();
+  }
+
+  onPagination(e: any) {
+    const limit = e.pageSize;
+    const skip = e.pageIndex * limit;
+    this.setParams(skip, limit, '', this.defaultSort);
+    this.loading = true;
+    this.getCowBreeds();
+  }
+
+  
 }

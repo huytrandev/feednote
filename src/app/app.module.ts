@@ -15,9 +15,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { SharedModule } from './_shared/shared.module';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, MainComponent, ProfileComponent],
+  declarations: [AppComponent, LoginComponent, MainComponent, ProfileComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

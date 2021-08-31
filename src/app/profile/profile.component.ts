@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private areaSerive: AreaService,
+    private areaService: AreaService,
     private userService: UserService,
     private route: ActivatedRoute,
     private authService: AuthService,
@@ -147,7 +147,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   getArea() {
-    this.areaSerive
+    this.areaService
       .getAll()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
