@@ -1,21 +1,20 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { MustMatch } from '../_helpers/must-match.validator';
-import { AreaService } from '../_services/area.service';
-import { AuthService } from '../_services/auth.service';
-import { SnackbarService } from '../_services/snackbar.service';
-import { UserService } from '../_services/user.service';
+import { MustMatch } from 'src/app/_helpers/must-match.validator';
+import { AreaService } from 'src/app/_services/area.service';
+import { AuthService } from 'src/app/_services/auth.service';
+import { SnackbarService } from 'src/app/_services/snackbar.service';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   loading: boolean = true;
   updateInfoForm: FormGroup;

@@ -6,10 +6,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../_shared/shared.module';
 import { MaterialModule } from '../material/material.module';
 import { DialogFormComponent } from './dialog-form/dialog-form.component';
-import { DetailComponent } from './detail/detail.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
-  declarations: [MainComponent, DialogFormComponent, DetailComponent],
+  declarations: [MainComponent, DialogFormComponent],
   imports: [
     CommonModule,
     CowBreedRoutingModule,
@@ -17,6 +17,7 @@ import { DetailComponent } from './detail/detail.component';
     ReactiveFormsModule,
     SharedModule,
     MaterialModule,
+    FlexLayoutModule
   ],
 })
 export class CowBreedModule {}

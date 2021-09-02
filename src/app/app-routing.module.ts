@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './_helpers/auth.guard';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
+    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
     path: '',
@@ -22,15 +19,9 @@ const routes: Routes = [
           import('./admin/admin.module').then((m) => m.AdminModule),
       },
       {
-        path: 'veterinary',
+        path: 'profile',
         loadChildren: () =>
-          import('./veterinary/veterinary.module').then(
-            (m) => m.VeterinaryModule
-          ),
-      },
-      {
-        path: 'profile/:id',
-        component: ProfileComponent,
+          import('./profile/profile.module').then((m) => m.ProfileModule),
       },
       {
         path: 'foods',
@@ -43,13 +34,9 @@ const routes: Routes = [
           import('./cow-breed/cow-breed.module').then((m) => m.CowBreedModule),
       },
       {
-        path: 'breeders',
-        loadChildren: () =>
-          import('./breeder/breeder.module').then((m) => m.BreederModule),
-      },
-      {
         path: 'not-found',
-        component: NotFoundComponent
+        loadChildren: () =>
+          import('./not-found/not-found.module').then((m) => m.NotFoundModule),
       },
     ],
   },

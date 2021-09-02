@@ -11,14 +11,14 @@ Chart.register(...registerables);
 export class StatisticComponent implements OnInit, AfterViewInit {
   canvas: any;
   ctx: any;
-  @ViewChild('mychart') mychart: any;
+  @ViewChild('mychart') myChart: any;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    this.canvas = this.mychart.nativeElement;
+    this.canvas = this.myChart.nativeElement;
     this.ctx = this.canvas.getContext('2d');
 
     new Chart(this.ctx, {
