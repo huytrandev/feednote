@@ -101,6 +101,10 @@ mat-progress-bar {
   &-yellow {
     background: $yellow !important;
   }
+
+  &-white {
+    background: #fff !important;
+  }
 }
 
 .font {
@@ -138,6 +142,10 @@ mat-progress-bar {
   border: 1px solid #d9d9d9;
 }
 
+.shadow {
+  box-shadow: 0 0 7px rgb(0 0 0 / 15%) !important;
+}
+
 .green-snackbar {
   background: $green;
   color: #fff;
@@ -156,4 +164,30 @@ mat-progress-bar {
 
 .app-icon {
   font-size: 1.35rem;
+}
+
+
+.row {
+  display: flex;
+  width: 100%;
+}
+
+.justify-content {
+  &-center {
+    justify-content: center;
+  }
+
+  &-start {
+    justify-content: start;
+  }
+
+  &-end {
+    justify-content: end;
+  }
+}
+
+.align-items {
+  &-center {
+    align-items: center;
+  }
 }

@@ -12,11 +12,11 @@ export class MainComponent implements OnInit {
   mobileQuery!: MediaQueryList;
   fillerNav = [
     {
-      path: '/breeders',
+      path: 'admin/breeders',
       title: 'Hộ chăn nuôi',
     },
     {
-      path: '/cow-breeds',
+      path: 'cow-breeds',
       title: 'Giống bò',
     },
     {
@@ -24,15 +24,15 @@ export class MainComponent implements OnInit {
       title: 'Nguồn thức ăn',
     },
     {
-      path: '/not',
+      path: 'not',
       title: 'Khẩu phần ăn chuẩn',
     },
     {
-      path: '/not',
+      path: 'not',
       title: 'Nhu cầu dinh dưỡng',
     },
     {
-      path: 'veterinary/statistic',
+      path: 'admin/statistic',
       title: 'Thống kê',
     }
   ];

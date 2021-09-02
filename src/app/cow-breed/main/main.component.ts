@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 import { FilterDto } from 'src/app/_models/filter';
 import { CowBreedService } from 'src/app/_services/cow-breed.service';
 import { SnackbarService } from 'src/app/_services/snackbar.service';
+import { DialogComponent } from 'src/app/_shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-main',
@@ -37,12 +38,18 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   paramsGetCowBreeds = {} as FilterDto;
   defaultSort = 'createdAt desc';
   totalCount: number;
+  showDetail: boolean = false;
+  currentCowBreedId!: string;
+  selectedElement!: any;
+  detailLoading: boolean = true;
 
   constructor(
     private snackbar: SnackbarService,
     public dialog: MatDialog,
     private cowBreedService: CowBreedService
-  ) {}
+  ) {
+    this.showDetail = false;
+  }
 
   ngOnInit(): void {}
 
@@ -117,5 +124,46 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getCowBreeds();
   }
 
-  
+  viewDetail(id: string) {
+    if (id === this.currentCowBreedId) {
+      this.showDetail = !this.showDetail;
+      return;
+    }
+    this.showDetail = true;
+    this.detailLoading = true;
+    this.currentCowBreedId = id;
+
+    this.cowBreedService.getById(this.currentCowBreedId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      const { status, data } = res;
+      this.selectedElement = data;
+      this.detailLoading = false;
+    })
+  }
+
+  onDelete(element: any): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '500px',
+    });
+
+    const { _id } = element;
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action } = result;
+      if (action === 'delete') {
+        this.loading = true;
+        this.cowBreedService.delete(_id).subscribe((res) => {
+          const { status } = res;
+          if (status === true) {
+            this.snackbar.openSnackBar(
+              'Xoá thức ăn thành công',
+              'success',
+              2000
+            );
+            this.getCowBreeds();
+          } else {
+            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+          }
+        });
+      }
+    });
+  }
 }
