@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 
@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/_services/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   loginForm!: FormGroup;
   loginError: boolean = false;
   loading: boolean = false;
@@ -49,16 +50,26 @@ export class LoginComponent implements OnInit {
 
     this.authService
       .login(this.f.username.value, this.f.password.value)
-      .subscribe((respose) => {
-        if (Object.keys(respose).length === 0 || respose.status === false) {
+      .subscribe(
+        (response) => {
+          const { status } = response;
+          if (Object.keys(response).length === 0 || status === false) {
+            this.loading = false;
+            this.submitted = false;
+            this.loginError = true;
+            this.loginForm.reset();
+            this.formGroupDirective.resetForm();
+            return;
+          }
+          this.router.navigate(['/']);
+        },
+        (error) => {
           this.loading = false;
           this.submitted = false;
           this.loginError = true;
           this.loginForm.reset();
-          return;
+          this.formGroupDirective.resetForm();
         }
-
-        this.router.navigate(['/']);
-      });
+      );
   }
 }

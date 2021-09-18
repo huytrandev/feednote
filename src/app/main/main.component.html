@@ -1,16 +1,16 @@
-<div class="app-container" [class.app-is-mobile]="mobileQuery.matches">
+<div class="app-container">
   <mat-progress-bar
     *ngIf="false"
     class="app-progress"
     mode="indeterminate"
   ></mat-progress-bar>
   <mat-toolbar class="app-toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
+    <button mat-icon-button (click)="isExpanded = !isExpanded">
       <mat-icon>menu</mat-icon>
     </button>
     <h1 class="app-name">FeedNote</h1>
     <span class="app-spacer"></span>
-    <div class="avatar" [routerLink]="['profile', currentUser._id]">
+    <div class="avatar" [routerLink]="['profile']">
       <img src="assets/images/avatar.png" alt="" />
       <span class="user-name">{{ currentUser.name }}</span>
     </div>
@@ -19,7 +19,11 @@
       class="nav-icon favorite-icon"
       [matMenuTriggerFor]="notifications"
     >
-      <mat-icon class="material-icons-outlined app-icon" matBadge="2" matBadgeColor="warn" matBadgeSize="small"
+      <mat-icon
+        class="material-icons-outlined app-icon"
+        matBadge="2"
+        matBadgeColor="warn"
+        matBadgeSize="small"
         >notifications</mat-icon
       >
     </button>
@@ -31,48 +35,38 @@
         <span>Thông báo 1</span>
       </button>
     </mat-menu>
-    <button
-      mat-icon-button
-      class="nav-icon favorite-icon"
-      [matMenuTriggerFor]="menu"
-    >
-      <mat-icon class="app-icon">arrow_drop_down</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <div mat-menu-item class="menu-avatar" [routerLink]="['profile', currentUser._id]">
-        <img src="assets/images/avatar.png" alt="" />
-        <span class="user-name">{{ currentUser.name }}</span>
-      </div>
-      <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon class="material-icons-outlined app-icon">logout</mat-icon>
-        <span>Đăng xuất</span>
-      </button>
-    </mat-menu>
   </mat-toolbar>
 
   <mat-sidenav-container
     class="app-sidenav-container"
-    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+    [style.marginTop.px]="0"
+    autosize
   >
-    <mat-sidenav
-      #snav
-      [mode]="mobileQuery.matches ? 'over' : 'side'"
-      [fixedInViewport]="mobileQuery.matches"
-      fixedTopGap="56"
-      [opened]="true"
-    >
-      <mat-nav-list>
-        <a
-          mat-list-item
-          [routerLink]="nav.path"
-          routerLinkActive="active"
-          *ngFor="let nav of fillerNav"
-        >
-          <!-- <mat-icon class="material-icons-round">{{ nav.icon }}</mat-icon> -->
-          {{ nav.title }}
-        </a>
-      </mat-nav-list>
+    <mat-sidenav #snav mode="side" fixedTopGap="56" [opened]="true">
+      <div class="my-side-nav">
+        <mat-nav-list>
+          <mat-list-item
+            mat-list-item
+            [routerLink]="nav.path"
+            routerLinkActive="active"
+            *ngFor="let nav of fillerNav"
+          >
+            <img [src]="nav.icon" alt="" style="width: 1.25rem" />
+            <span *ngIf="isExpanded" style="margin-left: 15px">{{
+              nav.title
+            }}</span>
+          </mat-list-item>
+        </mat-nav-list>
+
+        <div class="my-side-nav-bottom">
+          <div id="logout" class="app-button" (click)="logout()">
+            <img src="assets/icons/logout.svg" alt="" style="width: 1.25rem" />
+            <span *ngIf="isExpanded" style="margin-left: 15px; font-weight: 400"
+              >Đăng xuất</span
+            >
+          </div>
+        </div>
+      </div>
     </mat-sidenav>
 
     <mat-sidenav-content>

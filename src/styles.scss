@@ -17,9 +17,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-mat-sidenav {
-  width: 250px;
-}
 mat-sidenav-content {
   padding: 10px 30px;
 }
@@ -32,12 +29,21 @@ mat-toolbar {
 mat-progress-bar {
   position: absolute;
 }
+::selection {
+  background: $brown-primary;
+  color: #fff;
+}
+::-webkit-selection {
+  background: $brown-primary;
+  color: #fff;
+}
+::-moz-selection {
+  background: $brown-primary;
+  color: #fff;
+}
 
 .mat-menu-panel {
   border-radius: $border-radius !important;
-}
-.app-progress .mat-progress-bar-fill::after {
-  background-color: $brown-primary !important;
 }
 
 // Customize class
@@ -68,6 +74,11 @@ mat-progress-bar {
 
   &-grey {
     background-color: $grey !important;
+  }
+
+  &-blue {
+    background-color: $blue !important;
+    color: #fff;
   }
 }
 
@@ -147,15 +158,15 @@ mat-progress-bar {
 }
 
 .green-snackbar {
-  background: $green;
-  color: #fff;
-  font-weight: 500;
+  background: $light-green;
+  color: $text-green;
+  // font-weight: 500;
 }
 
 .red-snackbar {
-  background: $red;
-  color: #fff;
-  font-weight: 500;
+  background: $light-red;
+  color: $text-red;
+  // font-weight: 500;
 }
 
 .app-spacer {
@@ -165,7 +176,6 @@ mat-progress-bar {
 .app-icon {
   font-size: 1.35rem;
 }
-
 
 .row {
   display: flex;
@@ -178,16 +188,49 @@ mat-progress-bar {
   }
 
   &-start {
-    justify-content: start;
+    justify-content: flex-start;
   }
 
   &-end {
-    justify-content: end;
+    justify-content: flex-end;
   }
 }
 
 .align-items {
   &-center {
     align-items: center;
+  }
+}
+
+.w {
+  &-100 {
+    width: 100%;
+  }
+  &-90 {
+    width: 90%;
+  }
+  &-80 {
+    width: 80%;
+  }
+  &-70 {
+    width: 70%;
+  }
+  &-60 {
+    width: 60%;
+  }
+  &-50 {
+    width: 50%;
+  }
+  &-40 {
+    width: 40%;
+  }
+  &-30 {
+    width: 30%;
+  }
+  &-20 {
+    width: 20%;
+  }
+  &-10 {
+    width: 10%;
   }
 }

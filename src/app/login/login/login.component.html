@@ -5,11 +5,7 @@
   fxLayoutAlign="center center"
   fxLayoutGap="10"
 >
-  <mat-progress-bar
-    *ngIf="loading"
-    class="app-progress"
-    mode="indeterminate"
-  ></mat-progress-bar>
+  <app-progress-bar *ngIf="loading"></app-progress-bar>
   <div
     fxFlex="50%"
     fxLayout="column"
@@ -32,7 +28,7 @@
         >
           Thông tin tài khoản không hợp lệ.
         </div>
-        <mat-form-field class="login-full-width" appearance="outline">
+        <mat-form-field class="login-full-width" appearance="outline" floatLabel="always">
           <mat-label>Tên tài khoản</mat-label>
           <input matInput type="text" formControlName="username" autocomplete="username" />
 
@@ -44,7 +40,7 @@
           >
         </mat-form-field>
 
-        <mat-form-field class="login-full-width" appearance="outline">
+        <mat-form-field class="login-full-width" appearance="outline" floatLabel="always">
           <mat-label>Mật khẩu</mat-label>
           <input
             matInput

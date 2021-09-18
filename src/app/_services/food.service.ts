@@ -31,13 +31,13 @@ export class FoodService {
   }
 
   create(food: any) {
-    return this.http.post<any>(`${env.apiUrl}/api/food`, food, {
+    return this.http.post<any>(`${env.apiUrl}/api/food`, JSON.stringify(food), {
       headers: this.headers,
     });
   }
 
   update(id: string, food: any) {
-    return this.http.put<any>(`${env.apiUrl}/api/food/${id}`, food, {
+    return this.http.put<any>(`${env.apiUrl}/api/food/${id}`, JSON.stringify(food), {
       headers: this.headers,
     });
   }

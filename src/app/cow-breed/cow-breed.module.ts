@@ -5,11 +5,12 @@ import { CowBreedRoutingModule } from './cow-breed-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../_shared/shared.module';
 import { MaterialModule } from '../material/material.module';
-import { DialogFormComponent } from './dialog-form/dialog-form.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DetailComponent } from './detail/detail.component';
+import { CreateUpdateComponent } from './create-update/create-update.component';
 
 @NgModule({
-  declarations: [MainComponent, DialogFormComponent],
+  declarations: [MainComponent, DetailComponent, CreateUpdateComponent],
   imports: [
     CommonModule,
     CowBreedRoutingModule,

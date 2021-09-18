@@ -37,15 +37,21 @@ export class CowBreedService {
   }
 
   create(cowBreed: any) {
-    return this.http.post<any>(`${env.apiUrl}/api/cowBreed`, cowBreed, {
-      headers: this.headers,
-    });
+    return this.http.post<any>(
+      `${env.apiUrl}/api/cowBreed`,
+      JSON.stringify(cowBreed),
+      {
+        headers: this.headers,
+      }
+    );
   }
 
   update(id: string, cowBreed: any) {
-    return this.http.put<any>(`${env.apiUrl}/api/cowBreed/${id}`, cowBreed, {
-      headers: this.headers,
-    });
+    return this.http.put<any>(
+      `${env.apiUrl}/api/cowBreed/${id}`,
+      JSON.stringify(cowBreed),
+      { headers: this.headers }
+    );
   }
 
   delete(id: string) {

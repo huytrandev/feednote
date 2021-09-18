@@ -12,7 +12,7 @@ import { UserService } from 'src/app/_services/user.service';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -34,7 +34,6 @@ export class MainComponent implements OnInit {
     private snackbarService: SnackbarService,
     private router: Router
   ) {
-    this.userId = this.route.snapshot.params.id;
     this.currentUser = this.authService.currentUserValue;
   }
 
@@ -59,90 +58,32 @@ export class MainComponent implements OnInit {
   }
 
   getUser(): void {
-    if (this.currentUser.role === 'admin') {
-      this.userService
-        .getAdminInfoById(this.userId)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((res) => {
-          const { data, status } = res;
-          if (status === false) {
-            return this.authService.logout();
-          }
+    this.userService
+      .getUserInfo()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        const { data, status } = res;
+        if (status === false) {
+          return this.authService.logout();
+        }
+        const createdAt = new Date(data.createdAt);
+        let roleName = '';
+        switch (data.role) {
+          case 'admin':
+            roleName = 'Quản trị viên';
+            break;
+          case 'manager':
+            roleName = 'Cán bộ thú y';
+            break;
+          case 'breeder':
+            roleName = 'Nông dân';
+            break;
+        }
 
-          const createdAt = new Date(data.createdAt);
-          let roleName = '';
-          switch (data.role) {
-            case 'admin':
-              roleName = 'Quản trị viên';
-              break;
-            case 'manager':
-              roleName = 'Cán bộ thú y';
-              break;
-            case 'breeder':
-              roleName = 'Nông dân';
-              break;
-          }
-
-          this.user = { ...data, createdAt, roleName };
-          this.setValueForForm({ ...this.user });
-          this.loading = false;
-        });
-    } else if (this.currentUser.role === 'manager') {
-      this.userService
-        .getVeterinaryInfoById(this.userId)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((res) => {
-          const { data, status } = res;
-          if (status === false) {
-            return this.authService.logout();
-          }
-
-          const createdAt = new Date(data.createdAt);
-          let roleName = '';
-          switch (data.role) {
-            case 'admin':
-              roleName = 'Quản trị viên';
-              break;
-            case 'manager':
-              roleName = 'Cán bộ thú y';
-              break;
-            case 'breeder':
-              roleName = 'Nông dân';
-              break;
-          }
-
-          this.user = { ...data, createdAt, roleName };
-          this.setValueForForm({ ...this.user });
-          this.loading = false;
-        });
-    } else if (this.currentUser.role === 'breeder') {
-      this.userService
-        .getUserInfoById(this.userId)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((res) => {
-          const { data, status } = res;
-          if (status === false) {
-            return this.authService.logout();
-          }
-          const createdAt = new Date(data.createdAt);
-          let roleName = '';
-          switch (data.role) {
-            case 'admin':
-              roleName = 'Quản trị viên';
-              break;
-            case 'manager':
-              roleName = 'Cán bộ thú y';
-              break;
-            case 'breeder':
-              roleName = 'Nông dân';
-              break;
-          }
-
-          this.user = { ...data, createdAt, roleName };
-          this.setValueForForm({ ...this.user });
-          this.loading = false;
-        });
-    }
+        this.user = { ...data, createdAt, roleName };
+        this.setValueForForm({ ...this.user });
+        this.loading = false;
+      });
   }
 
   getArea() {
@@ -241,7 +182,6 @@ export class MainComponent implements OnInit {
           this.changePasswordForm.reset();
         }
       });
-    console.log(this.changePasswordForm.value);
   }
 
   reloadComponent() {
