@@ -1,0 +1,17 @@
+.wrapper {
+  width: 80%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  flex-direction: column;
+}

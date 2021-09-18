@@ -33,14 +33,14 @@ export class DialogFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.getArea();
-    this.buidForm();
+    this.buildForm();
   }
 
   get f() {
     return this.form.controls;
   }
 
-  buidForm(): void {
+  buildForm(): void {
     if (this.action === 'add') {
       this.form = this.fb.group({
         name: ['', [Validators.required]],
@@ -84,7 +84,7 @@ export class DialogFormComponent implements OnInit {
 
       this.form.reset();
     } else if (this.action === 'edit') {
-      this.buidForm();
+      this.buildForm();
     }
   }
 

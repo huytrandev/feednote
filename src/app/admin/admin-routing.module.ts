@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BreedersComponent } from './breeders/breeders.component';
+import { FeedingDiaryComponent } from './feeding-diary/feeding-diary.component';
 import { StatisticComponent } from './statistic/statistic.component';
 
 const routes: Routes = [
@@ -11,6 +12,15 @@ const routes: Routes = [
   {
     path: 'breeders',
     component: BreedersComponent
+  },
+  {
+    path: 'feeding-diary',
+    component: FeedingDiaryComponent
+  },
+  {
+    path: '',
+    redirectTo: 'breeders',
+    pathMatch: 'full'
   }
 ];
 

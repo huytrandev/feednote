@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment as env } from 'src/environments/environment';
+import { FilterDto } from '../_models/filter';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -17,8 +18,8 @@ export class UserService {
     });
   }
 
-  getUserInfoById(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/user/${id}`, {
+  getUserInfo() {
+    return this.http.get<any>(`${env.apiUrl}/api/user/info`, {
       headers: this.headers,
     });
   }
@@ -29,10 +30,19 @@ export class UserService {
     });
   }
 
-  getVeterinaryInfoById(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/manager/user/${id}`, {
+  getAllBreeders(filter?: FilterDto) {
+    const params = new HttpParams()
+      .set('skip', filter?.skip?.toString() || '')
+      .set('limit', filter?.limit?.toString() || '')
+      .set('search', filter?.search?.toString() || '')
+      .set('sort', filter?.sort?.toString() || '');
+
+    const options = {
       headers: this.headers,
-    });
+      params,
+    };
+
+    return this.http.get<any>(`${env.apiUrl}/api/user/getAllBreeder`, options);
   }
 
   updateUserInfo(input: any) {
@@ -43,5 +53,11 @@ export class UserService {
         headers: this.headers,
       }
     );
+  }
+
+  deleteBreeder(id: string) {
+    return this.http.delete<any>(`${env.apiUrl}/api/user/${id}`, {
+      headers: this.headers,
+    });
   }
 }

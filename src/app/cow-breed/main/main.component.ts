@@ -19,26 +19,20 @@ import { DialogComponent } from 'src/app/_shared/dialog/dialog.component';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MainComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   loading: boolean = true;
   cowBreeds: any = {};
   dataTableSource: MatTableDataSource<any>;
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'farmingTime',
-    'actions',
-  ];
+  displayedColumns: string[] = ['id', 'name', 'farmingTime', 'actions'];
   defaultPageSize = 5;
   paramsGetCowBreeds = {} as FilterDto;
   defaultSort = 'createdAt desc';
   totalCount: number;
-  showDetail: boolean = false;
   currentCowBreedId!: string;
   selectedElement!: any;
   detailLoading: boolean = true;
@@ -47,13 +41,9 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     private snackbar: SnackbarService,
     public dialog: MatDialog,
     private cowBreedService: CowBreedService
-  ) {
-    this.showDetail = false;
-  }
+  ) {}
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.setParams(0, this.defaultPageSize, '', this.defaultSort);
     this.getCowBreeds();
   }
@@ -124,25 +114,9 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getCowBreeds();
   }
 
-  viewDetail(id: string) {
-    if (id === this.currentCowBreedId) {
-      this.showDetail = !this.showDetail;
-      return;
-    }
-    this.showDetail = true;
-    this.detailLoading = true;
-    this.currentCowBreedId = id;
-
-    this.cowBreedService.getById(this.currentCowBreedId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      const { status, data } = res;
-      this.selectedElement = data;
-      this.detailLoading = false;
-    })
-  }
-
   onDelete(element: any): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '500px',
+      width: '350px',
     });
 
     const { _id } = element;
@@ -154,7 +128,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
           const { status } = res;
           if (status === true) {
             this.snackbar.openSnackBar(
-              'Xoá thức ăn thành công',
+              'Xoá giống bò thành công',
               'success',
               2000
             );

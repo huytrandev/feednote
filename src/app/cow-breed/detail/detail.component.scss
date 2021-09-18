@@ -1,0 +1,57 @@
+@import "../../../assets/scss/_variable.scss";
+
+.wrapper {
+  padding: 20px 15px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  width: 60%;
+  min-width: 500px;
+}
+
+.title {
+  margin-bottom: 15px;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+.left {
+  width: 150px;
+}
+
+.right {
+  width: calc(100% - 150px);
+}
+
+.period-list {
+  width: 100%;
+  display: block;
+  margin-bottom: 20px;
+
+  &-item {
+    border: 1px solid #d9d9d9;
+    border-radius: $border-radius;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+
+    &-remove {
+      position: absolute;
+      right: 0;
+    }
+
+    &-header {
+      height: 50px;
+      border-bottom: 1px solid #d9d9d9;
+      background-color: #f5f5f5;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.app-title {
+  font-weight: 500;
+  color: #333;
+  margin-left: 10px;
+}

@@ -1,9 +1,5 @@
 <div class="wrapper">
-  <mat-progress-bar
-    *ngIf="loading"
-    class="app-progress"
-    mode="indeterminate"
-  ></mat-progress-bar>
+  <app-progress-bar *ngIf="loading"></app-progress-bar>
   <div class="table-search-container">
     <button
       mat-raised-button
@@ -13,7 +9,7 @@
       <mat-icon>add</mat-icon>
       Thêm
     </button>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" floatLabel="always">
       <mat-label>Tìm kiếm</mat-label>
       <input
         type="search"

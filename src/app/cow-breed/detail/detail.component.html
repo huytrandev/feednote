@@ -1,0 +1,107 @@
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading" class="wrapper bg-white rounded shadow">
+  <div *ngIf="error">
+    <h2>Không thể tìm thấy giống bò</h2>
+  </div>
+  <div *ngIf="!error">
+    <div class="row align-items-center">
+      <h2 class="" style="margin: 0;">Chi tiết</h2>
+      <button
+        mat-icon-button
+        matTooltip="Cập nhật"
+        (click)="$event.stopPropagation()"
+        [routerLink]="['/cow-breeds/update', cowBreed._id]"
+      >
+        <mat-icon class="material-icons-outlined app-icon"
+          >drive_file_rename_outline</mat-icon
+        >
+      </button>
+    </div>
+    <div class="content">
+      <div class="row">
+        <div class="left">
+          <span class="font-weight-bold">Tên giống bò</span>
+        </div>
+        <div class="right">
+          <span>{{ cowBreed.name }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span class="font-weight-bold">Thời gian nuôi</span>
+        </div>
+        <div class="right">
+          <span>{{ cowBreed.farmingTime }}</span>
+        </div>
+      </div>
+
+      <div class="period-list">
+        <div
+          class="period-list-item"
+          *ngFor="let period of cowBreed.periods; index as i"
+        >
+          <div class="row align-items-center period-list-item-header">
+            <span class="app-title">Giai đoạn {{ i + 1 }}</span>
+          </div>
+          <div class="period-list-item-content">
+            <div style="width: 85%; margin: 0 auto">
+              <div class="row justify-content-center">
+                <div class="left">
+                  <span class="font-weight-bold">Tên giai đoạn</span>
+                </div>
+                <div class="right">
+                  <span>{{ period.name }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 85%; margin: 0 auto">
+              <div class="row justify-content-center">
+                <div class="left">
+                  <span class="font-weight-bold">Số seri</span>
+                </div>
+                <div class="right">
+                  <span>{{ period.serial }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 85%; margin: 0 auto">
+              <div class="row justify-content-center">
+                <div class="left">
+                  <span class="font-weight-bold">Ngày bắt đầu</span>
+                </div>
+                <div class="right">
+                  <span>{{ period.startDay }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 85%; margin: 0 auto">
+              <div class="row justify-content-center">
+                <div class="left">
+                  <span class="font-weight-bold">Ngày kết thúc</span>
+                </div>
+                <div class="right">
+                  <span>{{ period.endDay }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 85%; margin: 0 auto">
+              <div class="row justify-content-center">
+                <div class="left">
+                  <span class="font-weight-bold">Cân nặng</span>
+                </div>
+                <div class="right">
+                  <span>{{ period.weight }} kg</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

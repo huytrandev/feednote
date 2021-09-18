@@ -1,5 +1,4 @@
-import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -9,50 +8,53 @@ import { AuthService } from '../_services/auth.service';
 })
 export class MainComponent implements OnInit {
   currentUser: any = null;
+  isExpanded: boolean = true;
   mobileQuery!: MediaQueryList;
   fillerNav = [
     {
       path: 'admin/breeders',
       title: 'Hộ chăn nuôi',
+      icon: 'assets/icons/farmer.svg',
+    },
+    {
+      path: 'admin/feeding-diary',
+      title: 'Nhật ký cho ăn',
+      icon: 'assets/icons/notes.svg',
     },
     {
       path: 'cow-breeds',
       title: 'Giống bò',
+      icon: 'assets/icons/cow.svg',
     },
     {
       path: 'foods',
       title: 'Nguồn thức ăn',
+      icon: 'assets/icons/grass.svg',
     },
     {
       path: 'not',
       title: 'Khẩu phần ăn chuẩn',
+      icon: 'assets/icons/scale.svg',
     },
     {
       path: 'not',
       title: 'Nhu cầu dinh dưỡng',
+      icon: 'assets/icons/chemistry.svg',
     },
     {
       path: 'admin/statistic',
       title: 'Thống kê',
+      icon: 'assets/icons/statistics.svg',
     }
   ];
   loading: boolean = true;
   currentYear = new Date().getFullYear();
 
-  private _mobileQueryListener!: () => void;
-
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authService: AuthService) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+  constructor(private authService: AuthService) {
     this.currentUser = this.authService.currentUserValue;
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.mobileQuery.removeEventListener('change', this._mobileQueryListener);
-  }
 
   logout(): void {
     // this.authService.revokeToken();

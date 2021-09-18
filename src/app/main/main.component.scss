@@ -80,6 +80,20 @@ mat-toolbar {
 mat-sidenav {
   padding-top: 3px;
 }
+
+.my-side-nav {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+  }
+}
 mat-sidenav-content {
   background-color: #f0f2f5;
   overflow: auto;
@@ -89,11 +103,12 @@ mat-nav-list {
   margin-right: 15px;
   transition: all 300ms ease;
 }
-mat-nav-list a {
+mat-nav-list mat-list-item {
   transition: all 300ms ease;
   border-radius: $border-radius;
+  font-size: 14px;
 }
-mat-nav-list a:not(:last-child) {
+mat-nav-list mat-list-item:not(:last-child) {
   margin-bottom: 7px;
 }
 mat-nav-list .active {
@@ -101,13 +116,31 @@ mat-nav-list .active {
   box-shadow: 0 8px 15px 0 rgb(0 0 0 / 25%);
   color: #fff;
   border-radius: $border-radius;
-
-  & .mat-list-item-content {
-    transform: translateX(20px);
-  }
+}
+mat-list-item.active img {
+  filter: invert(100%);
 }
 mat-progress-bar {
   position: absolute;
   top: 0;
   z-index: 3;
+}
+
+#logout {
+  transition: all 350ms ease;
+  cursor: pointer;
+  width: 100%;
+  margin-left: 15px;
+  margin-right: 15px;
+  line-height: 20px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  background: #fafafa;
+  box-shadow: 0 0 15px 0 rgb(0 0 0 / 15%);
+  border: 1px solid #d9d9d9;
+  &:hover {
+    background: #efefef;
+  }
 }

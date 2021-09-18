@@ -9,10 +9,20 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
+    path: 'not-found',
+    loadChildren: () =>
+      import('./not-found/not-found.module').then((m) => m.NotFoundModule),
+  },
+  {
     path: '',
     component: MainComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: '',
+        redirectTo: 'admin',
+        pathMatch: 'full'
+      },
       {
         path: 'admin',
         loadChildren: () =>
@@ -32,11 +42,6 @@ const routes: Routes = [
         path: 'cow-breeds',
         loadChildren: () =>
           import('./cow-breed/cow-breed.module').then((m) => m.CowBreedModule),
-      },
-      {
-        path: 'not-found',
-        loadChildren: () =>
-          import('./not-found/not-found.module').then((m) => m.NotFoundModule),
       },
     ],
   },

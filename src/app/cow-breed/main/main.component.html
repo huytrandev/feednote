@@ -1,24 +1,19 @@
-<div
-  class="wrapper"
-  fxLayout="row"
-  fxLayout.lt-lg="column"
-  fxLayoutAlign="space-between start"
-  fxLayoutGap="20px"
->
-  <div class="table-wrapper" [fxFlex]="showDetail ? '60%' : '100%'">
-    <mat-progress-bar
-      *ngIf="loading"
-      class="app-progress"
-      mode="indeterminate"
-    ></mat-progress-bar>
+<div class="wrapper">
+  <div class="table-wrapper">
+    <app-progress-bar *ngIf="loading"></app-progress-bar>
 
     <div class="table-search-container">
-      <button mat-raised-button class="app-button app-button-green">
+      <button
+        mat-raised-button
+        class="app-button app-button-green"
+        [routerLink]="['create']"
+        [state]="{type: 'create'}"
+      >
         <mat-icon>add</mat-icon>
         Thêm
       </button>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Tìm kiếm</mat-label>
         <input
           type="search"
@@ -66,6 +61,7 @@
               mat-icon-button
               matTooltip="Cập nhật"
               (click)="$event.stopPropagation()"
+              [routerLink]="['update', element._id]"
             >
               <mat-icon class="material-icons-outlined app-icon"
                 >drive_file_rename_outline</mat-icon
@@ -74,7 +70,7 @@
             <button
               mat-icon-button
               matTooltip="Xoá"
-              (click)="$event.stopPropagation(); onDelete(element);"
+              (click)="$event.stopPropagation(); onDelete(element)"
             >
               <mat-icon class="material-icons-outlined color-red app-icon"
                 >delete_outline</mat-icon
@@ -91,13 +87,12 @@
           mat-row
           *matRowDef="let element; columns: displayedColumns"
           class="app-element-row"
-          [ngClass]="(element._id === currentCowBreedId) && showDetail ? 'active' : ''"
-          (click)="viewDetail(element._id)"
+          [routerLink]="[element._id]"
         ></tr>
         <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="6">
-            Chưa có dữ liệu "{{ input.value }}"
+            Chưa có dữ liệu <strong>{{ input.value }}</strong>
           </td>
         </tr>
       </table>
@@ -110,77 +105,6 @@
         aria-label="Select page"
         class="mat-paginator-sticky"
       ></mat-paginator>
-    </div>
-  </div>
-
-  <!-- Detail -->
-  <div
-    *ngIf="showDetail"
-    class="detail-cow-breed bg-white rounded shadow"
-    fxFlex="40%"
-  >
-    <div>
-      <mat-progress-bar
-        *ngIf="detailLoading"
-        class="app-progress"
-        mode="indeterminate"
-      ></mat-progress-bar>
-      <h2 class="detail-cow-breed-title">Chi tiết</h2>
-      <div class="detail-cow-breed-content" *ngIf="!detailLoading">
-        <!-- Name -->
-        <div class="row">
-          <div class="left font-weight-bold">Tên</div>
-          <div class="right">{{ selectedElement.name }}</div>
-        </div>
-        <!-- Farming Time -->
-        <div class="row">
-          <div class="left font-weight-bold">Thời gian nuôi</div>
-          <div class="right">{{ selectedElement.farmingTime }} ngày</div>
-        </div>
-        <!-- Periods -->
-        <div class="">
-          <div class="font-weight-bold">Giai đoạn</div>
-          <div class="periods" *ngFor="let period of selectedElement.periods">
-            <div class="period">
-              <div class="row">
-                <div class="left font-weight-bold">Tên</div>
-                <div class="right">{{ period.name }}</div>
-              </div>
-
-              <div class="row">
-                <div class="left font-weight-bold">Ngày bắt đầu</div>
-                <div class="right">Ngày {{ period.startDay }}</div>
-              </div>
-
-              <div class="row">
-                <div class="left font-weight-bold">Ngày kết thúc</div>
-                <div class="right">Ngày {{ period.endDay }}</div>
-              </div>
-
-              <div class="row">
-                <div class="left font-weight-bold">Cân nặng</div>
-                <div class="right">{{ period.weight }} kg</div>
-              </div>
-
-              <div class="foods">
-                <div class="font-weight-bold">Thức ăn</div>
-                <div class="">
-                  <table>
-                    <tr>
-                      <th>Tên</th>
-                      <th>Số lượng</th>
-                    </tr>
-                    <tr *ngFor="let food of period.foods">
-                      <td>{{ food.idFood }}</td>
-                      <td>{{ food.amount }}</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
