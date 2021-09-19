@@ -5,3 +5,16 @@
   bottom: 35px;
   z-index: 99;
 }
+
+.scroll-to-top {
+  position:fixed;
+  right: 35px;
+  bottom: 15px;
+  display: none;
+  transition: all 200ms ease;
+}
+
+.show-scrollTop {
+  display: block;
+  transition: all 200ms ease;
+}

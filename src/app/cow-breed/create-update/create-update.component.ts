@@ -6,9 +6,12 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CowBreedService } from 'src/app/_services/cow-breed.service';
+import { PeriodService } from 'src/app/_services/period.service';
 import { SnackbarService } from 'src/app/_services/snackbar.service';
+import { DialogComponent } from 'src/app/_shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-create-update',
@@ -22,7 +25,7 @@ export class CreateUpdateComponent implements OnInit {
   submitted: boolean = false;
   cowBreed: any;
   loading: boolean = false;
-
+  periodToRemove: any = [];
   isCreate: boolean = true;
   cowBreedId!: string;
 
@@ -31,7 +34,9 @@ export class CreateUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private cowBreedService: CowBreedService,
-    private snackbarService: SnackbarService
+    private periodService: PeriodService,
+    private snackbarService: SnackbarService,
+    public dialog: MatDialog
   ) {
     this.cowBreedId = this.route.snapshot.paramMap.get('id')!;
     this.isCreate = !this.cowBreedId;
@@ -114,8 +119,37 @@ export class CreateUpdateComponent implements OnInit {
     this.periods.push(this.createPeriod());
   }
 
-  removePeriod(index: number) {
-    this.periods.removeAt(index);
+  removePeriod(index: number, period: any, e: any) {
+    e.preventDefault();
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+    });
+
+    const { _id } = period;
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action } = result;
+      if (action === 'delete') {
+        this.periodService.delete(_id).subscribe((res) => {
+          const { status } = res;
+          if (status === true) {
+            this.snackbarService.openSnackBar(
+              'Xoá giai đoạn sinh trưởng thành công',
+              'success',
+              2000
+            );
+            this.periods.removeAt(index);
+          } else {
+            this.snackbarService.openSnackBar(
+              'Xoá giai đoạn sinh trưởng',
+              'danger',
+              2000
+            );
+          }
+          this.reloadComponent();
+        });
+      }
+    });
   }
 
   onReset() {
@@ -152,7 +186,6 @@ export class CreateUpdateComponent implements OnInit {
             );
             return;
           }
-
           this.submitted = false;
           this.formGroupDirective.resetForm();
           this.snackbarService.openSnackBar(
@@ -215,5 +248,15 @@ export class CreateUpdateComponent implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate([currentUrl]);
+  }
+
+  canSubmit(): boolean {
+    if (!this.form.valid) {
+      return false;
+    }
+    if (!this.form.dirty) {
+      return false;
+    }
+    return true;
   }
 }

@@ -1,0 +1,18 @@
+@import "../../../../assets/scss/_variable.scss";
+
+.wrapper {
+  padding: 20px 15px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  width: 60%;
+  min-width: 500px;
+}
+.row {
+  margin-bottom: 20px;
+}
+.left {
+  width: 150px;
+}
+.right {
+  width: calc(100% - 150px);
+}

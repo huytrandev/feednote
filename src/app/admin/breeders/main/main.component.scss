@@ -1,4 +1,4 @@
-@import '../../../assets/scss/variable';
+@import "../../../../assets/scss/variable";
 
 table {
   width: 100%;
@@ -13,7 +13,15 @@ table {
 .table-search-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+}
+
+tr.app-element-row:not(.app-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.app-element-row:not(.app-expanded-row):active {
+  background: #efefef;
 }
 
 .table-wrapper {
@@ -51,26 +59,12 @@ table {
   hyphens: auto;
 }
 
-.mat-column-name {
-  width: 25% !important;
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 25% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
+.mat-column-name,
 .mat-column-email {
-  width: calc(100% - 50px - 100px - 25% - 25%) !important;
+  width: 20% !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 calc(100% - 50px - 100px - 25% - 25%) !important;
+  flex: 0 0 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -82,10 +76,25 @@ table {
 }
 
 .mat-column-phone {
-  width: 25% !important;
+  width: 15% !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 25% !important;
+  flex: 0 0 15% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-areaName {
+  width: calc(100% - 200px - 65%) !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 calc(100% - 200px - 65%) !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

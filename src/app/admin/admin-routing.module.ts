@@ -1,27 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BreedersComponent } from './breeders/breeders.component';
 import { FeedingDiaryComponent } from './feeding-diary/feeding-diary.component';
 import { StatisticComponent } from './statistic/statistic.component';
 
 const routes: Routes = [
   {
     path: 'statistic',
-    component: StatisticComponent
+    component: StatisticComponent,
   },
   {
     path: 'breeders',
-    component: BreedersComponent
+    loadChildren: () =>
+      import('./breeders/breeders.module').then((m) => m.BreedersModule),
   },
   {
     path: 'feeding-diary',
-    component: FeedingDiaryComponent
+    component: FeedingDiaryComponent,
   },
   {
     path: '',
-    redirectTo: 'breeders',
-    pathMatch: 'full'
-  }
+    redirectTo: 'feeding-diary',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

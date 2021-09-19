@@ -45,6 +45,12 @@ export class UserService {
     return this.http.get<any>(`${env.apiUrl}/api/user/getAllBreeder`, options);
   }
 
+  getBreederById(id: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/user/${id}`, {
+      headers: this.headers,
+    });
+  }
+
   updateUserInfo(input: any) {
     return this.http.put<any>(
       `${env.apiUrl}/api/auth/update`,

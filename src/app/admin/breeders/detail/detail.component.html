@@ -1,0 +1,71 @@
+<app-loading *ngIf="loading"></app-loading>
+<app-scroll-to-top></app-scroll-to-top>
+<div *ngIf="!loading" class="wrapper bg-white rounded shadow">
+  <div *ngIf="error">
+    <h2>Không thể tìm thấy hộ dân</h2>
+  </div>
+  <div *ngIf="!error">
+    <div class="row align-items-center">
+      <h2 class="" style="margin: 0">Chi tiết</h2>
+      <button
+        mat-icon-button
+        matTooltip="Cập nhật"
+        [routerLink]="['breeders', 'u', breeder._id]"
+      >
+        <mat-icon class="material-icons-outlined app-icon"
+          >drive_file_rename_outline</mat-icon
+        >
+      </button>
+    </div>
+    <div class="content">
+      <div class="row">
+        <div class="left">
+          <span>Tên hộ dân</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{ breeder.name }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Email</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{ breeder.email }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Số điện thoại</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{ breeder.phone }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Khu vực</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold" *ngIf="area$ | async as area">{{
+            area.data.name
+          }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Tham gia vào</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{
+            breeder.createdAt | date: "dd/MM/YYYY"
+          }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
