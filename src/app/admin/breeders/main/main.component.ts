@@ -5,15 +5,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FilterDto } from 'src/app/_models/filter';
-import { BreederService } from 'src/app/_services/breeder.service';
 import { UserService } from 'src/app/_services/user.service';
 
 @Component({
-  selector: 'app-breeders',
-  templateUrl: './breeders.component.html',
-  styleUrls: ['./breeders.component.scss'],
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss']
 })
-export class BreedersComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -24,6 +23,7 @@ export class BreedersComponent implements OnInit, OnDestroy {
     'name',
     'email',
     'phone',
+    'areaName',
     'actions',
   ];
   paramGetBreeders = {} as FilterDto;
@@ -31,7 +31,7 @@ export class BreedersComponent implements OnInit, OnDestroy {
   defaultPageSize = 5;
   totalCount: number = 0;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.setParams(0, this.defaultPageSize, '', this.defaultSort);
@@ -55,7 +55,7 @@ export class BreedersComponent implements OnInit, OnDestroy {
   getBreeders(): void {
     this.loading = true;
     this.userService
-      .getAllBreeders()
+      .getAllBreeders(this.paramGetBreeders)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const { status, data } = res;
@@ -69,7 +69,43 @@ export class BreedersComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteBreeder(): void {
+  onSearch(e: any) {
+    const input = e.target.value;
+
+    if (input === '' || input.length === 0) {
+      this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+      this.loading = true;
+      this.getBreeders();
+      return;
+    }
     
+    this.setParams(0, this.defaultPageSize, input, this.defaultSort);
+    this.loading = true;
+    this.getBreeders();
+  }
+
+  onSort(e: any) {
+    const { active, direction } = e;
+
+    const limit = this.paginator.pageSize;
+    const skip = limit * this.paginator.pageIndex;
+
+    if (direction === '') {
+      this.setParams(skip, limit, '', this.defaultSort);
+    } else {
+      const sortQuery = `${active} ${direction}`;
+      this.setParams(skip, limit, '', sortQuery);
+    }
+
+    this.loading = true;
+    this.getBreeders();
+  }
+
+  onPagination(e: any) {
+    const limit = e.pageSize;
+    const skip = e.pageIndex * limit;
+    this.setParams(skip, limit, '', this.defaultSort);
+    this.loading = true;
+    this.getBreeders();
   }
 }

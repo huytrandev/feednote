@@ -24,6 +24,7 @@
     "@angular/router": "~12.1.1",
     "chart.js": "^3.5.1",
     "express": "^4.17.1",
+    "jwt-decode": "^3.1.2",
     "path": "^0.12.7",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",

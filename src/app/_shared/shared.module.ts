@@ -8,11 +8,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
   declarations: [LoadingComponent, DialogComponent, ScrollToTopComponent, ProgressBarComponent],
   imports: [
+    CommonModule,
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,

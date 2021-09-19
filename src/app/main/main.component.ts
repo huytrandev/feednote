@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -12,14 +13,14 @@ export class MainComponent implements OnInit {
   mobileQuery!: MediaQueryList;
   fillerNav = [
     {
-      path: 'admin/breeders',
-      title: 'Hộ chăn nuôi',
-      icon: 'assets/icons/farmer.svg',
-    },
-    {
       path: 'admin/feeding-diary',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
+    },
+    {
+      path: 'admin/breeders',
+      title: 'Hộ chăn nuôi',
+      icon: 'assets/icons/farmer.svg',
     },
     {
       path: 'cow-breeds',
@@ -32,7 +33,7 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/grass.svg',
     },
     {
-      path: 'not',
+      path: 'standard-servings',
       title: 'Khẩu phần ăn chuẩn',
       icon: 'assets/icons/scale.svg',
     },
@@ -45,13 +46,14 @@ export class MainComponent implements OnInit {
       path: 'admin/statistic',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
-    }
+    },
   ];
   loading: boolean = true;
   currentYear = new Date().getFullYear();
 
-  constructor(private authService: AuthService) {
-    this.currentUser = this.authService.currentUserValue;
+  constructor(private authService: AuthService, private router: Router) {
+    // this.currentUser = this.authService.currentUserValue;
+    this.authService.currentUser.subscribe((user) => (this.currentUser = user));
   }
 
   ngOnInit(): void {}
@@ -59,5 +61,6 @@ export class MainComponent implements OnInit {
   logout(): void {
     // this.authService.revokeToken();
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

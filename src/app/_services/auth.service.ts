@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import jwt_decode from 'jwt-decode';
 
 import { environment as env } from 'src/environments/environment';
 import { Router } from '@angular/router';
@@ -64,5 +65,20 @@ export class AuthService {
       { password: password },
       { headers: headers }
     );
+  }
+
+  getDecodeAccessToken(token: string) {
+    try {
+      return jwt_decode(token);
+    } catch (err) {
+      return null;
+    }
+  }
+
+  getUserByToken() {
+    let token = this.currentUserValue.token;
+    token = token.replace('Bearer ', '');
+    const user = this.getDecodeAccessToken(token);
+    return user;
   }
 }

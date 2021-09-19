@@ -6,7 +6,8 @@ import { AuthGuard } from './_helpers/auth.guard';
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginModule),
   },
   {
     path: 'not-found',
@@ -21,7 +22,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'admin',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'admin',
@@ -42,6 +43,13 @@ const routes: Routes = [
         path: 'cow-breeds',
         loadChildren: () =>
           import('./cow-breed/cow-breed.module').then((m) => m.CowBreedModule),
+      },
+      {
+        path: 'standard-servings',
+        loadChildren: () =>
+          import('./standard-servings/standard-servings.module').then(
+            (m) => m.StandardServingsModule
+          ),
       },
     ],
   },

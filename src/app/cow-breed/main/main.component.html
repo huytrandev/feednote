@@ -6,7 +6,7 @@
       <button
         mat-raised-button
         class="app-button app-button-green"
-        [routerLink]="['create']"
+        [routerLink]="['c']"
         [state]="{type: 'create'}"
       >
         <mat-icon>add</mat-icon>
@@ -61,7 +61,7 @@
               mat-icon-button
               matTooltip="Cập nhật"
               (click)="$event.stopPropagation()"
-              [routerLink]="['update', element._id]"
+              [routerLink]="['u', element._id]"
             >
               <mat-icon class="material-icons-outlined app-icon"
                 >drive_file_rename_outline</mat-icon
@@ -87,7 +87,7 @@
           mat-row
           *matRowDef="let element; columns: displayedColumns"
           class="app-element-row"
-          [routerLink]="[element._id]"
+          [routerLink]="['d', element._id]"
         ></tr>
         <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>

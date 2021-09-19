@@ -55,17 +55,16 @@
       <div class="period-list" formArrayName="periods">
         <div
           class="period-list-item"
-          *ngFor="let _ of periods.controls; index as i"
+          *ngFor="let period of periods.controls; index as i"
         >
           <ng-container [formGroupName]="i">
             <div class="row align-items-center period-list-item-header">
               <span class="title">Giai đoạn {{ i + 1 }}</span>
               <button
-                *ngIf="periods.controls.length > 1"
                 mat-icon-button
                 class="period-list-item-remove"
                 matTooltip="Xoá"
-                (click)="removePeriod(i)"
+                (click)="removePeriod(i, period.value, $event)"
               >
                 <mat-icon class="material-icons-outlined color-red app-icon"
                   >highlight_off</mat-icon
@@ -222,7 +221,7 @@
           mat-raised-button
           type="submit"
           class="app-button app-button-brown"
-          [disabled]="!form.valid || !form.dirty || submitted"
+          [disabled]="periodToRemove.length > 0 ? false : !form.valid || !form.dirty || submitted"
         >
           <mat-spinner
             diameter="16"
