@@ -18,6 +18,20 @@ export class UserService {
     });
   }
 
+  createBreeder(breeder: any) {
+    return this.http.post<any>(
+      `${env.apiUrl}/api/user`,
+      JSON.stringify(breeder),
+      { headers: this.headers }
+    );
+  }
+
+  updateBreeder(id: string, breeder: any) {
+    return this.http.put<any>(`${env.apiUrl}/api/user/${id}`, breeder, {
+      headers: this.headers,
+    });
+  }
+
   getUserInfo() {
     return this.http.get<any>(`${env.apiUrl}/api/user/info`, {
       headers: this.headers,

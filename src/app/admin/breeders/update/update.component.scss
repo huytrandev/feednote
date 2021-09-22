@@ -1,0 +1,27 @@
+@import "../../../../assets/scss/variable";
+
+mat-form-field {
+  display: block;
+  margin-bottom: 20px;
+}
+.wrapper {
+  padding: 20px 15px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  width: 60%;
+}
+.title {
+  font-weight: 500;
+  color: #333;
+  margin-left: 10px;
+}
+.button-group {
+  width: 100%;
+  display: inline-flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+
+  & button:not(:last-child) {
+    margin-right: 20px;
+  }
+}

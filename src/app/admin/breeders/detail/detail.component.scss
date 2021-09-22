@@ -10,6 +10,11 @@
 .row {
   margin-bottom: 20px;
 }
+.left,
+.right {
+  display: inline-flex;
+  align-items: center;
+}
 .left {
   width: 150px;
 }

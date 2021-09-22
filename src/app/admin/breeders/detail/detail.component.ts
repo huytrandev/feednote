@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { AreaService } from 'src/app/_services/area.service';
 import { UserService } from 'src/app/_services/user.service';
 
@@ -16,7 +16,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   error: boolean = false;
   breederId: string = '';
-  area$: Observable<any>;
+  area$!: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
