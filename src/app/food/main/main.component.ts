@@ -139,6 +139,8 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     const dialogRef = this.dialog.open(DialogFormComponent, {
       width: '500px',
       minHeight: '200px',
+      disableClose: true,
+      autoFocus: false,
       data: {
         action,
         obj,
@@ -189,6 +191,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   delete(element: any) {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
+      disableClose: true,
     });
 
     const { _id } = element;

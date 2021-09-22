@@ -1,8 +1,8 @@
-<app-page-loading *ngIf="loading"></app-page-loading>
+<!-- <app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <app-scroll-to-top></app-scroll-to-top>
   <div class="title">
-    <h2>{{ isCreate ? "Thêm mới" : "Chỉnh sửa" }} giống bò</h2>
+    <h2>{{ isCreate ? "Thêm mới" : "Chỉnh sửa" }} thức ăn</h2>
   </div>
 
   <div class="content">
@@ -12,59 +12,36 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Tên giống bò</mat-label>
+        <mat-label>Tên thức ăn</mat-label>
         <input
           type="text"
           matInput
-          placeholder="Ví dụ: Bò vàng"
+          placeholder="Ví dụ: Cỏ xanh"
           maxlength="100"
           formControlName="name"
         />
 
         <mat-error *ngIf="f.name.errors?.required"
-          >Tên giống bò không được trống.</mat-error
+          >Tên thức ăn không được trống.</mat-error
         >
         <mat-error *ngIf="f.name.errors?.minlength"
-          >Tên giống bò phải có ít nhất 5 ký tự.</mat-error
+          >Tên thức ăn phải có ít nhất 5 ký tự.</mat-error
         >
       </mat-form-field>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
-        <mat-label>Thời gian nuôi</mat-label>
-        <input
-          type="number"
-          matInput
-          id="farmingTime"
-          placeholder="10"
-          formControlName="farmingTime"
-        />
-
-        <mat-hint>Đơn vị: ngày</mat-hint>
-        <mat-error *ngIf="f.farmingTime.errors?.required"
-          >Thời gian nuôi không được trống.</mat-error
-        >
-        <mat-error *ngIf="f.farmingTime.errors?.min"
-          >Thời gian nuôi phải lớn hơn 10.</mat-error
-        >
-      </mat-form-field>
-
-      <div class="period-list" formArrayName="periods">
+      <div class="nutrition-list" formArrayName="nutritions">
         <div
-          class="period-list-item"
-          *ngFor="let period of periods.controls; index as i"
+          class="nutrition-list-item"
+          *ngFor="let nutrition of nutritions.controls; index as i"
         >
           <ng-container [formGroupName]="i">
-            <div class="row align-items-center period-list-item-header">
+            <div class="row align-items-center nutrition-list-item-header">
               <span class="title">Giai đoạn {{ i + 1 }}</span>
               <button
                 mat-icon-button
-                class="period-list-item-remove"
+                class="nutrition-list-item-remove"
                 matTooltip="Xoá"
-                (click)="removePeriod(i, period.value, $event)"
+                (click)="removePeriod(i, nutrition.value, $event)"
               >
                 <mat-icon class="material-icons-outlined color-red app-icon"
                   >highlight_off</mat-icon
@@ -89,11 +66,11 @@
                 />
 
                 <mat-error
-                  *ngIf="periods.controls[i].get('name')?.hasError('required')"
+                  *ngIf="nutritions.controls[i].get('name')?.hasError('required')"
                   >Tên giai đoạn không được trống.</mat-error
                 >
                 <mat-error
-                  *ngIf="periods.controls[i].get('name')?.hasError('minlength')"
+                  *ngIf="nutritions.controls[i].get('name')?.hasError('minlength')"
                   >Tên giai đoạn ít nhất 5 ký tự.</mat-error
                 >
               </mat-form-field>
@@ -115,7 +92,7 @@
                 <mat-hint>Đơn vị: kg</mat-hint>
                 <mat-error
                   *ngIf="
-                    periods.controls[i].get('serial')?.hasError('required')
+                    nutritions.controls[i].get('serial')?.hasError('required')
                   "
                   >Số seri không được trống.</mat-error
                 >
@@ -139,12 +116,12 @@
                 <mat-hint>Đơn vị: ngày</mat-hint>
                 <mat-error
                   *ngIf="
-                    periods.controls[i].get('startDay')?.hasError('required')
+                    nutritions.controls[i].get('startDay')?.hasError('required')
                   "
                   >Ngày bắt đầu không được trống.</mat-error
                 >
                 <mat-error
-                  *ngIf="periods.controls[i].get('startDay')?.hasError('min')"
+                  *ngIf="nutritions.controls[i].get('startDay')?.hasError('min')"
                   >Ngày bắt đầu trong khoảng 1 - 20.</mat-error
                 >
               </mat-form-field>
@@ -166,12 +143,12 @@
                 <mat-hint>Đơn vị: ngày</mat-hint>
                 <mat-error
                   *ngIf="
-                    periods.controls[i].get('endDay')?.hasError('required')
+                    nutritions.controls[i].get('endDay')?.hasError('required')
                   "
                   >Ngày kết thúc không được trống.</mat-error
                 >
                 <mat-error
-                  *ngIf="periods.controls[i].get('endDay')?.hasError('min')"
+                  *ngIf="nutritions.controls[i].get('endDay')?.hasError('min')"
                   >Ngày kết thúc trong khoảng 20 - 60.</mat-error
                 >
               </mat-form-field>
@@ -193,12 +170,12 @@
                 <mat-hint>Đơn vị: kg</mat-hint>
                 <mat-error
                   *ngIf="
-                    periods.controls[i].get('weight')?.hasError('required')
+                    nutritions.controls[i].get('weight')?.hasError('required')
                   "
                   >Cân nặng không được trống.</mat-error
                 >
                 <mat-error
-                  *ngIf="periods.controls[i].get('weight')?.hasError('min')"
+                  *ngIf="nutritions.controls[i].get('weight')?.hasError('min')"
                   >Cân nặng phải trên 10kg.</mat-error
                 >
               </mat-form-field>
@@ -221,7 +198,7 @@
           mat-raised-button
           type="submit"
           class="app-button app-button-brown"
-          [disabled]="periodToRemove.length > 0 ? false : !form.valid || !form.dirty || submitted"
+          [disabled]="nutritionToRemove.length > 0 ? false : !form.valid || !form.dirty || submitted"
         >
           <mat-spinner
             diameter="16"
@@ -242,4 +219,4 @@
       </div>
     </form>
   </div>
-</div>
+</div> -->

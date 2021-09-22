@@ -1,4 +1,4 @@
-<app-loading *ngIf="loading"></app-loading>
+<app-page-loading *ngIf="loading"></app-page-loading>
 <app-scroll-to-top></app-scroll-to-top>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
@@ -10,7 +10,7 @@
       <button
         mat-icon-button
         matTooltip="Cập nhật"
-        [routerLink]="['breeders', 'u', breeder._id]"
+        [routerLink]="['/admin', 'breeders', 'u', breeder._id]"
       >
         <mat-icon class="material-icons-outlined app-icon"
           >drive_file_rename_outline</mat-icon
@@ -32,7 +32,9 @@
           <span>Email</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{ breeder.email }}</span>
+          <span class="font-weight-bold">{{
+            !!breeder.email ? breeder.email : "..."
+          }}</span>
         </div>
       </div>
 
@@ -41,7 +43,9 @@
           <span>Số điện thoại</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{ breeder.phone }}</span>
+          <span class="font-weight-bold">{{
+            !!breeder.phone ? breeder.phone : "..."
+          }}</span>
         </div>
       </div>
 
@@ -53,6 +57,16 @@
           <span class="font-weight-bold" *ngIf="area$ | async as area">{{
             area.data.name
           }}</span>
+          <a
+            target="_blank"
+            style="margin-left: 5px; color: #000"
+            matTooltip="Bản đồ"
+            *ngIf="area$ | async as area"
+            [href]="'https://www.google.com/maps/place/' + area.data.name"
+            ><mat-icon class="material-icons-outlined app-icon"
+              >place</mat-icon
+            ></a
+          >
         </div>
       </div>
 

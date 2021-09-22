@@ -3,15 +3,14 @@
 
   <div>
     <div class="table-search-container">
-      <!-- <button
+      <button
         mat-raised-button
         class="app-button app-button-green"
-        [routerLink]="['create']"
-        [state]="{ type: 'create' }"
+        [routerLink]="['c']"
       >
         <mat-icon>add</mat-icon>
         Thêm
-      </button> -->
+      </button>
 
       <mat-form-field
         appearance="outline"
@@ -75,6 +74,7 @@
             <button
               mat-icon-button
               matTooltip="Cập nhật"
+              [routerLink]="['u', element._id]"
               (click)="$event.stopPropagation()"
             >
               <mat-icon class="material-icons-outlined app-icon"
@@ -84,7 +84,7 @@
             <button
               mat-icon-button
               matTooltip="Xoá"
-              (click)="$event.stopPropagation()"
+              (click)="$event.stopPropagation(); delete(element)"
             >
               <mat-icon class="material-icons-outlined color-red app-icon"
                 >delete_outline</mat-icon

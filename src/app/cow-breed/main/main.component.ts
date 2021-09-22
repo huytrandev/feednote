@@ -117,6 +117,7 @@ export class MainComponent implements OnInit, OnDestroy {
   onDelete(element: any): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
+      disableClose: true
     });
 
     const { _id } = element;

@@ -9,10 +9,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { CommonModule } from '@angular/common';
+import { PageLoadingComponent } from './page-loading/page-loading.component';
 
 
 @NgModule({
-  declarations: [LoadingComponent, DialogComponent, ScrollToTopComponent, ProgressBarComponent],
+  declarations: [LoadingComponent, DialogComponent, ScrollToTopComponent, ProgressBarComponent, PageLoadingComponent],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -20,6 +21,6 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatProgressBarModule
   ],
-  exports: [LoadingComponent, DialogComponent, ScrollToTopComponent, ProgressBarComponent]
+  exports: [LoadingComponent, DialogComponent, ScrollToTopComponent, ProgressBarComponent, PageLoadingComponent]
 })
 export class SharedModule {}

@@ -1,0 +1,76 @@
+.loading-card {
+  width: 60%;
+  height: 75vh;
+  // border: 1px solid #d9d9d9;
+  padding: 30px;
+  margin: 0 auto;
+}
+.loading-card .loading-header {
+  display: flex;
+  align-items: center;
+}
+.loading-card .loading-header .loading-img {
+  height: 70px;
+  width: 70px;
+  background: #d9d9d9;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+.loading-header .loading-details {
+  margin-left: 20px;
+}
+.loading-details span {
+  width: 150px;
+  height: 15px;
+  background: #d9d9d9;
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+.loading-details .loading-name {
+  width: 100px;
+  height: 15px;
+}
+.loading-details .loading-about {
+  width: 150px;
+  height: 15px;
+  margin-top: 10px;
+}
+.loading-card .loading-content {
+  margin: 35px 0;
+}
+.loading-content .loading-line {
+  background: #d9d9d9;
+  height: 13px;
+  border-radius: 10px;
+  margin: 15px 0;
+  overflow: hidden;
+  position: relative;
+}
+.loading-content .line-1 {
+  width: calc(100% - 15%);
+}
+.loading-content .line-3 {
+  width: calc(100% - 40%);
+}
+.loading-card .loading-header .loading-img::before,
+.loading-details span::before,
+.loading-content .loading-line::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(to right, #d9d9d9 0%, rgba(0,0,0,0.05) 20%, #d9d9d9 40%, #d9d9d9 100%);
+  background-size: 450px 450px;
+  background-repeat: no-repeat;
+  animation: shimmer 1s linear infinite;
+}
+@keyframes shimmer {
+  0%{
+    background-position: -450px 0;
+  }
+  100%{
+    background-position: 450px 0;
+  }
+}

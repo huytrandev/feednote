@@ -1,0 +1,178 @@
+<app-page-loading *ngIf="loading"></app-page-loading>
+<div *ngIf="!loading" class="wrapper bg-white rounded shadow">
+  <div class="title">
+    <h2>Thêm mới hộ dân</h2>
+  </div>
+  <div class="content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Tên hộ dân</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Ví dụ: Nguyễn Văn A"
+          maxlength="100"
+          autocomplete="name"
+          formControlName="name"
+        />
+
+        <mat-error *ngIf="f.name.errors?.required"
+          >Tên hộ dân không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.name.errors?.minlength"
+          >Tên hộ dân phải có ít nhất 5 ký tự.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Tên tài khoản</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Ví dụ: nguyenvana"
+          maxlength="30"
+          autocomplete="username"
+          formControlName="username"
+        />
+
+        <mat-error *ngIf="f.username.errors?.required"
+          >Tên tài khoản không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.username.errors?.minlength"
+          >Tên tài khoản phải có ít nhất 5 ký tự.</mat-error
+        >
+        <mat-error *ngIf="f.username.errors?.usernameExisted"
+          >Tên tài khoản đã tồn tại.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Mật khẩu</mat-label>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          matInput
+          maxlength="30"
+          autocomplete="new-password"
+          formControlName="password"
+        />
+        <mat-icon
+          matSuffix
+          [matTooltip]="showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'"
+          class="material-icons-outlined app-icon"
+          style="cursor: pointer"
+          (click)="showPassword = !showPassword"
+          >{{ showPassword ? "visibility_off" : "visibility" }}</mat-icon
+        >
+        <mat-icon
+          matSuffix
+          matTooltip="Tạo mật khẩu"
+          class="material-icons-outlined app-icon"
+          style="cursor: pointer; margin-left: 5px"
+          (click)="generatePassword()"
+          >autorenew</mat-icon
+        >
+        <mat-error *ngIf="f.password.errors?.required"
+          >Mật khẩu không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.password.errors?.minlength"
+          >Mật khẩu phải có ít nhất 5 ký tự.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Số điện thoại</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Ví dụ: 0987321123"
+          maxlength="12"
+          autocomplete="tel"
+          formControlName="phone"
+        />
+
+        <mat-error *ngIf="f.phone.errors?.pattern"
+          >Số điện thoại không đúng định dạng.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          matInput
+          placeholder="Ví dụ: nguyenvana123@gmail.com"
+          maxlength="50"
+          autocomplete="email"
+          formControlName="email"
+        />
+
+        <mat-error *ngIf="f.email.errors?.required"
+          >Email không đúng định dạng.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Khu vực</mat-label>
+        <mat-select formControlName="idArea">
+          <mat-option *ngFor="let area of areas" [value]="area._id">
+            {{ area.name }}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="f.idArea.errors?.required"
+          >Vui lòng chọn khu vực.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-divider></mat-divider>
+      <div class="button-group">
+        <button
+          mat-raised-button
+          type="submit"
+          [disabled]="!form.valid || !form.dirty || submitted"
+          class="app-button app-button-brown"
+        >
+          <mat-spinner
+            diameter="16"
+            style="display: inline-flex; margin-right: 10px"
+            *ngIf="submitted"
+          ></mat-spinner>
+          Tạo mới
+        </button>
+
+        <button
+          mat-raised-button
+          type="button"
+          class="app-button app-button-grey"
+          (click)="onReset()"
+        >
+          Huỷ bỏ
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
