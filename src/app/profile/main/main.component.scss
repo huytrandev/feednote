@@ -1,4 +1,4 @@
-@import "../../../assets/scss/variable";
+@import "../../../variable";
 
 mat-card {
   width: 100%;
@@ -39,6 +39,7 @@ mat-card {
     margin-top: 20px;
     display: inline-flex;
     justify-content: center;
+    width: 100% !important;
   }
 
   &__form form {

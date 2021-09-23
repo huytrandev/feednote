@@ -18,10 +18,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FilterDto } from 'src/app/_models/filter';
-import { FoodService } from 'src/app/_services/food.service';
-import { SnackbarService } from 'src/app/_services/snackbar.service';
-import { DialogComponent } from 'src/app/_shared/dialog/dialog.component';
+
+import { FilterDto, SnackbarService, FoodService } from 'src/app/core';
+import { DialogComponent } from 'src/app/shared';
 import { DialogFormComponent } from '../dialog-form/dialog-form.component';
 
 @Component({

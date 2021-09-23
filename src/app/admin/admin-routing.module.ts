@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { FeedingDiaryComponent } from './feeding-diary/feeding-diary.component';
 import { StatisticComponent } from './statistic/statistic.component';
 

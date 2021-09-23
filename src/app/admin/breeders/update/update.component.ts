@@ -6,9 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AreaService } from 'src/app/_services/area.service';
-import { SnackbarService } from 'src/app/_services/snackbar.service';
-import { UserService } from 'src/app/_services/user.service';
+
+import { UserService, AreaService, SnackbarService } from 'src/app/core';
 
 @Component({
   selector: 'app-update',

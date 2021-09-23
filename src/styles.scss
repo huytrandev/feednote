@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 // @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
 
-@import "./assets/scss/variable";
-@import '~@angular/material/theming';
+@import "./variable";
+@import "~@angular/material/theming";
 $custom-typography: mat-typography-config(
-  $font-family: 'Be Vietnam Pro',
+  $font-family: "Be Vietnam Pro",
 );
 @include mat-core($custom-typography);
 
@@ -49,6 +49,9 @@ mat-progress-bar {
 .mat-form-field-suffix {
   display: inline-flex !important;
   align-items: center;
+}
+.mat-tab-group {
+  width: 100%;
 }
 // Customize class
 .app-button {

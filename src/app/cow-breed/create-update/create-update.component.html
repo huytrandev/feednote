@@ -12,7 +12,7 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Tên giống bò</mat-label>
+        <mat-label>Tên giống bò <span class="color-red">(*)</span></mat-label>
         <input
           type="text"
           matInput
@@ -27,6 +27,9 @@
         <mat-error *ngIf="f.name.errors?.minlength"
           >Tên giống bò phải có ít nhất 5 ký tự.</mat-error
         >
+        <mat-error *ngIf="f.name.errors?.pattern"
+          >Tên giống bò không hợp lệ.</mat-error
+        >
       </mat-form-field>
 
       <mat-form-field
@@ -34,7 +37,7 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Thời gian nuôi</mat-label>
+        <mat-label>Thời gian nuôi <span class="color-red">(*)</span></mat-label>
         <input
           type="number"
           matInput
@@ -79,7 +82,7 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Tên giai đoạn</mat-label>
+                <mat-label>Tên giai đoạn <span class="color-red">(*)</span></mat-label>
                 <input
                   type="text"
                   matInput
@@ -96,6 +99,10 @@
                   *ngIf="periods.controls[i].get('name')?.hasError('minlength')"
                   >Tên giai đoạn ít nhất 5 ký tự.</mat-error
                 >
+                <mat-error
+                  *ngIf="periods.controls[i].get('name')?.hasError('pattern')"
+                  >Tên giai đoạn không hợp lệ.</mat-error
+                >
               </mat-form-field>
             </div>
 
@@ -105,7 +112,7 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Số seri</mat-label>
+                <mat-label>Số seri <span class="color-red">(*)</span></mat-label>
                 <input
                   type="number"
                   placeholder="1"
@@ -128,7 +135,7 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Ngày bắt đầu</mat-label>
+                <mat-label>Ngày bắt đầu <span class="color-red">(*)</span></mat-label>
                 <input
                   type="number"
                   placeholder="1"
@@ -145,7 +152,7 @@
                 >
                 <mat-error
                   *ngIf="periods.controls[i].get('startDay')?.hasError('min')"
-                  >Ngày bắt đầu trong khoảng 1 - 20.</mat-error
+                  >Ngày bắt đầu trong ít nhất 1.</mat-error
                 >
               </mat-form-field>
             </div>
@@ -156,7 +163,7 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Ngày kết thúc</mat-label>
+                <mat-label>Ngày kết thúc <span class="color-red">(*)</span></mat-label>
                 <input
                   type="number"
                   placeholder="20"
@@ -171,8 +178,8 @@
                   >Ngày kết thúc không được trống.</mat-error
                 >
                 <mat-error
-                  *ngIf="periods.controls[i].get('endDay')?.hasError('min')"
-                  >Ngày kết thúc trong khoảng 20 - 60.</mat-error
+                  *ngIf="periods.controls[i].get('endDay')?.hasError('lessThan')"
+                  >Ngày kết thúc phải lớn hơn ngày bắt đầu.</mat-error
                 >
               </mat-form-field>
             </div>
@@ -183,7 +190,7 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Cân nặng</mat-label>
+                <mat-label>Cân nặng <span class="color-red">(*)</span></mat-label>
                 <input
                   type="number"
                   placeholder="10"

@@ -6,11 +6,10 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { AreaService } from 'src/app/_services/area.service';
-import { SnackbarService } from 'src/app/_services/snackbar.service';
-import { UserService } from 'src/app/_services/user.service';
+
+import { AreaService, SnackbarService, UserService } from 'src/app/core';
 
 @Component({
   selector: 'app-create-update',
@@ -88,11 +87,22 @@ export class CreateComponent implements OnInit {
     this.form = this.fb.group({
       username: [
         '',
-        [Validators.required, Validators.minLength(5)],
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.pattern(/^[\w\s]+$/),
+        ],
         this.validateUsernameExist.bind(this),
       ],
       password: ['', [Validators.required, Validators.minLength(5)]],
-      name: ['', [Validators.required, Validators.minLength(5)]],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.pattern(/^[\w\s]+$/),
+        ],
+      ],
       phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
       email: ['', [Validators.email]],
       idArea: ['', [Validators.required]],

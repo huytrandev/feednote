@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../services';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -25,6 +25,12 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
         if (err.status === 400) {
           this.router.navigate(['not-found']);
+        }
+        if (err.status === 404) {
+          let currentUrl = this.router.url;
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate([currentUrl]);
         }
         const error = err.error.message || err.statusText;
         return throwError(error);

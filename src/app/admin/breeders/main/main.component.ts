@@ -5,10 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FilterDto } from 'src/app/_models/filter';
-import { SnackbarService } from 'src/app/_services/snackbar.service';
-import { UserService } from 'src/app/_services/user.service';
-import { DialogComponent } from 'src/app/_shared/dialog/dialog.component';
+
+import { SnackbarService, UserService, FilterDto } from 'src/app/core';
+import { DialogComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-main',

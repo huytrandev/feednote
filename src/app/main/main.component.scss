@@ -1,4 +1,4 @@
-@import "../../assets/scss/variable";
+@import "../../variable";
 
 .app-container {
   display: flex;
@@ -29,7 +29,7 @@ h1.app-name {
 mat-toolbar .nav-icon {
   transition: all 300ms ease;
   &:hover {
-    background: #e7e7e7;
+    background: #f1f1f1;
   }
 }
 mat-toolbar .avatar {
@@ -41,7 +41,7 @@ mat-toolbar .avatar {
   cursor: pointer;
 
   &:hover {
-    background: #e7e7e7;
+    background: #f1f1f1;
   }
 }
 mat-toolbar .avatar img {
@@ -141,6 +141,6 @@ mat-progress-bar {
   box-shadow: 0 0 15px 0 rgb(0 0 0 / 15%);
   border: 1px solid #d9d9d9;
   &:hover {
-    background: #efefef;
+    background: #f1f1f1;
   }
 }
