@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AreaService } from 'src/app/_services/area.service';
+
+import { AreaService } from 'src/app/core';
 
 @Component({
   selector: 'app-dialog-form',

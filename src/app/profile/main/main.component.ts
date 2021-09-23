@@ -3,11 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MustMatch } from 'src/app/_helpers/must-match.validator';
-import { AreaService } from 'src/app/_services/area.service';
-import { AuthService } from 'src/app/_services/auth.service';
-import { SnackbarService } from 'src/app/_services/snackbar.service';
-import { UserService } from 'src/app/_services/user.service';
+import { MustMatch } from 'src/app/core/validations';
+import {
+  SnackbarService,
+  AuthService,
+  AreaService,
+  UserService,
+} from 'src/app/core/services';
 
 @Component({
   selector: 'app-main',
@@ -24,6 +26,7 @@ export class MainComponent implements OnInit {
   areas: any = [];
   currentUser: any;
   submitted: boolean = false;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -98,8 +101,8 @@ export class MainComponent implements OnInit {
   buildUpdateUserInfoForm(): void {
     this.updateInfoForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      phone: ['', [Validators.required, Validators.pattern('[- +()0-9]{10}')]],
-      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
+      email: ['', [Validators.email]],
       idArea: ['', [Validators.required]],
     });
   }

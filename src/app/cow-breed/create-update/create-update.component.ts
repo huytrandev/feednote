@@ -6,12 +6,16 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CowBreedService } from 'src/app/_services/cow-breed.service';
-import { PeriodService } from 'src/app/_services/period.service';
-import { SnackbarService } from 'src/app/_services/snackbar.service';
-import { DialogComponent } from 'src/app/_shared/dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+
+import {
+  SnackbarService,
+  PeriodService,
+  CowBreedService,
+  LessThan,
+} from 'src/app/core';
+import { DialogComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-create-update',
@@ -74,9 +78,16 @@ export class CreateUpdateComponent implements OnInit {
 
   buildForm(): void {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.pattern(/^[\w\s]+$/),
+        ],
+      ],
       farmingTime: ['', [Validators.required, Validators.min(10)]],
-      periods: this.fb.array([this.createPeriod()]),
+      periods: this.fb.array([]),
     });
   }
 
@@ -104,14 +115,26 @@ export class CreateUpdateComponent implements OnInit {
   }
 
   createPeriod() {
-    return this.fb.group({
-      _id: [''],
-      name: ['', [Validators.required, Validators.minLength(5)]],
-      serial: ['', [Validators.required]],
-      startDay: ['', [Validators.required, Validators.min(1)]],
-      endDay: ['', [Validators.required, Validators.min(1)]],
-      weight: ['', [Validators.required, Validators.min(10)]],
-    });
+    return this.fb.group(
+      {
+        _id: [''],
+        name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(5),
+            Validators.pattern(/^[\w\s]+$/),
+          ],
+        ],
+        serial: ['', [Validators.required]],
+        startDay: ['', [Validators.required, Validators.min(1)]],
+        endDay: ['', [Validators.required, Validators.min(1)]],
+        weight: ['', [Validators.required, Validators.min(10)]],
+      },
+      {
+        validator: LessThan('startDay', 'endDay'),
+      }
+    );
   }
 
   addPeriod(e: any) {
@@ -121,6 +144,11 @@ export class CreateUpdateComponent implements OnInit {
 
   removePeriod(index: number, period: any, e: any) {
     e.preventDefault();
+    if (!!this.isCreate) {
+      this.periods.removeAt(index);
+      return;
+    }
+
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
     });

@@ -2,8 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment as env } from 'src/environments/environment';
-import { FilterDto } from '../_models/filter';
-import { AuthService } from './auth.service';
+import { AuthService } from '.';
 
 @Injectable({
   providedIn: 'root',

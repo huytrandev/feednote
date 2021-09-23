@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AreaService } from 'src/app/_services/area.service';
-import { UserService } from 'src/app/_services/user.service';
+
+import { AreaService, UserService } from 'src/app/core';
 
 @Component({
   selector: 'app-detail',

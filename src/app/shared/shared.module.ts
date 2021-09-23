@@ -11,16 +11,27 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { CommonModule } from '@angular/common';
 import { PageLoadingComponent } from './page-loading/page-loading.component';
 
-
 @NgModule({
-  declarations: [LoadingComponent, DialogComponent, ScrollToTopComponent, ProgressBarComponent, PageLoadingComponent],
+  declarations: [
+    LoadingComponent,
+    DialogComponent,
+    ScrollToTopComponent,
+    ProgressBarComponent,
+    PageLoadingComponent,
+  ],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
-  exports: [LoadingComponent, DialogComponent, ScrollToTopComponent, ProgressBarComponent, PageLoadingComponent]
+  exports: [
+    LoadingComponent,
+    DialogComponent,
+    ScrollToTopComponent,
+    ProgressBarComponent,
+    PageLoadingComponent,
+  ],
 })
 export class SharedModule {}

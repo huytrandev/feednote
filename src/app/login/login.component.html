@@ -16,7 +16,8 @@
       <span>FeedNote</span>
     </div>
     <div class="describe">
-      FeedNote - Quản lý nguồn thức ăn và lên danh sách dinh dưỡng cho đàn gia súc.
+      FeedNote - Quản lý nguồn thức ăn và lên danh sách dinh dưỡng cho đàn gia
+      súc.
     </div>
   </div>
   <div fxFlex="50%" class="right" fxLayoutAlign="center center">
@@ -28,9 +29,18 @@
         >
           Thông tin tài khoản không hợp lệ.
         </div>
-        <mat-form-field class="login-full-width" appearance="outline" floatLabel="always">
+        <mat-form-field
+          class="login-full-width"
+          appearance="outline"
+          floatLabel="always"
+        >
           <mat-label>Tên tài khoản</mat-label>
-          <input matInput type="text" formControlName="username" autocomplete="username" />
+          <input
+            matInput
+            type="text"
+            formControlName="username"
+            autocomplete="username"
+          />
 
           <mat-error *ngIf="f.username.errors?.required"
             >Tên tài khoản không được trống.</mat-error
@@ -40,7 +50,11 @@
           >
         </mat-form-field>
 
-        <mat-form-field class="login-full-width" appearance="outline" floatLabel="always">
+        <mat-form-field
+          class="login-full-width"
+          appearance="outline"
+          floatLabel="always"
+        >
           <mat-label>Mật khẩu</mat-label>
           <input
             matInput

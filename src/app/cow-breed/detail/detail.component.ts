@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CowBreedService } from 'src/app/_services/cow-breed.service';
+
+import { CowBreedService } from 'src/app/core';
 
 @Component({
   selector: 'app-detail',

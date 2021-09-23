@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../services';
 
 const TOKEN_HEADER_KEY = 'Authorization';
 

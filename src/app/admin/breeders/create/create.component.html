@@ -10,7 +10,7 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Tên hộ dân</mat-label>
+        <mat-label>Tên hộ dân <span class="color-red">(*)</span></mat-label>
         <input
           type="text"
           matInput
@@ -26,6 +26,9 @@
         <mat-error *ngIf="f.name.errors?.minlength"
           >Tên hộ dân phải có ít nhất 5 ký tự.</mat-error
         >
+        <mat-error *ngIf="f.name.errors?.pattern"
+          >Tên hộ dân không hợp lệ.</mat-error
+        >
       </mat-form-field>
 
       <mat-form-field
@@ -33,7 +36,7 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Tên tài khoản</mat-label>
+        <mat-label>Tên tài khoản <span class="color-red">(*)</span></mat-label>
         <input
           type="text"
           matInput
@@ -49,6 +52,9 @@
         <mat-error *ngIf="f.username.errors?.minlength"
           >Tên tài khoản phải có ít nhất 5 ký tự.</mat-error
         >
+        <mat-error *ngIf="f.name.errors?.pattern"
+          >Tên tài khoản không hợp lệ.</mat-error
+        >
         <mat-error *ngIf="f.username.errors?.usernameExisted"
           >Tên tài khoản đã tồn tại.</mat-error
         >
@@ -59,7 +65,7 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Mật khẩu</mat-label>
+        <mat-label>Mật khẩu <span class="color-red">(*)</span></mat-label>
         <input
           [type]="showPassword ? 'text' : 'password'"
           matInput
@@ -136,7 +142,7 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Khu vực</mat-label>
+        <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
         <mat-select formControlName="idArea">
           <mat-option *ngFor="let area of areas" [value]="area._id">
             {{ area.name }}

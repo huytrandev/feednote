@@ -24,7 +24,7 @@
               >
                 <!-- Name -->
                 <mat-form-field appearance="outline">
-                  <mat-label>Họ tên</mat-label>
+                  <mat-label>Họ tên <span class="color-red">(*)</span></mat-label>
                   <input type="text" matInput formControlName="name" />
                   <mat-error *ngIf="f1.name.errors?.required"
                     >Họ tên không được trống.</mat-error
@@ -60,7 +60,7 @@
 
                 <!-- Address -->
                 <mat-form-field appearance="outline">
-                  <mat-label>Khu vực</mat-label>
+                  <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
                   <mat-select [(value)]="user.idArea" formControlName="idArea">
                     <mat-option *ngFor="let area of areas" [value]="area._id">
                       {{ area.name }}
@@ -111,10 +111,22 @@
                 <mat-form-field appearance="outline" floatLabel="always">
                   <mat-label>Mật khẩu mới</mat-label>
                   <input
-                    type="password"
+                    [type]="showPassword ? 'text' : 'password'"
                     matInput
                     formControlName="newPassword"
                   />
+                  <mat-icon
+                    matSuffix
+                    [matTooltip]="
+                      showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
+                    "
+                    class="material-icons-outlined app-icon"
+                    style="cursor: pointer"
+                    (click)="showPassword = !showPassword"
+                    >{{
+                      showPassword ? "visibility_off" : "visibility"
+                    }}</mat-icon
+                  >
                   <mat-error *ngIf="f2.newPassword.errors?.required"
                     >Mật khẩu mới không được trống.</mat-error
                   >
@@ -127,10 +139,22 @@
                 <mat-form-field appearance="outline" floatLabel="always">
                   <mat-label>Nhập lại mật khẩu</mat-label>
                   <input
-                    type="password"
+                    [type]="showPassword ? 'text' : 'password'"
                     matInput
                     formControlName="confirmPassword"
                   />
+                  <mat-icon
+                    matSuffix
+                    [matTooltip]="
+                      showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
+                    "
+                    class="material-icons-outlined app-icon"
+                    style="cursor: pointer"
+                    (click)="showPassword = !showPassword"
+                    >{{
+                      showPassword ? "visibility_off" : "visibility"
+                    }}</mat-icon
+                  >
                   <mat-error *ngIf="f2.confirmPassword.errors?.required"
                     >Nhập lại mật khẩu không được trống.</mat-error
                   >
@@ -189,11 +213,11 @@
         <div class="user-info__contact">
           <p class="user-info__phone">
             <span>Số điện thoại</span>
-            <span>{{ user.phone }}</span>
+            <span>{{ !!user.phone ? user.phone : '[...]'}}</span>
           </p>
           <p class="user-info__mail">
             <span>Email</span>
-            <span>{{ user.email }}</span>
+            <span>{{ !!user.email ? user.email : '[...]'}}</span>
           </p>
           <p class="user-info__address">
             <span>Khu vực</span>
