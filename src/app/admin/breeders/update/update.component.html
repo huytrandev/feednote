@@ -1,4 +1,4 @@
-<app-page-loading *ngIf="loading"></app-page-loading>
+<app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div class="title">
     <h2>Cập nhật hộ dân</h2>
@@ -124,28 +124,20 @@
 
       <mat-divider></mat-divider>
       <div class="button-group">
-        <button
-          mat-raised-button
-          type="submit"
-          [disabled]="!form.valid || !form.dirty || submitted"
-          class="app-button app-button-brown"
-        >
-          <mat-spinner
-            diameter="16"
-            style="display: inline-flex; margin-right: 10px"
-            *ngIf="submitted"
-          ></mat-spinner>
-          Cập nhật
-        </button>
+        <app-button
+          [buttonContent]="'Cập nhật'"
+          [buttonType]="'submit'"
+          [disabledCondition]="!form.valid || !form.dirty || submitted"
+          [showSpinner]="submitted"
+          [customClasses]="['app-button-brown']"
+        ></app-button>
 
-        <button
-          mat-raised-button
-          type="button"
-          class="app-button app-button-grey"
+        <app-button
+          [buttonContent]="'Huỷ bỏ'"
+          [buttonType]="'button'"
+          [customClasses]="['app-button-grey']"
           (click)="onReset()"
-        >
-          Huỷ bỏ
-        </button>
+        ></app-button>
       </div>
     </form>
   </div>

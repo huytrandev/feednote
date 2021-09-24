@@ -1,1 +1,102 @@
-<p>detail works!</p>
+<app-loading *ngIf="loading"></app-loading>
+<app-scroll-to-top></app-scroll-to-top>
+<div *ngIf="!loading" class="wrapper bg-white rounded shadow">
+  <div *ngIf="error">
+    <h2>Không thể tìm thấy thức ăn</h2>
+  </div>
+  <div *ngIf="!error">
+    <div class="row align-items-center justify-content-between">
+      <h2 class="" style="margin: 0">Chi tiết</h2>
+      <app-button-icon
+        [matMenuTriggerFor]="optionsPanel"
+        [iconName]="'more_horiz'"
+      ></app-button-icon>
+
+      <mat-menu #optionsPanel="matMenu" xPosition="before">
+        <app-menu-item
+          [iconName]="'drive_file_rename_outline'"
+          [menuItemContent]="'Cập nhật'"
+          [routerLink]="['/foods', 'u', food._id]"
+        ></app-menu-item>
+        <mat-divider></mat-divider>
+        <app-menu-item
+          [iconName]="'delete_outline'"
+          [menuItemContent]="'Xoá'"
+          (click)="onDelete()"
+        ></app-menu-item>
+      </mat-menu>
+    </div>
+    <div class="content">
+      <div class="row">
+        <div class="left">
+          <span>Tên thức ăn</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{ food.name }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Đơn vị</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{ food.unit }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Khu vực</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{ food.areaName }}</span>
+          <a
+            target="_blank"
+            style="margin-left: 5px; color: #000"
+            matTooltip="Bản đồ"
+            *ngIf="!!food.areaName"
+            [href]="'https://www.google.com/maps/place/' + food.areaName"
+            ><mat-icon class="material-icons-outlined app-icon"
+              >place</mat-icon
+            ></a
+          >
+        </div>
+      </div>
+
+      <div class="ingredient-list">
+        <div
+          class="ingredient-list-item"
+          *ngFor="let _ingredient of food.ingredient; index as i"
+        >
+          <div class="row align-items-center ingredient-list-item-header">
+            <span class="app-title">Thành phần thứ {{ i + 1 }}</span>
+          </div>
+          <div class="period-list-item-content">
+            <div style="width: 85%; margin: 0 auto">
+              <div class="row justify-content-center">
+                <div class="left">
+                  <span>Tên thành phần</span>
+                </div>
+                <div class="right">
+                  <span class="font-weight-bold">{{ _ingredient.name }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 85%; margin: 0 auto">
+              <div class="row justify-content-center">
+                <div class="left">
+                  <span>Hàm lượng</span>
+                </div>
+                <div class="right">
+                  <span class="font-weight-bold">{{ _ingredient.amount }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

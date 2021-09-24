@@ -5,17 +5,26 @@
     <h2>Không thể tìm thấy giống bò</h2>
   </div>
   <div *ngIf="!error">
-    <div class="row align-items-center">
-      <h2 class="" style="margin: 0;">Chi tiết</h2>
-      <button
-        mat-icon-button
-        matTooltip="Cập nhật"
-        [routerLink]="['/cow-breeds', 'u', cowBreedIdParam]"
-      >
-        <mat-icon class="material-icons-outlined app-icon"
-          >drive_file_rename_outline</mat-icon
-        >
-      </button>
+    <div class="row align-items-center justify-content-between">
+      <h2 class="" style="margin: 0">Chi tiết</h2>
+      <app-button-icon
+        [matMenuTriggerFor]="optionsPanel"
+        [iconName]="'more_horiz'"
+      ></app-button-icon>
+
+      <mat-menu #optionsPanel="matMenu" xPosition="before">
+        <app-menu-item
+          [iconName]="'drive_file_rename_outline'"
+          [menuItemContent]="'Cập nhật'"
+          [routerLink]="['/cow-breeds', 'u', cowBreed._id]"
+        ></app-menu-item>
+        <mat-divider></mat-divider>
+        <app-menu-item
+          [iconName]="'delete_outline'"
+          [menuItemContent]="'Xoá'"
+          (click)="onDelete()"
+        ></app-menu-item>
+      </mat-menu>
     </div>
     <div class="content">
       <div class="row">

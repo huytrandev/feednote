@@ -67,7 +67,7 @@ export class UserService {
 
   updateUserInfo(input: any) {
     return this.http.put<any>(
-      `${env.apiUrl}/api/auth/update`,
+      `${env.apiUrl}/api/user/update`,
       JSON.stringify(input),
       {
         headers: this.headers,

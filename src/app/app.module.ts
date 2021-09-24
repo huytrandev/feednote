@@ -8,13 +8,13 @@ import { MaterialModule } from './material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MainComponent } from './main/main.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
+import { MainModule } from './main/main.module';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -26,6 +26,7 @@ import { CoreModule } from './core/core.module';
     HttpClientModule,
     SharedModule,
     CoreModule,
+    MainModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { environment as env } from 'src/environments/environment';
 import { FilterDto } from '../models/filter';
-import { AuthService } from '.'; 
+import { AuthService } from '.';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +30,12 @@ export class FoodService {
     return this.http.get<any>(`${env.apiUrl}/api/food`, options);
   }
 
+  getById(id: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/food/${id}`, {
+      headers: this.headers,
+    });
+  }
+
   create(food: any) {
     return this.http.post<any>(`${env.apiUrl}/api/food`, JSON.stringify(food), {
       headers: this.headers,
@@ -37,14 +43,25 @@ export class FoodService {
   }
 
   update(id: string, food: any) {
-    return this.http.put<any>(`${env.apiUrl}/api/food/${id}`, JSON.stringify(food), {
-      headers: this.headers,
-    });
+    return this.http.put<any>(
+      `${env.apiUrl}/api/food/${id}`,
+      JSON.stringify(food),
+      {
+        headers: this.headers,
+      }
+    );
   }
 
   delete(id: string) {
     return this.http.delete<any>(`${env.apiUrl}/api/food/${id}`, {
       headers: this.headers,
     });
+  }
+
+  deleteIngredient(foodId: string, ingredientId: string) {
+    return this.http.delete<any>(
+      `${env.apiUrl}/api/food/${foodId}/ingredient/${ingredientId}`,
+      { headers: this.headers }
+    );
   }
 }

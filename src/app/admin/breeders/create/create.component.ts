@@ -9,7 +9,12 @@ import {
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 
-import { AreaService, SnackbarService, UserService } from 'src/app/core';
+import {
+  AreaService,
+  SnackbarService,
+  UserService,
+  Vietnamese,
+} from 'src/app/core';
 
 @Component({
   selector: 'app-create-update',
@@ -84,29 +89,33 @@ export class CreateComponent implements OnInit {
   }
 
   buildForm(): void {
-    this.form = this.fb.group({
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.pattern(/^[\w\s]+$/),
+    this.form = this.fb.group(
+      {
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(5),
+            Validators.pattern(/^[\w\s]+$/),
+          ],
+          this.validateUsernameExist.bind(this),
         ],
-        this.validateUsernameExist.bind(this),
-      ],
-      password: ['', [Validators.required, Validators.minLength(5)]],
-      name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.pattern(/^[\w\s]+$/),
+        password: ['', [Validators.required, Validators.minLength(5)]],
+        name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(5),
+          ],
         ],
-      ],
-      phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
-      email: ['', [Validators.email]],
-      idArea: ['', [Validators.required]],
-    });
+        phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
+        email: ['', [Validators.email]],
+        idArea: ['', [Validators.required]],
+      },
+      {
+        validator: [Vietnamese('name')],
+      }
+    );
   }
 
   onSubmit() {

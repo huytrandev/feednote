@@ -5,13 +5,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -21,22 +14,11 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FilterDto, SnackbarService, FoodService } from 'src/app/core';
 import { DialogComponent } from 'src/app/shared';
-import { DialogFormComponent } from '../dialog-form/dialog-form.component';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ),
-    ]),
-  ],
 })
 export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,7 +26,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   loading: boolean = true;
   foods: any = {};
-  displayedColumns: string[] = ['id', 'name', 'areaName', 'unit', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'areaName', 'actions'];
   dataTableSource: MatTableDataSource<any>;
   resultLength = 0;
   paramsGetFoods = {} as FilterDto;
@@ -67,9 +49,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // This aborts all HTTP requests.
     this.ngUnsubscribe.next();
-    // This completes the subject properlly.
     this.ngUnsubscribe.complete();
   }
 
@@ -132,59 +112,6 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setParams(skip, limit, '', this.defaultSort);
     this.loading = true;
     this.getFoods();
-  }
-
-  openDialog(action: string, obj: any) {
-    const dialogRef = this.dialog.open(DialogFormComponent, {
-      width: '500px',
-      minHeight: '200px',
-      disableClose: true,
-      autoFocus: false,
-      data: {
-        action,
-        obj,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      const { action, data } = result;
-      if (action === 'add') {
-        this.loading = true;
-        this.foodService.create(data).subscribe((res) => {
-          const { status } = res;
-          if (status === true) {
-            this.snackbar.openSnackBar(
-              'Thêm thức ăn thành công',
-              'success',
-              2000
-            );
-            this.getFoods();
-          } else {
-            this.snackbar.openSnackBar('Thêm thức ăn thất bại', 'danger', 2000);
-          }
-        });
-      } else if (action === 'edit') {
-        this.loading = true;
-        const { _id } = obj;
-        this.foodService.update(_id, data).subscribe((res) => {
-          const { status } = res;
-          if (status === true) {
-            this.snackbar.openSnackBar(
-              'Cập nhật thức ăn thành công',
-              'success',
-              2000
-            );
-            this.getFoods();
-          } else {
-            this.snackbar.openSnackBar(
-              'Cập nhật thức ăn thất bại',
-              'danger',
-              2000
-            );
-          }
-        });
-      }
-    });
   }
 
   delete(element: any) {

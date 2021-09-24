@@ -30,6 +30,10 @@ mat-toolbar {
 mat-progress-bar {
   position: absolute;
 }
+mat-form-field {
+  display: block;
+  margin-bottom: 20px;
+}
 ::selection {
   background: $brown-primary;
   color: #fff;
@@ -53,13 +57,17 @@ mat-progress-bar {
 .mat-tab-group {
   width: 100%;
 }
+.mat-dialog-container {
+  border-radius: $border-radius !important;
+}
 // Customize class
 .app-button {
   border-radius: $border-radius !important;
   text-transform: capitalize;
   height: fit-content;
-  // min-width: 90px !important;
   text-transform: none !important;
+  line-height: 2.6rem !important;
+  padding: 0 20px !important;
 
   &-brown {
     background-color: $brown-primary !important;
@@ -196,6 +204,12 @@ mat-progress-bar {
 
   &-end {
     justify-content: flex-end;
+  }
+  &-around {
+    justify-content: space-around;
+  }
+  &-between {
+    justify-content: space-between;
   }
 }
 

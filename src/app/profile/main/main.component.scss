@@ -24,7 +24,7 @@ mat-card {
     top: -20px;
     width: 95%;
     border-radius: $border-radius;
-    box-shadow: 0 8px 15px 0 rgb(0 0 0 / 25%);
+    box-shadow: $box-shadow;
     color: #fff;
     display: flex;
     align-items: center;
@@ -48,7 +48,6 @@ mat-card {
 
   &__form mat-form-field {
     width: 100%;
-    margin: 5px auto;
   }
 }
 
@@ -69,7 +68,7 @@ mat-card {
     width: 130px;
     height: 130px;
     border-radius: 50%;
-    box-shadow: 0 8px 15px 0 rgb(0 0 0 / 25%);
+    box-shadow: $box-shadow;
   }
 
   &__description {
@@ -135,7 +134,7 @@ mat-card {
   display: flex;
   justify-content: flex-end;
 }
-.button-group button:not(:last-child) {
+.button-group :not(:last-child) {
   margin-right: 20px;
 }
 

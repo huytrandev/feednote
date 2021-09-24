@@ -24,10 +24,15 @@
               >
                 <!-- Name -->
                 <mat-form-field appearance="outline">
-                  <mat-label>Họ tên <span class="color-red">(*)</span></mat-label>
+                  <mat-label
+                    >Họ tên <span class="color-red">(*)</span></mat-label
+                  >
                   <input type="text" matInput formControlName="name" />
                   <mat-error *ngIf="f1.name.errors?.required"
                     >Họ tên không được trống.</mat-error
+                  >
+                  <mat-error *ngIf="f1.name.errors?.inValid"
+                    >Họ tên không hợp lệ.</mat-error
                   >
                   <mat-error *ngIf="f1.name.errors?.minlength"
                     >Tên phải ít nhất 3 ký tự.</mat-error
@@ -60,7 +65,9 @@
 
                 <!-- Address -->
                 <mat-form-field appearance="outline">
-                  <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
+                  <mat-label
+                    >Khu vực <span class="color-red">(*)</span></mat-label
+                  >
                   <mat-select [(value)]="user.idArea" formControlName="idArea">
                     <mat-option *ngFor="let area of areas" [value]="area._id">
                       {{ area.name }}
@@ -69,31 +76,24 @@
                 </mat-form-field>
 
                 <div class="button-group">
-                  <button
-                    mat-raised-button
-                    class="app-button app-button-brown"
-                    type="submit"
-                    [disabled]="
+                  <app-button
+                    [customClasses]="['app-button-brown']"
+                    [buttonContent]="'Cập nhật'"
+                    [buttonType]="'submit'"
+                    [disabledCondition]="
                       !updateInfoForm.valid ||
                       !updateInfoForm.dirty ||
                       submitted
                     "
-                  >
-                    <mat-spinner
-                      diameter="16"
-                      style="display: inline-flex; margin-right: 10px"
-                      *ngIf="submitted"
-                    ></mat-spinner>
-                    Cập nhật
-                  </button>
-                  <button
-                    mat-raised-button
-                    class="app-button app-button-grey"
-                    type="button"
+                    [showSpinner]="submitted"
+                  ></app-button>
+
+                  <app-button
+                    [customClasses]="['app-button-grey']"
+                    [buttonContent]="'Huỷ bỏ'"
+                    [buttonType]="'button'"
                     (click)="resetUserInfo()"
-                  >
-                    Huỷ bỏ
-                  </button>
+                  ></app-button>
                 </div>
               </form>
             </div>
@@ -213,11 +213,11 @@
         <div class="user-info__contact">
           <p class="user-info__phone">
             <span>Số điện thoại</span>
-            <span>{{ !!user.phone ? user.phone : '[...]'}}</span>
+            <span>{{ !!user.phone ? user.phone : "[...]" }}</span>
           </p>
           <p class="user-info__mail">
             <span>Email</span>
-            <span>{{ !!user.email ? user.email : '[...]'}}</span>
+            <span>{{ !!user.email ? user.email : "[...]" }}</span>
           </p>
           <p class="user-info__address">
             <span>Khu vực</span>

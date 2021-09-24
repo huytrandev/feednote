@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AreaService, UserService } from 'src/app/core';
+import { AreaService, SnackbarService, UserService } from 'src/app/core';
+import { DialogComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-detail',
@@ -20,8 +22,11 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private userService: UserService,
-    private areaService: AreaService
+    private areaService: AreaService,
+    public dialog: MatDialog,
+    private snackbar: SnackbarService
   ) {
     this.breederId = this.route.snapshot.paramMap.get('id')!;
   }
@@ -54,5 +59,32 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.breeder = { ...data, createdAt };
         this.loading = false;
       });
+  }
+
+  onDelete() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action } = result;
+      if (action === 'delete') {
+        this.loading = true;
+        this.userService.deleteBreeder(this.breederId).subscribe((res) => {
+          const { status } = res;
+          if (status === true) {
+            this.snackbar.openSnackBar(
+              'Xoá thức ăn thành công',
+              'success',
+              2000
+            );
+            this.router.navigate(['/breeders']);
+          } else {
+            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+          }
+        });
+      }
+    });
   }
 }

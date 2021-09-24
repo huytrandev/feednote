@@ -1,4 +1,4 @@
-<app-page-loading *ngIf="loading"></app-page-loading>
+<app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div class="title">
     <h2>Thêm mới hộ dân</h2>
@@ -23,11 +23,11 @@
         <mat-error *ngIf="f.name.errors?.required"
           >Tên hộ dân không được trống.</mat-error
         >
+        <mat-error *ngIf="f.name.errors?.inValid"
+          >Tên hộ dân không hợp lệ.</mat-error
+        >
         <mat-error *ngIf="f.name.errors?.minlength"
           >Tên hộ dân phải có ít nhất 5 ký tự.</mat-error
-        >
-        <mat-error *ngIf="f.name.errors?.pattern"
-          >Tên hộ dân không hợp lệ.</mat-error
         >
       </mat-form-field>
 
@@ -52,7 +52,7 @@
         <mat-error *ngIf="f.username.errors?.minlength"
           >Tên tài khoản phải có ít nhất 5 ký tự.</mat-error
         >
-        <mat-error *ngIf="f.name.errors?.pattern"
+        <mat-error *ngIf="f.username.errors?.pattern"
           >Tên tài khoản không hợp lệ.</mat-error
         >
         <mat-error *ngIf="f.username.errors?.usernameExisted"
@@ -156,28 +156,20 @@
 
       <mat-divider></mat-divider>
       <div class="button-group">
-        <button
-          mat-raised-button
-          type="submit"
-          [disabled]="!form.valid || !form.dirty || submitted"
-          class="app-button app-button-brown"
-        >
-          <mat-spinner
-            diameter="16"
-            style="display: inline-flex; margin-right: 10px"
-            *ngIf="submitted"
-          ></mat-spinner>
-          Tạo mới
-        </button>
+        <app-button
+          [buttonType]="'submit'"
+          [disabledCondition]="!form.valid || !form.dirty || submitted"
+          [customClasses]="['app-button-brown']"
+          [buttonContent]="'Tạo mới'"
+          [showSpinner]="submitted"
+        ></app-button>
 
-        <button
-          mat-raised-button
-          type="button"
-          class="app-button app-button-grey"
+        <app-button
+          [buttonType]="'button'"
+          [customClasses]="['app-button-grey']"
+          [buttonContent]="'Huỷ bỏ'"
           (click)="onReset()"
-        >
-          Huỷ bỏ
-        </button>
+        ></app-button>
       </div>
     </form>
   </div>
