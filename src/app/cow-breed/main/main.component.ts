@@ -134,7 +134,7 @@ export class MainComponent implements OnInit, OnDestroy {
             );
             this.getCowBreeds();
           } else {
-            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+            this.snackbar.openSnackBar('Xoá giống bò thất bại', 'danger', 2000);
           }
         });
       }

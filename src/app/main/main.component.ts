@@ -18,6 +18,16 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/notes.svg',
     },
     {
+      path: 'not',
+      title: 'Nhu cầu dinh dưỡng',
+      icon: 'assets/icons/chemistry.svg',
+    },
+    {
+      path: 'standard-servings',
+      title: 'Khẩu phần ăn chuẩn',
+      icon: 'assets/icons/scale.svg',
+    },
+    {
       path: 'admin/breeders',
       title: 'Hộ chăn nuôi',
       icon: 'assets/icons/farmer.svg',
@@ -31,16 +41,6 @@ export class MainComponent implements OnInit {
       path: 'foods',
       title: 'Nguồn thức ăn',
       icon: 'assets/icons/grass.svg',
-    },
-    {
-      path: 'standard-servings',
-      title: 'Khẩu phần ăn chuẩn',
-      icon: 'assets/icons/scale.svg',
-    },
-    {
-      path: 'not',
-      title: 'Nhu cầu dinh dưỡng',
-      icon: 'assets/icons/chemistry.svg',
     },
     {
       path: 'admin/statistic',

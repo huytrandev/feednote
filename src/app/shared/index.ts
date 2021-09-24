@@ -4,3 +4,6 @@ export * from './loading/loading.component';
 export * from './page-loading/page-loading.component';
 export * from './progress-bar/progress-bar.component';
 export * from './scroll-to-top/scroll-to-top.component';
+export * from './button-icon/button-icon.component';
+export * from './button/button.component';
+export * from './menu-item/menu-item.component';

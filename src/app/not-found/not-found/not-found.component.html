@@ -7,13 +7,11 @@
     </p>
     <p>Hoặc bạn có thể quay về trang chủ ngay bằng cách chọn nút bên dưới.</p>
 
-    <button
-      mat-raised-button
-      class="app-button app-button-brown"
-      type="button"
+    <app-button
+      [customClasses]="['app-button-brown']"
+      [buttonType]="'button'"
+      [buttonContent]="'Trang chủ'"
       [routerLink]="['/']"
-    >
-      Trang chủ
-    </button>
+    ></app-button>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<!-- <app-loading *ngIf="loading"></app-loading>
+<app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <app-scroll-to-top></app-scroll-to-top>
   <div class="title">
@@ -12,7 +12,7 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Tên thức ăn</mat-label>
+        <mat-label>Tên thức ăn <span class="color-red">(*)</span></mat-label>
         <input
           type="text"
           matInput
@@ -24,31 +24,65 @@
         <mat-error *ngIf="f.name.errors?.required"
           >Tên thức ăn không được trống.</mat-error
         >
+        <mat-error *ngIf="f.name.errors?.inValid"
+          >Tên thức ăn không hợp lệ.</mat-error
+        >
         <mat-error *ngIf="f.name.errors?.minlength"
           >Tên thức ăn phải có ít nhất 5 ký tự.</mat-error
         >
       </mat-form-field>
 
-      <div class="nutrition-list" formArrayName="nutritions">
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Đơn vị đo <span class="color-red">(*)</span></mat-label>
+        <mat-select formControlName="unit">
+          <mat-option *ngFor="let unit of units" [value]="unit">
+            {{ unit }}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="f.unit.errors?.required"
+          >Vui lòng chọn đơn vị.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
+        <mat-select formControlName="idArea">
+          <mat-option *ngFor="let area of areas" [value]="area._id">
+            {{ area.name }}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="f.idArea.errors?.required"
+          >Vui lòng chọn khu vực.</mat-error
+        >
+      </mat-form-field>
+
+      <div class="ingredient-list" formArrayName="ingredient">
         <div
-          class="nutrition-list-item"
-          *ngFor="let nutrition of nutritions.controls; index as i"
+          class="ingredient-list-item"
+          *ngFor="let _ingredient of ingredient.controls; index as i"
         >
           <ng-container [formGroupName]="i">
-            <div class="row align-items-center nutrition-list-item-header">
-              <span class="title">Giai đoạn {{ i + 1 }}</span>
-              <button
-                mat-icon-button
-                class="nutrition-list-item-remove"
+            <input type="hidden" formControlName="idIngredient" />
+            <div class="row align-items-center ingredient-list-item-header">
+              <span class="title">Thành phần thứ {{ i + 1 }}</span>
+              <app-button-icon
+                [customClasses]="['color-red']"
+                class="ingredient-list-item-remove"
                 matTooltip="Xoá"
-                (click)="removePeriod(i, nutrition.value, $event)"
-              >
-                <mat-icon class="material-icons-outlined color-red app-icon"
-                  >highlight_off</mat-icon
-                >
-              </button>
+                (click)="removeIngredient(i, _ingredient.value, $event)"
+                [iconName]="'highlight_off'"
+              ></app-button-icon>
             </div>
-            <input type="hidden" formControlName="_id" />
 
             <div class="row justify-content-center">
               <mat-form-field
@@ -56,21 +90,33 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Tên giai đoạn</mat-label>
+                <mat-label
+                  >Tên thành phần <span class="color-red">(*)</span></mat-label
+                >
                 <input
                   type="text"
                   matInput
                   formControlName="name"
-                  placeholder="Ví dụ: Bò sơ sinh"
+                  placeholder="Ví dụ: Tinh bột"
                   maxlength="100"
                 />
 
                 <mat-error
-                  *ngIf="nutritions.controls[i].get('name')?.hasError('required')"
-                  >Tên giai đoạn không được trống.</mat-error
+                  *ngIf="
+                    ingredient.controls[i].get('name')?.hasError('required')
+                  "
+                  >Tên thành phần không được trống.</mat-error
                 >
                 <mat-error
-                  *ngIf="nutritions.controls[i].get('name')?.hasError('minlength')"
+                  *ngIf="
+                    ingredient.controls[i].get('name')?.hasError('inValid')
+                  "
+                  >Tên thành phần không hợp lệ.</mat-error
+                >
+                <mat-error
+                  *ngIf="
+                    ingredient.controls[i].get('name')?.hasError('minlength')
+                  "
                   >Tên giai đoạn ít nhất 5 ký tự.</mat-error
                 >
               </mat-form-field>
@@ -82,141 +128,52 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Số seri</mat-label>
-                <input
-                  type="number"
-                  placeholder="1"
-                  matInput
-                  formControlName="serial"
-                />
-                <mat-hint>Đơn vị: kg</mat-hint>
+                <mat-label
+                  >Hàm lượng <span class="color-red">(*)</span></mat-label
+                >
+                <input type="number" matInput formControlName="amount" />
+
+                <mat-hint>Đơn vị: (%)</mat-hint>
                 <mat-error
                   *ngIf="
-                    nutritions.controls[i].get('serial')?.hasError('required')
+                    ingredient.controls[i].get('amount')?.hasError('required')
                   "
-                  >Số seri không được trống.</mat-error
-                >
-              </mat-form-field>
-            </div>
-
-            <div class="row justify-content-center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
-                <mat-label>Ngày bắt đầu</mat-label>
-                <input
-                  type="number"
-                  placeholder="1"
-                  matInput
-                  formControlName="startDay"
-                />
-
-                <mat-hint>Đơn vị: ngày</mat-hint>
-                <mat-error
-                  *ngIf="
-                    nutritions.controls[i].get('startDay')?.hasError('required')
-                  "
-                  >Ngày bắt đầu không được trống.</mat-error
-                >
-                <mat-error
-                  *ngIf="nutritions.controls[i].get('startDay')?.hasError('min')"
-                  >Ngày bắt đầu trong khoảng 1 - 20.</mat-error
-                >
-              </mat-form-field>
-            </div>
-
-            <div class="row justify-content-center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
-                <mat-label>Ngày kết thúc</mat-label>
-                <input
-                  type="number"
-                  placeholder="20"
-                  matInput
-                  formControlName="endDay"
-                />
-                <mat-hint>Đơn vị: ngày</mat-hint>
-                <mat-error
-                  *ngIf="
-                    nutritions.controls[i].get('endDay')?.hasError('required')
-                  "
-                  >Ngày kết thúc không được trống.</mat-error
-                >
-                <mat-error
-                  *ngIf="nutritions.controls[i].get('endDay')?.hasError('min')"
-                  >Ngày kết thúc trong khoảng 20 - 60.</mat-error
-                >
-              </mat-form-field>
-            </div>
-
-            <div class="row justify-content-center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
-                <mat-label>Cân nặng</mat-label>
-                <input
-                  type="number"
-                  placeholder="10"
-                  matInput
-                  formControlName="weight"
-                />
-                <mat-hint>Đơn vị: kg</mat-hint>
-                <mat-error
-                  *ngIf="
-                    nutritions.controls[i].get('weight')?.hasError('required')
-                  "
-                  >Cân nặng không được trống.</mat-error
-                >
-                <mat-error
-                  *ngIf="nutritions.controls[i].get('weight')?.hasError('min')"
-                  >Cân nặng phải trên 10kg.</mat-error
+                  >Hàm lượng không được trống.</mat-error
                 >
               </mat-form-field>
             </div>
           </ng-container>
         </div>
 
-        <button
-          mat-raised-button
-          class="app-button app-button-green"
-          (click)="addPeriod($event)"
-        >
-          Thêm giai đoạn
-        </button>
+        <app-button
+          [customClasses]="['app-button-green']"
+          [buttonType]="'button'"
+          [buttonContent]="'Thêm thành phần'"
+          (click)="addIngredient($event)"
+        ></app-button>
       </div>
 
       <mat-divider></mat-divider>
       <div class="button-group">
-        <button
-          mat-raised-button
-          type="submit"
-          class="app-button app-button-brown"
-          [disabled]="nutritionToRemove.length > 0 ? false : !form.valid || !form.dirty || submitted"
-        >
-          <mat-spinner
-            diameter="16"
-            style="display: inline-flex; margin-right: 10px"
-            *ngIf="submitted"
-          ></mat-spinner>
-          {{ !!isCreate ? "Tạo mới" : "Cập nhật" }}
-        </button>
+        <app-button
+          [customClasses]="['app-button-brown']"
+          [buttonType]="'submit'"
+          [buttonContent]="!!isCreate ? 'Tạo mới' : 'Cập nhật'"
+          [disabledCondition]="
+            ingredientToRemove.length > 0
+              ? false
+              : !form.valid || !form.dirty || submitted
+          "
+          [showSpinner]="submitted"
+        ></app-button>
 
-        <button
-          mat-raised-button
-          type="button"
-          class="app-button app-button-grey"
+        <app-button
+          [customClasses]="['app-button-grey']"
+          [buttonType]="'submit'"
+          [buttonContent]="'Huỷ bỏ'"
           (click)="onReset()"
-        >
-          Huỷ bỏ
-        </button>
+        ></app-button>
       </div>
     </form>
   </div>
-</div> -->
+</div>

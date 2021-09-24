@@ -1,9 +1,5 @@
 @import "../../../../variable";
 
-mat-form-field {
-  display: block;
-  margin-bottom: 20px;
-}
 .wrapper {
   padding: 20px 15px;
   margin: 0 auto;
@@ -21,7 +17,7 @@ mat-form-field {
   justify-content: flex-end;
   margin-top: 20px;
 
-  & button:not(:last-child) {
+  & :not(:last-child) {
     margin-right: 20px;
   }
 }

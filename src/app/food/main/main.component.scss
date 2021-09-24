@@ -4,26 +4,17 @@ table {
   width: 100%;
 }
 
-mat-progress-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
 .wrapper {
-  position: relative;
-  border: 1px solid #d9d9d9;
+  margin-bottom: 30px;
   padding: 20px 15px;
-  background: #fff;
-  border-radius: $border-radius;
-  box-shadow: 0 0 7px rgba($color: #000000, $alpha: 0.15);
-
-  & .table-container {
-    max-height: 450px;
-    overflow: auto;
-  }
+  position: relative;
 }
+
+.table-container {
+  max-height: 450px;
+  overflow: auto;
+}
+
 .mat-paginator-sticky {
   bottom: 0px;
   position: sticky;
@@ -50,8 +41,8 @@ mat-progress-bar {
 .mat-column-name {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 20% !important;
-  width: 20% !important;
+  flex: 0 0 40% !important;
+  width: 40% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -65,23 +56,8 @@ mat-progress-bar {
 .mat-column-areaName {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 calc(100% - 20% - 230px) !important;
-  width: calc(100% - 20% - 230px) !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-.mat-column-unit {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 100px !important;
-  width: 100px !important;
+  flex: 0 0 calc(100% - 40% - 200px) !important;
+  width: calc(100% - 40% - 200px) !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -129,10 +105,6 @@ tr.app-element-row:not(.app-expanded-row):hover {
 
 tr.app-element-row:not(.app-expanded-row):active {
   background: #efefef;
-}
-
-.app-element-row td {
-  border-bottom-width: 0;
 }
 
 .app-element-detail {

@@ -144,7 +144,7 @@ export class CreateUpdateComponent implements OnInit {
 
   removePeriod(index: number, period: any, e: any) {
     e.preventDefault();
-    if (!!this.isCreate) {
+    if (!!this.isCreate || !this.cowBreed['periods']) {
       this.periods.removeAt(index);
       return;
     }

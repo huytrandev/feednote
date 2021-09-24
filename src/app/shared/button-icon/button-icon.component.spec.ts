@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogFormComponent } from './dialog-form.component';
+import { ButtonIconComponent } from './button-icon.component';
 
-describe('DialogFormComponent', () => {
-  let component: DialogFormComponent;
-  let fixture: ComponentFixture<DialogFormComponent>;
+describe('ButtonIconComponent', () => {
+  let component: ButtonIconComponent;
+  let fixture: ComponentFixture<ButtonIconComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DialogFormComponent ]
+      declarations: [ ButtonIconComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogFormComponent);
+    fixture = TestBed.createComponent(ButtonIconComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

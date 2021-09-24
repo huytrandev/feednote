@@ -10,6 +10,11 @@ table {
   position: relative;
 }
 
+.table-container {
+  max-height: 450px;
+  overflow: auto;
+}
+
 .table-search-container {
   display: flex;
   align-items: center;
@@ -22,20 +27,6 @@ tr.app-element-row:not(.app-expanded-row):hover {
 
 tr.app-element-row:not(.app-expanded-row):active {
   background: #efefef;
-}
-
-.table-wrapper {
-  position: relative;
-  border: 1px solid #d9d9d9;
-  padding: 7px 10px;
-  background: #fff;
-  border-radius: $border-radius;
-  box-shadow: 0 0 7px rgba($color: #000000, $alpha: 0.15);
-
-  & .table-container {
-    max-height: 450px;
-    overflow: auto;
-  }
 }
 
 .mat-paginator-sticky {
@@ -61,10 +52,10 @@ tr.app-element-row:not(.app-expanded-row):active {
 
 .mat-column-name,
 .mat-column-email {
-  width: 20% !important;
+  width: 22% !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 20% !important;
+  flex: 0 0 22% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -91,10 +82,10 @@ tr.app-element-row:not(.app-expanded-row):active {
 }
 
 .mat-column-areaName {
-  width: calc(100% - 200px - 65%) !important;
+  width: calc(100% - 200px - 69%) !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 calc(100% - 200px - 65%) !important;
+  flex: 0 0 calc(100% - 200px - 69%) !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

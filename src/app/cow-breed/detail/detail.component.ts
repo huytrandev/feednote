@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CowBreedService } from 'src/app/core';
+import { CowBreedService, SnackbarService } from 'src/app/core';
+import { DialogComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-detail',
@@ -22,7 +24,10 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private cowBreedService: CowBreedService
+    private router: Router,
+    private cowBreedService: CowBreedService,
+    private snackbar: SnackbarService,
+    public dialog: MatDialog
   ) {
     this.cowBreedIdParam = this.route.snapshot.paramMap.get('id')!;
   }
@@ -52,5 +57,32 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.cowBreed = data;
         this.loading = false;
       });
+  }
+
+  onDelete() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action } = result;
+      if (action === 'delete') {
+        this.loading = true;
+        this.cowBreedService.delete(this.cowBreed._id).subscribe((res) => {
+          const { status } = res;
+          if (status === true) {
+            this.snackbar.openSnackBar(
+              'Xoá giống bò thành công',
+              'success',
+              2000
+            );
+            this.router.navigate(['/cow-breeds']);
+          } else {
+            this.snackbar.openSnackBar('Xoá giống bò thất bại', 'danger', 2000);
+          }
+        });
+      }
+    });
   }
 }

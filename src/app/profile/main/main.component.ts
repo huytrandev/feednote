@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MustMatch } from 'src/app/core/validations';
+import { MustMatch, Vietnamese } from 'src/app/core';
 import {
   SnackbarService,
   AuthService,
@@ -32,7 +32,6 @@ export class MainComponent implements OnInit {
     private fb: FormBuilder,
     private areaService: AreaService,
     private userService: UserService,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private snackbarService: SnackbarService,
     private router: Router
@@ -99,12 +98,17 @@ export class MainComponent implements OnInit {
   }
 
   buildUpdateUserInfoForm(): void {
-    this.updateInfoForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
-      email: ['', [Validators.email]],
-      idArea: ['', [Validators.required]],
-    });
+    this.updateInfoForm = this.fb.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
+        email: ['', [Validators.email]],
+        idArea: ['', [Validators.required]],
+      },
+      {
+        validator: Vietnamese('name'),
+      }
+    );
   }
 
   buildChangePasswordForm(): void {

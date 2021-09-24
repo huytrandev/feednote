@@ -1,4 +1,4 @@
-<app-page-loading *ngIf="loading"></app-page-loading>
+<app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <app-scroll-to-top></app-scroll-to-top>
   <div class="title">
@@ -62,17 +62,14 @@
         >
           <ng-container [formGroupName]="i">
             <div class="row align-items-center period-list-item-header">
-              <span class="title">Giai đoạn {{ i + 1 }}</span>
-              <button
-                mat-icon-button
+              <span class="title">Giai đoạn thứ {{ i + 1 }}</span>
+              <app-button-icon
+                [customClasses]="['color-red']"
                 class="period-list-item-remove"
                 matTooltip="Xoá"
                 (click)="removePeriod(i, period.value, $event)"
-              >
-                <mat-icon class="material-icons-outlined color-red app-icon"
-                  >highlight_off</mat-icon
-                >
-              </button>
+                [iconName]="'highlight_off'"
+              ></app-button-icon>
             </div>
             <input type="hidden" formControlName="_id" />
 
@@ -82,7 +79,9 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Tên giai đoạn <span class="color-red">(*)</span></mat-label>
+                <mat-label
+                  >Tên giai đoạn <span class="color-red">(*)</span></mat-label
+                >
                 <input
                   type="text"
                   matInput
@@ -112,7 +111,9 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Số seri <span class="color-red">(*)</span></mat-label>
+                <mat-label
+                  >Số seri <span class="color-red">(*)</span></mat-label
+                >
                 <input
                   type="number"
                   placeholder="1"
@@ -135,7 +136,9 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Ngày bắt đầu <span class="color-red">(*)</span></mat-label>
+                <mat-label
+                  >Ngày bắt đầu <span class="color-red">(*)</span></mat-label
+                >
                 <input
                   type="number"
                   placeholder="1"
@@ -163,7 +166,9 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Ngày kết thúc <span class="color-red">(*)</span></mat-label>
+                <mat-label
+                  >Ngày kết thúc <span class="color-red">(*)</span></mat-label
+                >
                 <input
                   type="number"
                   placeholder="20"
@@ -178,7 +183,9 @@
                   >Ngày kết thúc không được trống.</mat-error
                 >
                 <mat-error
-                  *ngIf="periods.controls[i].get('endDay')?.hasError('lessThan')"
+                  *ngIf="
+                    periods.controls[i].get('endDay')?.hasError('lessThan')
+                  "
                   >Ngày kết thúc phải lớn hơn ngày bắt đầu.</mat-error
                 >
               </mat-form-field>
@@ -190,7 +197,9 @@
                 style="width: 90%"
                 floatLabel="always"
               >
-                <mat-label>Cân nặng <span class="color-red">(*)</span></mat-label>
+                <mat-label
+                  >Cân nặng <span class="color-red">(*)</span></mat-label
+                >
                 <input
                   type="number"
                   placeholder="10"
@@ -213,39 +222,33 @@
           </ng-container>
         </div>
 
-        <button
-          mat-raised-button
-          class="app-button app-button-green"
+        <app-button
+          [customClasses]="['app-button-green']"
+          [buttonContent]="'Thêm giai đoạn'"
+          [buttonType]="'button'"
           (click)="addPeriod($event)"
-        >
-          Thêm giai đoạn
-        </button>
+        ></app-button>
       </div>
 
       <mat-divider></mat-divider>
       <div class="button-group">
-        <button
-          mat-raised-button
-          type="submit"
-          class="app-button app-button-brown"
-          [disabled]="periodToRemove.length > 0 ? false : !form.valid || !form.dirty || submitted"
-        >
-          <mat-spinner
-            diameter="16"
-            style="display: inline-flex; margin-right: 10px"
-            *ngIf="submitted"
-          ></mat-spinner>
-          {{ !!isCreate ? "Tạo mới" : "Cập nhật" }}
-        </button>
+        <app-button
+          [buttonType]="'submit'"
+          [customClasses]="['app-button-brown']"
+          [disabledCondition]="
+            periodToRemove.length > 0
+              ? false
+              : !form.valid || !form.dirty || submitted
+          "
+          [showSpinner]="submitted"
+          [buttonContent]="!!isCreate ? 'Tạo mới' : 'Cập nhật'"
+        ></app-button>
 
-        <button
-          mat-raised-button
-          type="button"
-          class="app-button app-button-grey"
-          (click)="onReset()"
-        >
-          Huỷ bỏ
-        </button>
+        <app-button
+          [buttonType]="'button'"
+          [customClasses]="['app-button-grey']"
+          [buttonContent]="'Huỷ bỏ'"
+        ></app-button>
       </div>
     </form>
   </div>
