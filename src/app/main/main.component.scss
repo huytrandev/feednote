@@ -89,10 +89,7 @@ mat-sidenav {
   max-width: 250px;
   
   &-bottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80px;
+    margin-bottom: 20px;
   }
 }
 mat-sidenav-content {
@@ -112,36 +109,17 @@ mat-nav-list mat-list-item {
 mat-nav-list mat-list-item:not(:last-child) {
   margin-bottom: 7px;
 }
-mat-nav-list .active {
-  background: $brown-primary;
+.active {
+  background: $brown-primary !important;
   box-shadow: $box-shadow;
   color: #fff;
   border-radius: $border-radius;
 }
-mat-list-item.active img {
+.active img {
   filter: invert(100%);
 }
 mat-progress-bar {
   position: absolute;
   top: 0;
   z-index: 3;
-}
-
-#logout {
-  transition: all 350ms ease;
-  cursor: pointer;
-  width: 100%;
-  margin-left: 15px;
-  margin-right: 15px;
-  line-height: 20px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  height: 48px;
-  background: #fafafa;
-  box-shadow: 0 0 15px 0 rgb(0 0 0 / 15%);
-  border: 1px solid #d9d9d9;
-  &:hover {
-    background: #f1f1f1;
-  }
 }

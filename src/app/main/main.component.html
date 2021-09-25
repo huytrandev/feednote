@@ -17,7 +17,7 @@
     <button
       mat-icon-button
       class="nav-icon favorite-icon"
-      style="margin-left: 5px;"
+      style="margin-left: 5px"
       [matMenuTriggerFor]="notifications"
     >
       <mat-icon
@@ -64,17 +64,44 @@
             [routerLink]="nav.path"
             routerLinkActive="active"
             *ngFor="let nav of fillerNav"
-            style="word-wrap: break-word;"
+            style="word-wrap: break-word"
           >
             <img [src]="nav.icon" alt="" style="width: 1.25rem" />
-            <span *ngIf="isExpanded" style="margin-left: 15px;">{{
+            <span *ngIf="isExpanded" style="margin-left: 15px">{{
               nav.title
             }}</span>
           </mat-list-item>
         </mat-nav-list>
 
-        <div class="my-side-nav-bottom">
-          <!-- <small class="font-weight-light text-muted">Phiên bản hiện tại: 1.0</small> -->
+        <div class="my-side-nav-bottom" *ngIf="currentUser.role === 'admin'">
+          <mat-nav-list>
+            <mat-list-item
+              mat-list-item
+              [routerLink]="['admin', 'users']"
+              routerLinkActive="active"
+              style="word-wrap: break-word"
+            >
+              <img
+                src="assets/icons/settings.svg"
+                alt=""
+                style="width: 1.25rem"
+              />
+              <span *ngIf="isExpanded" style="margin-left: 15px">Người dùng</span>
+            </mat-list-item>
+          </mat-nav-list>
+          <!-- <div
+            id="setting"
+            [routerLink]="['admin', 'users']"
+            routerLinkActive="active"
+            *ngIf="currentUser.role === 'admin'"
+          >
+            <img
+              src="assets/icons/settings.svg"
+              alt=""
+              style="width: 1.25rem"
+            />
+            <span *ngIf="isExpanded" style="margin-left: 15px">Người dùng</span>
+          </div> -->
         </div>
       </div>
     </mat-sidenav>

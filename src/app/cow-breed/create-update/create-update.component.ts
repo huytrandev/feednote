@@ -11,7 +11,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import {
   SnackbarService,
-  PeriodService,
   CowBreedService,
   LessThan,
 } from 'src/app/core';
@@ -38,7 +37,6 @@ export class CreateUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private cowBreedService: CowBreedService,
-    private periodService: PeriodService,
     private snackbarService: SnackbarService,
     public dialog: MatDialog
   ) {
@@ -158,7 +156,7 @@ export class CreateUpdateComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       const { action } = result;
       if (action === 'delete') {
-        this.periodService.delete(_id).subscribe((res) => {
+        this.cowBreedService.deletePeriod(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
             this.snackbarService.openSnackBar(

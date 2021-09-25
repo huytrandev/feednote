@@ -59,4 +59,10 @@ export class CowBreedService {
       headers: this.headers,
     });
   }
+
+  deletePeriod(periodId: string) {
+    return this.http.delete<any>(`${env.apiUrl}/api/period/${periodId}`, {
+      headers: this.headers,
+    });
+  }
 }

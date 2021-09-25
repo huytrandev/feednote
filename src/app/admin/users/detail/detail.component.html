@@ -1,0 +1,117 @@
+<app-loading *ngIf="loading"></app-loading>
+<app-scroll-to-top></app-scroll-to-top>
+<div *ngIf="!loading" class="wrapper bg-white rounded shadow">
+  <div *ngIf="error">
+    <h2>Không thể tìm thấy người dùng</h2>
+  </div>
+  <div *ngIf="!error">
+    <div class="row align-items-center justify-content-between">
+      <h2 class="" style="margin: 0">Chi tiết</h2>
+      <app-button
+        [matMenuTriggerFor]="optionsPanel"
+        [iconName]="'more_horiz'"
+        [customClasses]="['app-button-option']"
+      ></app-button>
+
+      <mat-menu #optionsPanel="matMenu" xPosition="before">
+        <app-menu-item
+          [iconName]="'drive_file_rename_outline'"
+          [menuItemContent]="'Cập nhật'"
+          [routerLink]="['/admin/users', 'u', user._id]"
+        ></app-menu-item>
+        <mat-divider></mat-divider>
+        <app-menu-item
+          [iconName]="'delete_outline'"
+          [menuItemContent]="'Xoá'"
+          (click)="onDelete()"
+        ></app-menu-item>
+      </mat-menu>
+    </div>
+    <div class="content">
+      <div class="row">
+        <div class="left">
+          <span>Tên người dùng</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{ user.name }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Chức vụ</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{
+            transformRoleName(user.role)
+          }}</span>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="!!user.idManager">
+        <div class="left">
+          <span>Cán bộ phụ trách</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold" *ngIf="manager$ | async as manager">{{
+            manager.data.name
+          }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Email</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{
+            !!user.email ? user.email : "..."
+          }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Số điện thoại</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{
+            !!user.phone ? user.phone : "..."
+          }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Khu vực</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold" *ngIf="area$ | async as area">{{
+            area.data.name
+          }}</span>
+          <a
+            target="_blank"
+            style="margin-left: 5px; color: #000"
+            matTooltip="Bản đồ"
+            *ngIf="area$ | async as area"
+            [href]="'https://www.google.com/maps/place/' + area.data.name"
+            ><mat-icon class="material-icons-outlined app-icon"
+              >place</mat-icon
+            ></a
+          >
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="left">
+          <span>Tham gia vào</span>
+        </div>
+        <div class="right">
+          <span class="font-weight-bold">{{
+            transformDate(user.createdAt) | date: "dd/MM/YYYY"
+          }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

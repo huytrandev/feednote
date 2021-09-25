@@ -43,6 +43,7 @@ export class AuthService {
   }
 
   logout() {
+    this.revokeToken();
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     location.reload();

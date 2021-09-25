@@ -5,6 +5,8 @@ import { environment as env } from 'src/environments/environment';
 import { FilterDto } from '../models';
 import { AuthService } from './auth.service';
 
+import { User } from '..';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,32 +20,47 @@ export class UserService {
     });
   }
 
-  createBreeder(breeder: any) {
-    return this.http.post<any>(
-      `${env.apiUrl}/api/user`,
-      JSON.stringify(breeder),
-      { headers: this.headers }
-    );
-  }
+  // User
+  getAllUsers(filter?: FilterDto) {
+    const params = new HttpParams()
+      .set('skip', filter?.skip?.toString() || '')
+      .set('limit', filter?.limit?.toString() || '')
+      .set('search', filter?.search?.toString() || '')
+      .set('sort', filter?.sort?.toString() || '');
 
-  updateBreeder(id: string, breeder: any) {
-    return this.http.put<any>(`${env.apiUrl}/api/user/${id}`, breeder, {
+    const options = {
       headers: this.headers,
-    });
+      params,
+    };
+
+    return this.http.get<any>(`${env.apiUrl}/api/admin/user`, options);
   }
 
-  getUserInfo() {
-    return this.http.get<any>(`${env.apiUrl}/api/user/info`, {
-      headers: this.headers,
-    });
-  }
-
-  getAdminInfoById(id: string) {
+  getUserById(id: string) {
     return this.http.get<any>(`${env.apiUrl}/api/admin/user/${id}`, {
       headers: this.headers,
     });
   }
 
+  createUser(user: User) {
+    return this.http.post<any>(`${env.apiUrl}/api/admin/user/`, user, {
+      headers: this.headers,
+    });
+  }
+
+  updateUser(userId: string, user: User) {
+    return this.http.put<any>(`${env.apiUrl}/api/admin/user/${userId}`, user, {
+      headers: this.headers,
+    });
+  }
+
+  deleteUser(userId: string) {
+    return this.http.delete<any>(`${env.apiUrl}/api/admin/user/${userId}`, {
+      headers: this.headers,
+    });
+  }
+
+  // Breeder
   getAllBreeders(filter?: FilterDto) {
     const params = new HttpParams()
       .set('skip', filter?.skip?.toString() || '')
@@ -59,13 +76,51 @@ export class UserService {
     return this.http.get<any>(`${env.apiUrl}/api/user/getAllBreeder`, options);
   }
 
-  getBreederById(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/user/${id}`, {
+  getBreederById(breederId: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/user/${breederId}`, {
       headers: this.headers,
     });
   }
 
-  updateUserInfo(input: any) {
+  createBreeder(breeder: User) {
+    return this.http.post<any>(
+      `${env.apiUrl}/api/user`,
+      JSON.stringify(breeder),
+      { headers: this.headers }
+    );
+  }
+
+  updateBreeder(breederId: string, breeder: User) {
+    return this.http.put<any>(`${env.apiUrl}/api/user/${breederId}`, breeder, {
+      headers: this.headers,
+    });
+  }
+
+  deleteBreeder(breederId: string) {
+    return this.http.delete<any>(`${env.apiUrl}/api/user/${breederId}`, {
+      headers: this.headers,
+    });
+  }
+
+  // Manager
+  getAllManager() {
+    const query = JSON.stringify({
+      role: 'manager',
+    });
+
+    return this.http.get<any>(`${env.apiUrl}/api/user?filter={"role":"manager"}`, {
+      headers: this.headers,
+    });
+  }
+
+  // Personal
+  getPersonalInfo() {
+    return this.http.get<any>(`${env.apiUrl}/api/user/info`, {
+      headers: this.headers,
+    });
+  }
+
+  updatePersonalInfo(input: any) {
     return this.http.put<any>(
       `${env.apiUrl}/api/user/update`,
       JSON.stringify(input),
@@ -73,11 +128,5 @@ export class UserService {
         headers: this.headers,
       }
     );
-  }
-
-  deleteBreeder(id: string) {
-    return this.http.delete<any>(`${env.apiUrl}/api/user/${id}`, {
-      headers: this.headers,
-    });
   }
 }

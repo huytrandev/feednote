@@ -5,8 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { SnackbarService, UserService, FilterDto, User } from 'src/app/core';
+import { AuthService, FilterDto, SnackbarService, User, UserService } from 'src/app/core';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -25,23 +24,27 @@ export class MainComponent implements OnInit, OnDestroy {
     'name',
     'email',
     'phone',
-    'areaName',
+    'role',
     'actions',
   ];
-  paramGetBreeders!: FilterDto;
-  defaultSort = 'createdAt desc';
-  defaultPageSize = 10;
+  paramGetUsers!: FilterDto;
+  defaultSort: string = 'createdAt desc';
+  defaultPageSize: number = 10;
   totalCount: number = 0;
+  currentUser!: any;
 
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    private snackbar: SnackbarService
-  ) {}
+    private snackbar: SnackbarService,
+    private authService: AuthService
+  ) {
+    this.currentUser = this.authService.getUserByToken();
+  }
 
   ngOnInit(): void {
     this.setParams(0, this.defaultPageSize, '', this.defaultSort);
-    this.getBreeders();
+    this.getUsers();
   }
 
   ngOnDestroy(): void {
@@ -50,7 +53,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   setParams(skip: number, limit: number, search: string, sort: string) {
-    this.paramGetBreeders = {
+    this.paramGetUsers = {
       skip,
       limit,
       search,
@@ -58,10 +61,10 @@ export class MainComponent implements OnInit, OnDestroy {
     };
   }
 
-  getBreeders(): void {
+  getUsers(): void {
     this.loading = true;
     this.userService
-      .getAllBreeders(this.paramGetBreeders)
+      .getAllUsers(this.paramGetUsers)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const { status, data } = res;
@@ -70,6 +73,7 @@ export class MainComponent implements OnInit, OnDestroy {
           return;
         }
         this.totalCount = data.totalCount;
+
         this.dataTableSource = new MatTableDataSource(data.items);
         this.loading = false;
       });
@@ -81,13 +85,13 @@ export class MainComponent implements OnInit, OnDestroy {
     if (input === '' || input.length === 0) {
       this.setParams(0, this.defaultPageSize, '', this.defaultSort);
       this.loading = true;
-      this.getBreeders();
+      this.getUsers();
       return;
     }
 
     this.setParams(0, this.defaultPageSize, input, this.defaultSort);
     this.loading = true;
-    this.getBreeders();
+    this.getUsers();
   }
 
   onSort(e: any) {
@@ -104,7 +108,7 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     this.loading = true;
-    this.getBreeders();
+    this.getUsers();
   }
 
   onPagination(e: any) {
@@ -112,7 +116,7 @@ export class MainComponent implements OnInit, OnDestroy {
     const skip = e.pageIndex * limit;
     this.setParams(skip, limit, '', this.defaultSort);
     this.loading = true;
-    this.getBreeders();
+    this.getUsers();
   }
 
   delete(element: any) {
@@ -127,20 +131,30 @@ export class MainComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.loading = true;
-        this.userService.deleteBreeder(_id).subscribe((res) => {
+        this.userService.deleteUser(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
             this.snackbar.openSnackBar(
-              'Xoá thức ăn thành công',
+              'Xoá người dùng thành công',
               'success',
               2000
             );
-            this.getBreeders();
+            this.getUsers();
           } else {
-            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+            this.snackbar.openSnackBar('Xoá người dùng thất bại', 'danger', 2000);
           }
         });
       }
     });
+  }
+
+  transformRole(role: string) {
+    if (role === 'admin') {
+      return 'Quản trị viên';
+    } else if (role === 'manager') {
+      return 'Cán bộ thú y';
+    } else {
+      return 'Hộ nông dân';
+    }
   }
 }
