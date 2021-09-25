@@ -10,7 +10,6 @@ import { AuthService } from '../core/services';
 export class MainComponent implements OnInit {
   currentUser: any = null;
   isExpanded: boolean = true;
-  mobileQuery!: MediaQueryList;
   fillerNav = [
     {
       path: 'admin/feeding-diary',
@@ -61,6 +60,5 @@ export class MainComponent implements OnInit {
   logout(): void {
     // this.authService.revokeToken();
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
 }

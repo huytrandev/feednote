@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MustMatch, Vietnamese } from 'src/app/core';
+import { Area, MustMatch, User, Vietnamese } from 'src/app/core';
 import {
   SnackbarService,
   AuthService,
@@ -21,10 +21,10 @@ export class MainComponent implements OnInit {
   loading: boolean = true;
   updateInfoForm: FormGroup;
   changePasswordForm: FormGroup;
-  user: any;
+  user!: User;
   userId: string;
-  areas: any = [];
-  currentUser: any;
+  areas: Area[] = [];
+  currentUser!: User;
   submitted: boolean = false;
   showPassword: boolean = false;
 
@@ -61,28 +61,14 @@ export class MainComponent implements OnInit {
 
   getUser(): void {
     this.userService
-      .getUserInfo()
+      .getPersonalInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const { data, status } = res;
         if (status === false) {
           return this.authService.logout();
         }
-        const createdAt = new Date(data.createdAt);
-        let roleName = '';
-        switch (data.role) {
-          case 'admin':
-            roleName = 'Quản trị viên';
-            break;
-          case 'manager':
-            roleName = 'Cán bộ thú y';
-            break;
-          case 'breeder':
-            roleName = 'Nông dân';
-            break;
-        }
-
-        this.user = { ...data, createdAt, roleName };
+        this.user = data;
         this.setValueForForm({ ...this.user });
         this.loading = false;
       });
@@ -134,7 +120,7 @@ export class MainComponent implements OnInit {
 
     this.submitted = true;
     this.userService
-      .updateUserInfo(this.updateInfoForm.value)
+      .updatePersonalInfo(this.updateInfoForm.value)
       .subscribe((data) => {
         const resData = { ...data };
         if (resData.status === true) {
@@ -196,5 +182,22 @@ export class MainComponent implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate([currentUrl]);
+  }
+
+  transformDate(date: number) {
+    return new Date(date);
+  }
+
+  transformRoleName(role: string) {
+    switch (role) {
+      case 'admin':
+        return 'Quản trị viên';
+      case 'manager':
+        return 'Cán bộ thú y';
+      case 'breeder':
+        return 'Hộ nông dân';
+      default:
+        return 'Hộ nông dân';
+    }
   }
 }

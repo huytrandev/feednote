@@ -1,0 +1,26 @@
+@import "../../../../variable";
+
+.wrapper {
+  padding: 20px 35px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  width: 60%;
+  min-width: 500px;
+}
+.row {
+  margin-bottom: 25px;
+}
+.left,
+.right {
+  display: inline-flex;
+  align-items: center;
+}
+.left {
+  width: 180px;
+}
+.right {
+  width: calc(100% - 180px);
+}
+.button-option {
+  background: #f7f7f7 !important;
+}

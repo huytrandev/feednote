@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { AreaService, SnackbarService, User, UserService } from 'src/app/core';
 import { DialogComponent } from 'src/app/shared';
 
@@ -14,25 +13,26 @@ import { DialogComponent } from 'src/app/shared';
 })
 export class DetailComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
-  breeder!: User;
+  user!: User;
   loading: boolean = true;
   error: boolean = false;
-  breederId!: string;
+  userId: string = '';
   area$!: Observable<any>;
+  manager$!: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
     private areaService: AreaService,
-    public dialog: MatDialog,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
+    public dialog: MatDialog
   ) {
-    this.breederId = this.route.snapshot.paramMap.get('id')!;
+    this.userId = this.route.snapshot.paramMap.get('id')!;
   }
 
   ngOnInit(): void {
-    this.getBreeder();
+    this.getUser();
   }
 
   ngOnDestroy(): void {
@@ -40,10 +40,10 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  getBreeder() {
+  getUser() {
     this.loading = true;
     this.userService
-      .getBreederById(this.breederId)
+      .getUserById(this.userId)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const { status } = res;
@@ -55,18 +55,15 @@ export class DetailComponent implements OnInit, OnDestroy {
 
         let data = { ...res.data };
         this.area$ = this.areaService.getById(data.idArea);
-        this.breeder = data;
+        this.manager$ = this.userService.getUserById(data.idManager);
+        this.user = data;
         this.loading = false;
       });
   }
 
-  transformDate(date: number) {
-    return new Date(date);
-  }
-
   onDelete() {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
       disableClose: true,
     });
 
@@ -74,20 +71,37 @@ export class DetailComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.loading = true;
-        this.userService.deleteBreeder(this.breederId).subscribe((res) => {
+        this.userService.deleteUser(this.userId).subscribe((res) => {
           const { status } = res;
           if (status === true) {
             this.snackbar.openSnackBar(
-              'Xoá thức ăn thành công',
+              'Xoá người dùng thành công',
               'success',
               2000
             );
             this.router.navigate(['/breeders']);
           } else {
-            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+            this.snackbar.openSnackBar('Xoá người dùng thất bại', 'danger', 2000);
           }
         });
       }
     });
+  }
+
+  transformDate(date: number) {
+    return new Date(date);
+  }
+
+  transformRoleName(role: string) {
+    switch (role) {
+      case 'admin':
+        return 'Quản trị viên';
+      case 'manager':
+        return 'Cán bộ thú y';
+      case 'breeder':
+        return 'Hộ nông dân';
+      default:
+        return 'Hộ nông dân';
+    }
   }
 }

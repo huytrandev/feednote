@@ -7,7 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { map } from 'rxjs/operators';
-
 import {
   Area,
   AreaService,
@@ -18,7 +17,7 @@ import {
 } from 'src/app/core';
 
 @Component({
-  selector: 'app-create-update',
+  selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
@@ -27,9 +26,10 @@ export class CreateComponent implements OnInit {
   form!: FormGroup;
   loading: boolean = false;
   submitted: boolean = false;
-  breeder!: User;
+  user!: User;
   areas: Area[] = [];
-  breeders: User[] = [];
+  users: User[] = [];
+  managers: User[]= []
   showPassword: boolean = false;
 
   constructor(
@@ -39,14 +39,15 @@ export class CreateComponent implements OnInit {
     private areaService: AreaService
   ) {}
 
-  get f() {
-    return this.form.controls;
-  }
-
   ngOnInit(): void {
     this.getAreas();
-    this.getBreeders();
+    // this.getManagers();
+    this.getUsers();
     this.buildForm();
+  }
+
+  get f() {
+    return this.form.controls;
   }
 
   getAreas() {
@@ -62,24 +63,37 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  getBreeders() {
+  getUsers() {
     this.loading = true;
-    this.userService.getAllBreeders().subscribe((res) => {
+    this.userService.getAllUsers().subscribe((res) => {
       const { status } = res;
       if (!status) {
         return;
       }
       const { data } = res;
-      this.breeders = data.items;
+      this.users = data.items;
       this.loading = false;
     });
   }
 
+  getManagers() {
+    this.loading = true;
+    this.userService.getAllManager().subscribe(res => {
+      const { status } = res;
+      if (!status) {
+        return;
+      }
+      const { data } = res;
+      this.managers = data.items;
+      this.loading = false;
+    })
+  }
+
   validateUsernameExist(control: AbstractControl) {
-    return this.userService.getAllBreeders().pipe(
+    return this.userService.getAllUsers().pipe(
       map((res) => {
-        const breeders = res.data.items;
-        if (breeders.some((b: any) => b.username === control.value)) {
+        const users = res.data.items;
+        if (users.some((b: any) => b.username === control.value)) {
           return { usernameExisted: true };
         } else {
           return null;
@@ -101,13 +115,8 @@ export class CreateComponent implements OnInit {
           this.validateUsernameExist.bind(this),
         ],
         password: ['', [Validators.required, Validators.minLength(5)]],
-        name: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(5),
-          ],
-        ],
+        isManager: [false],
+        name: ['', [Validators.required, Validators.minLength(5)]],
         phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
         email: ['', [Validators.email]],
         idArea: ['', [Validators.required]],
@@ -121,10 +130,15 @@ export class CreateComponent implements OnInit {
   onSubmit() {
     if (!this.form.valid) return;
 
-    const successNotification = 'Tạo mới hộ dân thành công';
-    const failureNotification = 'Tạo mới hộ dân thất bại';
+    const { isManager } = this.form.value;
+    const role = isManager ? 'manager' : 'breeder';
+    console.log({ ...this.form.value, role });
+    return;
+
+    const successNotification = 'Tạo mới người dùng thành công';
+    const failureNotification = 'Tạo mới người dùng thất bại';
     this.submitted = true;
-    this.userService.createBreeder(this.form.value).subscribe((res) => {
+    this.userService.createUser(this.form.value).subscribe((res) => {
       const { status } = res;
       if (!status) {
         this.snackbarService.openSnackBar(failureNotification, 'danger', 2000);

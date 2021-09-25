@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RoleGuard } from '../core';
 
 import { FeedingDiaryComponent } from './feeding-diary/feeding-diary.component';
 import { StatisticComponent } from './statistic/statistic.component';
@@ -22,6 +23,15 @@ const routes: Routes = [
     path: '',
     redirectTo: 'feeding-diary',
     pathMatch: 'full',
+  },
+  {
+    path: 'users',
+    canActivate: [RoleGuard],
+    data: {
+      expectedRole: ['admin'],
+    },
+    loadChildren: () =>
+      import('./users/users.module').then((m) => m.UsersModule),
   },
 ];
 

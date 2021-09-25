@@ -7,7 +7,6 @@ import {
   AuthService,
   CowBreedService,
   FoodService,
-  PeriodService,
   SnackbarService,
   UserService,
 } from './services';
@@ -29,7 +28,6 @@ import {
     AuthService,
     CowBreedService,
     FoodService,
-    PeriodService,
     SnackbarService,
     UserService,
   ],
