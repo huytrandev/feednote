@@ -1,7 +1,7 @@
 <app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
-  <div class="title">
-    <h2>Thêm mới người dùng</h2>
+  <div class="app-title">
+    <h2>{{ !!user ? 'Cập nhật' : 'Tạo mới' }} người dùng</h2>
   </div>
   <div class="content">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -14,7 +14,6 @@
         <input
           type="text"
           matInput
-          placeholder="Ví dụ: Nguyễn Văn A"
           maxlength="100"
           autocomplete="name"
           formControlName="name"
@@ -31,25 +30,8 @@
         >
       </mat-form-field>
 
-      <div class="row" style="margin-bottom: 35px;">
-        <mat-checkbox color="primary" formControlName="isManager">Cán bộ thú y</mat-checkbox>
-      </div>
-
       <mat-form-field
-        *ngIf="!f.isManager.value"
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
-        <mat-label>Cán bộ phụ trách <span class="color-red">(*)</span></mat-label>
-        <mat-select>
-          <mat-option *ngFor="let manager of users" [value]="manager._id">
-            {{ manager.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field
+        *ngIf="form.get('username')"
         appearance="outline"
         style="width: 100%"
         floatLabel="always"
@@ -58,7 +40,6 @@
         <input
           type="text"
           matInput
-          placeholder="Ví dụ: nguyenvana"
           maxlength="30"
           autocomplete="username"
           formControlName="username"
@@ -115,6 +96,33 @@
         >
       </mat-form-field>
 
+      <div class="row" style="margin-bottom: 35px">
+        <mat-checkbox color="primary" formControlName="isManager"
+          >Cán bộ thú y</mat-checkbox
+        >
+      </div>
+
+      <mat-form-field
+        *ngIf="!f.isManager.value"
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label
+          >Cán bộ phụ trách <span class="color-red">(*)</span></mat-label
+        >
+        <mat-select formControlName="idManager">
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let manager of managers" [value]="manager._id">
+            {{ manager.name }}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="f.idManager.errors?.required"
+          >Vui lòng chọn cán bộ phụ trách.</mat-error
+        >
+      </mat-form-field>
+
       <mat-form-field
         appearance="outline"
         style="width: 100%"
@@ -124,7 +132,6 @@
         <input
           type="text"
           matInput
-          placeholder="Ví dụ: 0987321123"
           maxlength="12"
           autocomplete="tel"
           formControlName="phone"
@@ -144,7 +151,6 @@
         <input
           type="email"
           matInput
-          placeholder="Ví dụ: nguyenvana123@gmail.com"
           maxlength="50"
           autocomplete="email"
           formControlName="email"
@@ -162,6 +168,7 @@
       >
         <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
         <mat-select formControlName="idArea">
+          <mat-option>--</mat-option>
           <mat-option *ngFor="let area of areas" [value]="area._id">
             {{ area.name }}
           </mat-option>
@@ -178,7 +185,7 @@
           [buttonType]="'submit'"
           [disabledCondition]="!form.valid || !form.dirty || submitted"
           [customClasses]="['app-button-brown']"
-          [buttonContent]="'Tạo mới'"
+          [buttonContent]="!!user ? 'Cập nhật' : 'Tạo mới'"
           [showSpinner]="submitted"
         ></app-button>
 

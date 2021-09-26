@@ -5,7 +5,7 @@ import { environment as env } from 'src/environments/environment';
 import { FilterDto } from '../models';
 import { AuthService } from './auth.service';
 
-import { User } from '..';
+import { User } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +43,7 @@ export class UserService {
   }
 
   createUser(user: User) {
-    return this.http.post<any>(`${env.apiUrl}/api/admin/user/`, user, {
+    return this.http.post<any>(`${env.apiUrl}/api/admin/user`, user, {
       headers: this.headers,
     });
   }
@@ -104,13 +104,17 @@ export class UserService {
 
   // Manager
   getAllManager() {
-    const query = JSON.stringify({
-      role: 'manager',
-    });
+    const params = new HttpParams().set(
+      'filter',
+      JSON.stringify({ role: 'manager' })
+    );
 
-    return this.http.get<any>(`${env.apiUrl}/api/user?filter={"role":"manager"}`, {
+    const options = {
       headers: this.headers,
-    });
+      params,
+    };
+
+    return this.http.get<any>(`${env.apiUrl}/api/admin/user`, options);
   }
 
   // Personal

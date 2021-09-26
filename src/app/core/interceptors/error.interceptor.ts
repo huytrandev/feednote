@@ -24,10 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.authService.logout();
         }
         if (err.status === 404) {
-          let currentUrl = this.router.url;
-          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-          this.router.onSameUrlNavigation = 'reload';
-          this.router.navigate([currentUrl]);
+          this.router.navigate(['not-found']);
         }
         const error = err.error.message || err.statusText;
         return throwError(error);

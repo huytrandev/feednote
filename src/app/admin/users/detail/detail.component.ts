@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { AreaService, SnackbarService, User, UserService } from 'src/app/core';
+import { catchError, takeUntil } from 'rxjs/operators';
+import { AreaService, SnackbarService, UserService } from 'src/app/core/services';
+import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -44,7 +45,10 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.userService
       .getUserById(this.userId)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError(_ => this.router.navigate(['not-found']))
+      )
       .subscribe((res) => {
         const { status } = res;
         if (!status) {
@@ -65,6 +69,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '400px',
       disableClose: true,
+      autoFocus: false,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -81,7 +86,11 @@ export class DetailComponent implements OnInit, OnDestroy {
             );
             this.router.navigate(['/breeders']);
           } else {
-            this.snackbar.openSnackBar('Xoá người dùng thất bại', 'danger', 2000);
+            this.snackbar.openSnackBar(
+              'Xoá người dùng thất bại',
+              'danger',
+              2000
+            );
           }
         });
       }

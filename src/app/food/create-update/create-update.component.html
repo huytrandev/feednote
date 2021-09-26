@@ -1,8 +1,8 @@
 <app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <app-scroll-to-top></app-scroll-to-top>
-  <div class="title">
-    <h2>{{ isCreate ? "Thêm mới" : "Chỉnh sửa" }} thức ăn</h2>
+  <div class="app-title">
+    <h2>{{ isCreate ? "Thêm mới" : "Cập nhật" }} thức ăn</h2>
   </div>
 
   <div class="content">
@@ -73,18 +73,17 @@
         >
           <ng-container [formGroupName]="i">
             <input type="hidden" formControlName="idIngredient" />
-            <div class="row align-items-center ingredient-list-item-header">
-              <span class="title">Thành phần thứ {{ i + 1 }}</span>
+            <div class="d-flex align-items-center justify-content-between ingredient-list-item-header">
+              <h4>Thành phần thứ {{ i + 1 }}</h4>
               <app-button-icon
                 [customClasses]="['color-red']"
-                class="ingredient-list-item-remove"
                 matTooltip="Xoá"
                 (click)="removeIngredient(i, _ingredient.value, $event)"
                 [iconName]="'highlight_off'"
               ></app-button-icon>
             </div>
 
-            <div class="row justify-content-center">
+            <div class="d-flex justify-content-center">
               <mat-form-field
                 appearance="outline"
                 style="width: 90%"
@@ -122,7 +121,7 @@
               </mat-form-field>
             </div>
 
-            <div class="row justify-content-center">
+            <div class="d-flex justify-content-center">
               <mat-form-field
                 appearance="outline"
                 style="width: 90%"
@@ -169,7 +168,7 @@
 
         <app-button
           [customClasses]="['app-button-grey']"
-          [buttonType]="'submit'"
+          [buttonType]="'button'"
           [buttonContent]="'Huỷ bỏ'"
           (click)="onReset()"
         ></app-button>

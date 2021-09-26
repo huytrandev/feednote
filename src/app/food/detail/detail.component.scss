@@ -1,17 +1,12 @@
 @import "../../../variable";
 
 .wrapper {
-  padding: 20px 15px;
+  padding: 30px;
   margin: 0 auto;
   margin-bottom: 30px;
   width: 60%;
   min-width: 500px;
 }
-
-.title {
-  margin-bottom: 15px;
-}
-
 .row {
   margin-bottom: 20px;
 }
@@ -49,16 +44,11 @@
     &-header {
       height: 50px;
       border-bottom: 1px solid #d9d9d9;
-      background-color: #f5f5f5;
-      margin-bottom: 20px;
       border-top-left-radius: $border-radius;
       border-top-right-radius: $border-radius;
+      background-color: #f5f5f5;
+      margin-bottom: 20px;
+      padding: 0 15px;
     }
   }
-}
-
-.app-title {
-  font-weight: 500;
-  color: #333;
-  margin-left: 10px;
 }

@@ -27,7 +27,7 @@ h1.app-name {
   flex: 1 0 auto;
 }
 mat-toolbar .nav-icon {
-  transition: all 300ms ease;
+  transition: all 200ms ease;
   &:hover {
     background: #f1f1f1;
   }
@@ -37,7 +37,7 @@ mat-toolbar .avatar {
   align-items: center;
   padding: 5px 7px 5px 5px;
   border-radius: 30px;
-  transition: all 300ms ease;
+  transition: all 200ms ease;
   cursor: pointer;
 
   &:hover {
@@ -99,10 +99,10 @@ mat-sidenav-content {
 mat-nav-list {
   margin-left: 15px;
   margin-right: 15px;
-  transition: all 300ms ease;
+  transition: all 200ms ease;
 }
 mat-nav-list mat-list-item {
-  transition: all 300ms ease;
+  transition: all 200ms ease;
   border-radius: $border-radius;
   font-size: 14px;
 }

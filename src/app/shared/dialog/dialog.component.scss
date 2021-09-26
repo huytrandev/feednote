@@ -4,6 +4,10 @@
   display: inline-flex;
   justify-content: flex-end;
   margin-top: 20px;
+
+  & :not(:last-child) {
+    margin-right: 20px;
+  }
 }
 .dialog-title {
   display: inline-flex;

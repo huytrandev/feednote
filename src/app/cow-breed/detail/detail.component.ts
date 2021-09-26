@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CowBreedService, SnackbarService } from 'src/app/core';
+import { CowBreedService, SnackbarService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -61,8 +61,9 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   onDelete() {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
       disableClose: true,
+      autoFocus: false,
     });
 
     dialogRef.afterClosed().subscribe((result) => {

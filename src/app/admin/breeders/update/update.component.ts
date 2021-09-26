@@ -6,8 +6,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
-import { UserService, AreaService, SnackbarService } from 'src/app/core';
+import { UserService, AreaService, SnackbarService } from 'src/app/core/services';
 
 @Component({
   selector: 'app-update',
@@ -15,6 +17,7 @@ import { UserService, AreaService, SnackbarService } from 'src/app/core';
   styleUrls: ['./update.component.scss'],
 })
 export class UpdateComponent implements OnInit {
+  protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   form!: FormGroup;
   breederId!: string;
@@ -47,32 +50,44 @@ export class UpdateComponent implements OnInit {
 
   getAreas() {
     this.loading = true;
-    this.areaService.getAll().subscribe((res) => {
-      const { status } = res;
-      if (!status) {
-        return;
-      }
-      const { data } = res;
-      this.areas = data.items;
-      this.loading = false;
-    });
+    this.areaService
+      .getAll()
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
+      .subscribe((res) => {
+        const { status } = res;
+        if (!status) {
+          return;
+        }
+        const { data } = res;
+        this.areas = data.items;
+        this.loading = false;
+      });
   }
 
   getBreeder() {
     this.loading = true;
-    this.userService.getBreederById(this.breederId).subscribe((res) => {
-      const { status } = res;
-      if (!status) {
-        console.log(status);
+    this.userService
+      .getBreederById(this.breederId)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
+      .subscribe((res) => {
+        const { status } = res;
+        if (!status) {
+          console.log(status);
+          this.loading = false;
+          this.router.navigate(['/not-found']);
+          return;
+        }
+        const { data } = res;
+        this.breeder = data;
+        this.setValueForForm(this.breeder);
         this.loading = false;
-        this.router.navigate(['/not-found']);
-        return;
-      }
-      const { data } = res;
-      this.breeder = data;
-      this.setValueForForm(this.breeder);
-      this.loading = false;
-    });
+      });
   }
 
   buildForm(): void {

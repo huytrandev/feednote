@@ -5,12 +5,13 @@
     <h2>Không thể tìm thấy giống bò</h2>
   </div>
   <div *ngIf="!error">
-    <div class="row align-items-center justify-content-between">
-      <h2 class="" style="margin: 0">Chi tiết</h2>
-      <app-button-icon
+    <div class="d-flex align-items-center justify-content-between app-title">
+      <h2>Chi tiết</h2>
+      <app-button
         [matMenuTriggerFor]="optionsPanel"
         [iconName]="'more_horiz'"
-      ></app-button-icon>
+        [customClasses]="['app-button-option']"
+      ></app-button>
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
         <app-menu-item
@@ -27,7 +28,7 @@
       </mat-menu>
     </div>
     <div class="content">
-      <div class="row">
+      <div class="d-flex m-bottom-20">
         <div class="left">
           <span>Tên giống bò</span>
         </div>
@@ -36,7 +37,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="d-flex m-bottom-20">
         <div class="left">
           <span>Thời gian nuôi</span>
         </div>
@@ -50,12 +51,12 @@
           class="period-list-item"
           *ngFor="let period of cowBreed.periods; index as i"
         >
-          <div class="row align-items-center period-list-item-header">
-            <span class="app-title">Giai đoạn {{ i + 1 }}</span>
+          <div class="d-flex align-items-center period-list-item-header">
+            <h4>Giai đoạn {{ i + 1 }}</h4>
           </div>
           <div class="period-list-item-content">
             <div style="width: 85%; margin: 0 auto">
-              <div class="row justify-content-center">
+              <div class="d-flex justify-content-center m-bottom-20">
                 <div class="left">
                   <span>Tên giai đoạn</span>
                 </div>
@@ -66,7 +67,7 @@
             </div>
 
             <div style="width: 85%; margin: 0 auto">
-              <div class="row justify-content-center">
+              <div class="d-flex justify-content-center m-bottom-20">
                 <div class="left">
                   <span>Số seri</span>
                 </div>
@@ -77,7 +78,7 @@
             </div>
 
             <div style="width: 85%; margin: 0 auto">
-              <div class="row justify-content-center">
+              <div class="d-flex justify-content-center m-bottom-20">
                 <div class="left">
                   <span>Ngày bắt đầu</span>
                 </div>
@@ -88,7 +89,7 @@
             </div>
 
             <div style="width: 85%; margin: 0 auto">
-              <div class="row justify-content-center">
+              <div class="d-flex justify-content-center m-bottom-20">
                 <div class="left">
                   <span>Ngày kết thúc</span>
                 </div>
@@ -99,7 +100,7 @@
             </div>
 
             <div style="width: 85%; margin: 0 auto">
-              <div class="row justify-content-center">
+              <div class="d-flex justify-content-center m-bottom-20">
                 <div class="left">
                   <span>Cân nặng</span>
                 </div>

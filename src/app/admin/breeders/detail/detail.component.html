@@ -5,12 +5,15 @@
     <h2>Không thể tìm thấy hộ dân</h2>
   </div>
   <div *ngIf="!error">
-    <div class="row align-items-center justify-content-between">
-      <h2 class="" style="margin: 0">Chi tiết</h2>
-      <app-button-icon
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="app-title">
+        <h2>Chi tiết</h2>
+      </div>
+      <app-button
         [matMenuTriggerFor]="optionsPanel"
         [iconName]="'more_horiz'"
-      ></app-button-icon>
+        [customClasses]="['app-button-option']"
+      ></app-button>
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
         <app-menu-item
@@ -27,7 +30,7 @@
       </mat-menu>
     </div>
     <div class="content">
-      <div class="row">
+      <div class="d-flex m-bottom-20">
         <div class="left">
           <span>Tên hộ dân</span>
         </div>
@@ -36,7 +39,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="d-flex m-bottom-20">
         <div class="left">
           <span>Email</span>
         </div>
@@ -47,7 +50,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="d-flex m-bottom-20">
         <div class="left">
           <span>Số điện thoại</span>
         </div>
@@ -58,7 +61,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="d-flex m-bottom-20">
         <div class="left">
           <span>Khu vực</span>
         </div>
@@ -79,7 +82,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="d-flex m-bottom-20">
         <div class="left">
           <span>Tham gia vào</span>
         </div>
