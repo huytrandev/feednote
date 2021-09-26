@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 
-import { AreaService, SnackbarService, User, UserService } from 'src/app/core';
+import { AreaService, SnackbarService, UserService } from 'src/app/core/services';
+import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -44,7 +45,10 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.userService
       .getBreederById(this.breederId)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
       .subscribe((res) => {
         const { status } = res;
         if (!status) {

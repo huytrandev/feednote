@@ -3,9 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { AuthService, FilterDto, SnackbarService, User, UserService } from 'src/app/core';
+import { catchError, takeUntil } from 'rxjs/operators';
+import { AuthService, SnackbarService, UserService } from 'src/app/core/services';
+import { User, FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -34,6 +36,7 @@ export class MainComponent implements OnInit, OnDestroy {
   currentUser!: any;
 
   constructor(
+    private router: Router,
     private userService: UserService,
     public dialog: MatDialog,
     private snackbar: SnackbarService,
@@ -65,7 +68,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.userService
       .getAllUsers(this.paramGetUsers)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
       .subscribe((res) => {
         const { status, data } = res;
         if (!status) {
@@ -121,8 +127,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   delete(element: any) {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
       disableClose: true,
+      autoFocus: false,
     });
 
     const { _id } = element;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -8,12 +8,14 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 import {
   AreaService,
   FoodService,
   SnackbarService,
-  Vietnamese,
-} from 'src/app/core';
+} from 'src/app/core/services';
+import { Vietnamese } from 'src/app/core/validations';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -21,7 +23,8 @@ import { DialogComponent } from 'src/app/shared';
   templateUrl: './create-update.component.html',
   styleUrls: ['./create-update.component.scss'],
 })
-export class CreateUpdateComponent implements OnInit {
+export class CreateUpdateComponent implements OnInit, OnDestroy {
+  protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   form!: FormGroup;
   isAddFood: boolean = false;
@@ -56,17 +59,28 @@ export class CreateUpdateComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   getAreas() {
     this.loading = true;
-    this.areaService.getAll().subscribe((res) => {
-      const { status } = res;
-      if (!status) {
-        return;
-      }
-      const { data } = res;
-      this.areas = data.items;
-      this.loading = false;
-    });
+    this.areaService
+      .getAll()
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
+      .subscribe((res) => {
+        const { status } = res;
+        if (!status) {
+          return;
+        }
+        const { data } = res;
+        this.areas = data.items;
+        this.loading = false;
+      });
   }
 
   getCowBreed(): void {

@@ -18,6 +18,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 !important;
+}
 mat-sidenav-content {
   padding: 10px 30px;
 }
@@ -172,6 +180,10 @@ mat-form-field {
   box-shadow: 0 0 7px rgb(0 0 0 / 15%) !important;
 }
 
+.app-title {
+  margin-bottom: 25px;
+}
+
 .green-snackbar {
   background: $light-green;
   color: $text-green;
@@ -192,9 +204,16 @@ mat-form-field {
   font-size: 1.35rem;
 }
 
-.row {
-  display: flex;
-  width: 100%;
+.d {
+  &-flex {
+    display: flex;
+  }
+  &-block {
+    display: block;
+  }
+  &-inline-flex {
+    display: inline-flex;
+  }
 }
 
 .justify-content {
@@ -220,6 +239,156 @@ mat-form-field {
 .align-items {
   &-center {
     align-items: center;
+  }
+}
+
+.m {
+  &-10 {
+    margin: 10px;
+  }
+  &-15 {
+    margin: 15px;
+  }
+  &-20 {
+    margin: 20px;
+  }
+  &-25 {
+    margin: 25px;
+  }
+
+  &-bottom {
+    &-10 {
+      margin-bottom: 10px;
+    }
+    &-15 {
+      margin-bottom: 15px;
+    }
+    &-20 {
+      margin-bottom: 20px;
+    }
+    &-25 {
+      margin-bottom: 25px;
+    }
+  }
+
+  &-top {
+    &-10 {
+      margin-top: 10px;
+    }
+    &-15 {
+      margin-top: 15px;
+    }
+    &-20 {
+      margin-top: 20px;
+    }
+    &-25 {
+      margin-top: 25px;
+    }
+  }
+
+  &-left {
+    &-10 {
+      margin-left: 10px;
+    }
+    &-15 {
+      margin-left: 15px;
+    }
+    &-20 {
+      margin-left: 20px;
+    }
+    &-25 {
+      margin-left: 25px;
+    }
+  }
+
+  &-right {
+    &-10 {
+      margin-right: 10px;
+    }
+    &-15 {
+      margin-right: 15px;
+    }
+    &-20 {
+      margin-right: 20px;
+    }
+    &-25 {
+      margin-right: 25px;
+    }
+  }
+}
+
+.p {
+  &-10 {
+    padding: 10px;
+  }
+  &-15 {
+    padding: 15px;
+  }
+  &-20 {
+    padding: 20px;
+  }
+  &-25 {
+    padding: 25px;
+  }
+
+  &-bottom {
+    &-10 {
+      padding-bottom: 10px;
+    }
+    &-15 {
+      padding-bottom: 15px;
+    }
+    &-20 {
+      padding-bottom: 20px;
+    }
+    &-25 {
+      padding-bottom: 25px;
+    }
+  }
+
+  &-top {
+    &-10 {
+      padding-top: 10px;
+    }
+    &-15 {
+      padding-top: 15px;
+    }
+    &-20 {
+      padding-top: 20px;
+    }
+    &-25 {
+      padding-top: 25px;
+    }
+  }
+
+  &-left {
+    &-10 {
+      padding-left: 10px;
+    }
+    &-15 {
+      padding-left: 15px;
+    }
+    &-20 {
+      padding-left: 20px;
+    }
+    &-25 {
+      padding-left: 25px;
+    }
+  }
+
+  &-right {
+    &-10 {
+      padding-right: 10px;
+    }
+    &-15 {
+      padding-right: 15px;
+    }
+    &-20 {
+      padding-right: 20px;
+    }
+    &-25 {
+      padding-right: 25px;
+    }
   }
 }
 

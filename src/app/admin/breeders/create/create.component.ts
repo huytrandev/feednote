@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -6,23 +6,25 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { catchError, map, takeUntil } from 'rxjs/operators';
 
 import {
-  Area,
   AreaService,
   SnackbarService,
-  User,
   UserService,
-  Vietnamese,
-} from 'src/app/core';
+} from 'src/app/core/services';
+import { Area, User } from 'src/app/core/models';
+import { Vietnamese } from 'src/app/core/validations';
 
 @Component({
   selector: 'app-create-update',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, OnDestroy {
+  protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   form!: FormGroup;
   loading: boolean = false;
@@ -34,6 +36,7 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private snackbarService: SnackbarService,
     private userService: UserService,
     private areaService: AreaService
@@ -49,30 +52,47 @@ export class CreateComponent implements OnInit {
     this.buildForm();
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   getAreas() {
     this.loading = true;
-    this.areaService.getAll().subscribe((res) => {
-      const { status } = res;
-      if (!status) {
-        return;
-      }
-      const { data } = res;
-      this.areas = data.items;
-      this.loading = false;
-    });
+    this.areaService
+      .getAll()
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
+      .subscribe((res) => {
+        const { status } = res;
+        if (!status) {
+          return;
+        }
+        const { data } = res;
+        this.areas = data.items;
+        this.loading = false;
+      });
   }
 
   getBreeders() {
     this.loading = true;
-    this.userService.getAllBreeders().subscribe((res) => {
-      const { status } = res;
-      if (!status) {
-        return;
-      }
-      const { data } = res;
-      this.breeders = data.items;
-      this.loading = false;
-    });
+    this.userService
+      .getAllBreeders()
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
+      .subscribe((res) => {
+        const { status } = res;
+        if (!status) {
+          return;
+        }
+        const { data } = res;
+        this.breeders = data.items;
+        this.loading = false;
+      });
   }
 
   validateUsernameExist(control: AbstractControl) {
@@ -84,7 +104,9 @@ export class CreateComponent implements OnInit {
         } else {
           return null;
         }
-      })
+      }),
+      takeUntil(this.ngUnsubscribe),
+      catchError((_) => this.router.navigate(['not-found']))
     );
   }
 
@@ -101,13 +123,7 @@ export class CreateComponent implements OnInit {
           this.validateUsernameExist.bind(this),
         ],
         password: ['', [Validators.required, Validators.minLength(5)]],
-        name: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(5),
-          ],
-        ],
+        name: ['', [Validators.required, Validators.minLength(5)]],
         phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
         email: ['', [Validators.email]],
         idArea: ['', [Validators.required]],

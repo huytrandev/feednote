@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   OnDestroy,
   OnInit,
@@ -12,7 +11,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CowBreedService, SnackbarService, FilterDto } from 'src/app/core';
+import { CowBreedService, SnackbarService } from 'src/app/core/services';
+import { FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -115,8 +115,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   onDelete(element: any): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
-      disableClose: true
+      width: '400px',
+      disableClose: true,
+      autoFocus: false,
     });
 
     const { _id } = element;

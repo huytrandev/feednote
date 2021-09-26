@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RoleGuard } from '../core';
+import { RoleGuard } from '../core/guards';
 
 import { FeedingDiaryComponent } from './feeding-diary/feeding-diary.component';
 import { StatisticComponent } from './statistic/statistic.component';
@@ -12,6 +12,10 @@ const routes: Routes = [
   },
   {
     path: 'breeders',
+    canActivate: [RoleGuard],
+    data: {
+      expectedRole: ['manager'],
+    },
     loadChildren: () =>
       import('./breeders/breeders.module').then((m) => m.BreedersModule),
   },

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { FoodService, SnackbarService } from 'src/app/core';
+import { catchError, takeUntil } from 'rxjs/operators';
+import { FoodService, SnackbarService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -11,7 +11,7 @@ import { DialogComponent } from 'src/app/shared';
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss'],
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   food: any = {};
   loading: boolean = true;
@@ -41,7 +41,10 @@ export class DetailComponent implements OnInit {
   getCowBreed(): void {
     this.foodService
       .getById(this.foodIdParam)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
       .subscribe((response) => {
         const { status } = response;
         if (!status) {
@@ -57,8 +60,9 @@ export class DetailComponent implements OnInit {
 
   onDelete() {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
       disableClose: true,
+      autoFocus: false,
     });
 
     dialogRef.afterClosed().subscribe((result) => {

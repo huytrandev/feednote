@@ -1,28 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Area, MustMatch, User, Vietnamese } from 'src/app/core';
+import { catchError, takeUntil } from 'rxjs/operators';
 import {
   SnackbarService,
   AuthService,
   AreaService,
   UserService,
 } from 'src/app/core/services';
+import { User, Area } from 'src/app/core/models';
+import { Vietnamese, MustMatch } from 'src/app/core/validations';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   loading: boolean = true;
   updateInfoForm: FormGroup;
   changePasswordForm: FormGroup;
   user!: User;
-  userId: string;
+  userId!: string;
   areas: Area[] = [];
   currentUser!: User;
   submitted: boolean = false;
@@ -62,7 +63,10 @@ export class MainComponent implements OnInit {
   getUser(): void {
     this.userService
       .getPersonalInfo()
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
       .subscribe((res) => {
         const { data, status } = res;
         if (status === false) {
@@ -77,7 +81,10 @@ export class MainComponent implements OnInit {
   getArea() {
     this.areaService
       .getAll()
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
       .subscribe((res) => {
         this.areas = res.data.items;
       });

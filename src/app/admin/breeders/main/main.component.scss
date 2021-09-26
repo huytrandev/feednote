@@ -11,7 +11,7 @@ table {
 }
 
 .table-container {
-  max-height: 450px;
+  max-height: 500px;
   overflow: auto;
 }
 
@@ -36,10 +36,10 @@ tr.app-element-row:not(.app-expanded-row):active {
 }
 
 .mat-column-id {
-  width: 50px !important;
+  width: 70px !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 50px !important;
+  flex: 0 0 70px !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -82,10 +82,10 @@ tr.app-element-row:not(.app-expanded-row):active {
 }
 
 .mat-column-areaName {
-  width: calc(100% - 200px - 69%) !important;
+  width: calc(100% - 220px - 69%) !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 calc(100% - 200px - 69%) !important;
+  flex: 0 0 calc(100% - 220px - 69%) !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

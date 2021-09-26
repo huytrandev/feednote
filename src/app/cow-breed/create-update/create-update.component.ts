@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -12,16 +12,18 @@ import { MatDialog } from '@angular/material/dialog';
 import {
   SnackbarService,
   CowBreedService,
-  LessThan,
-} from 'src/app/core';
+} from 'src/app/core/services';
+import { LessThan } from 'src/app/core/validations';
 import { DialogComponent } from 'src/app/shared';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-create-update',
   templateUrl: './create-update.component.html',
   styleUrls: ['./create-update.component.scss'],
 })
-export class CreateUpdateComponent implements OnInit {
+export class CreateUpdateComponent implements OnInit, OnDestroy {
+  protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   form!: FormGroup;
   isAddPeriod: boolean = false;
@@ -49,6 +51,11 @@ export class CreateUpdateComponent implements OnInit {
     if (!this.isCreate) {
       this.getCowBreed();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   getCowBreed(): void {
@@ -148,7 +155,9 @@ export class CreateUpdateComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
+      disableClose: true,
+      autoFocus: false,
     });
 
     const { _id } = period;
