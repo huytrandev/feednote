@@ -6,13 +6,13 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 
 import {
   AreaService,
-  SnackbarService,
+  CommonService,
   UserService,
 } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
@@ -20,10 +20,10 @@ import { Vietnamese } from 'src/app/core/validations';
 
 @Component({
   selector: 'app-create-update',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss'],
+  templateUrl: './create-update.component.html',
+  styleUrls: ['./create-update.component.scss'],
 })
-export class CreateComponent implements OnInit, OnDestroy {
+export class CreateUpdateComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   form!: FormGroup;
@@ -33,14 +33,18 @@ export class CreateComponent implements OnInit, OnDestroy {
   areas: Area[] = [];
   breeders: User[] = [];
   showPassword: boolean = false;
+  breederId!: string;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private snackbarService: SnackbarService,
+    private route: ActivatedRoute,
     private userService: UserService,
-    private areaService: AreaService
-  ) {}
+    private areaService: AreaService,
+    private commonService: CommonService
+  ) {
+    this.breederId = this.route.snapshot.paramMap.get('id')!;
+  }
 
   get f() {
     return this.form.controls;
@@ -50,6 +54,10 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.getAreas();
     this.getBreeders();
     this.buildForm();
+    if (!!this.breederId) {
+      this.removeFormFields();
+      this.getBreeder();
+    }
   }
 
   ngOnDestroy(): void {
@@ -95,6 +103,26 @@ export class CreateComponent implements OnInit, OnDestroy {
       });
   }
 
+  getBreeder() {
+    this.loading = true;
+    this.userService
+      .getBreederById(this.breederId)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
+      .subscribe((res) => {
+        const { status } = res;
+        if (!status) {
+          return;
+        }
+        const { data } = res;
+        this.breeder = data;
+        this.setValueForForm({ ...this.breeder });
+        this.loading = false;
+      });
+  }
+
   validateUsernameExist(control: AbstractControl) {
     return this.userService.getAllBreeders().pipe(
       map((res) => {
@@ -134,60 +162,60 @@ export class CreateComponent implements OnInit, OnDestroy {
     );
   }
 
+  removeFormFields() {
+    this.form.removeControl('username');
+    this.form.removeControl('password');
+  }
+
   onSubmit() {
     if (!this.form.valid) return;
 
-    const successNotification = 'Tạo mới hộ dân thành công';
-    const failureNotification = 'Tạo mới hộ dân thất bại';
+    const successNotification = !this.breederId
+      ? 'Tạo mới hộ dân thành công'
+      : 'Cập nhật hộ dân thành công';
+    const failureNotification = !this.breederId
+      ? 'Tạo mới hộ dân thất bại'
+      : 'Cập nhật hộ dân thất bại';
     this.submitted = true;
-    this.userService.createBreeder(this.form.value).subscribe((res) => {
-      const { status } = res;
-      if (!status) {
-        this.snackbarService.openSnackBar(failureNotification, 'danger', 2000);
-        this.submitted = false;
-        return;
-      }
 
-      this.submitted = false;
-      this.formGroupDirective.resetForm();
-      this.snackbarService.openSnackBar(successNotification, 'success', 2000);
-    });
+    if (!this.breederId) {
+      this.userService.createBreeder(this.form.value).subscribe((res) => {
+        const { status } = res;
+        if (!status) {
+          this.commonService.openAlert(failureNotification, 'danger');
+          this.submitted = false;
+          return;
+        }
+
+        this.submitted = false;
+        this.formGroupDirective.resetForm();
+        this.commonService.openAlert(successNotification, 'success');
+      });
+    } else {
+      this.userService
+        .updateBreeder(this.breederId, this.form.value)
+        .subscribe((res) => {
+          const { status } = res;
+          if (!status) {
+            this.commonService.openAlert(failureNotification, 'danger');
+            this.submitted = false;
+            return;
+          }
+
+          this.submitted = false;
+          this.formGroupDirective.resetForm();
+          this.commonService.openAlert(successNotification, 'success');
+          this.commonService.reloadComponent();
+        });
+    }
   }
 
   onReset() {
-    this.buildForm();
-  }
-
-  generatePassword() {
-    let generatedPassword = '';
-    const passwordLength = 10;
-
-    const numberChars = '0123456789';
-    const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
-    let allChars = numberChars + upperChars + lowerChars;
-    let randPasswordArray = Array(passwordLength);
-    randPasswordArray[0] = numberChars;
-    randPasswordArray[1] = upperChars;
-    randPasswordArray[2] = lowerChars;
-    randPasswordArray = randPasswordArray.fill(allChars, 3);
-    generatedPassword = this.shuffleArray(
-      randPasswordArray.map(function (x) {
-        return x[Math.floor(Math.random() * x.length)];
-      })
-    ).join('');
-
-    this.form.controls['password'].patchValue(generatedPassword);
-  }
-
-  shuffleArray(array: Array<string>) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      let temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
+    if (!this.breederId) {
+      this.buildForm();
+      return;
     }
-    return array;
+    this.setValueForForm(this.breeder);
   }
 
   setValueForForm(breeder: any) {

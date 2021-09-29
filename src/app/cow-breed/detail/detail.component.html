@@ -5,7 +5,7 @@
     <h2>Không thể tìm thấy giống bò</h2>
   </div>
   <div *ngIf="!error">
-    <div class="d-flex align-items-center justify-content-between app-title">
+    <div class="d-flex align-items-center justify-content-between app-title m-bottom-25">
       <h2>Chi tiết</h2>
       <app-button
         [matMenuTriggerFor]="optionsPanel"
@@ -107,6 +107,28 @@
                 <div class="right">
                   <span class="font-weight-bold">{{ period.weight }} kg</span>
                 </div>
+              </div>
+            </div>
+
+            <div style="width: 85%; margin: 0 auto">
+              <div class="d-flex justify-content-center m-bottom-20">
+                <div class="left">
+                  <span>Dinh dưỡng</span>
+                </div>
+                <div class="right">
+                  <span
+                    class="font-weight-bold"
+                    style="cursor: pointer"
+                    (click)="showNutrition = !showNutrition"
+                    >{{showNutrition ? 'Ẩn bớt' : 'Hiển thị'}}</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 85%; margin: 0 auto" *ngIf="showNutrition">
+              <div class="d-flex justify-content-center m-bottom-20">
+                <span>...</span>
               </div>
             </div>
           </div>

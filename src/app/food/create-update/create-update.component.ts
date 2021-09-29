@@ -12,8 +12,8 @@ import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 import {
   AreaService,
+  CommonService,
   FoodService,
-  SnackbarService,
 } from 'src/app/core/services';
 import { Vietnamese } from 'src/app/core/validations';
 import { DialogComponent } from 'src/app/shared';
@@ -27,7 +27,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   form!: FormGroup;
-  isAddFood: boolean = false;
   submitted: boolean = false;
   food: any;
   loading: boolean = false;
@@ -36,15 +35,13 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   foodId!: string;
   areas: any = [];
 
-  units: string[] = ['kg', 'lít'];
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private foodService: FoodService,
     private areaService: AreaService,
-    private snackbarService: SnackbarService,
+    private commonService: CommonService,
     public dialog: MatDialog
   ) {
     this.foodId = this.route.snapshot.paramMap.get('id')!;
@@ -170,7 +167,9 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     const { idIngredient } = ingredient;
 
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      width: '400px',
+      disableClose: true,
+      autoFocus: false,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -181,20 +180,18 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           .subscribe((res) => {
             const { status } = res;
             if (!!status) {
-              this.snackbarService.openSnackBar(
+              this.commonService.openAlert(
                 'Xoá thành phần dinh dưỡng thành công',
-                'success',
-                2000
+                'success'
               );
               this.ingredient.removeAt(index);
             } else {
-              this.snackbarService.openSnackBar(
+              this.commonService.openAlert(
                 'Xoá thành phần dinh dưỡng thất bại',
-                'danger',
-                2000
+                'danger'
               );
             }
-            this.reloadComponent();
+            this.commonService.reloadComponent();
           });
       }
     });
@@ -227,30 +224,18 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
             this.submitted = false;
             this.form.reset();
             this.formGroupDirective.resetForm();
-            this.snackbarService.openSnackBar(
-              failureNotification,
-              'danger',
-              2000
-            );
+            this.commonService.openAlert(failureNotification, 'danger');
             return;
           }
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.snackbarService.openSnackBar(
-            successNotification,
-            'success',
-            2000
-          );
+          this.commonService.openAlert(successNotification, 'success');
         },
         (error: any) => {
           this.submitted = false;
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.snackbarService.openSnackBar(
-            failureNotification,
-            'danger',
-            2000
-          );
+          this.commonService.openAlert(failureNotification, 'danger');
         }
       );
     } else {
@@ -261,41 +246,22 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           if (!status) {
             this.submitted = false;
             this.setValueForForm(this.food);
-            this.snackbarService.openSnackBar(
-              failureNotification,
-              'danger',
-              2000
-            );
+            this.commonService.openAlert(failureNotification, 'danger');
             return;
           }
 
           this.submitted = false;
-          this.reloadComponent();
-          this.snackbarService.openSnackBar(
-            successNotification,
-            'success',
-            2000
-          );
+          this.commonService.reloadComponent();
+          this.commonService.openAlert(successNotification, 'success');
         },
         (error) => {
           this.submitted = false;
           this.submitted = false;
           this.setValueForForm(this.food);
-          this.snackbarService.openSnackBar(
-            failureNotification,
-            'danger',
-            2000
-          );
+          this.commonService.openAlert(failureNotification, 'danger');
         }
       );
     }
-  }
-
-  reloadComponent() {
-    let currentUrl = this.router.url;
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([currentUrl]);
   }
 
   canSubmit(): boolean {

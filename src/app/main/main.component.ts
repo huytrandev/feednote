@@ -17,7 +17,7 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: 'not',
+      path: 'nutrition',
       title: 'Nhu cầu dinh dưỡng',
       icon: 'assets/icons/chemistry.svg',
     },
@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
     },
     {
       path: 'foods',
-      title: 'Nguồn thức ăn',
+      title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
     },
     {
@@ -60,7 +60,7 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: 'not',
+      path: 'nutrition',
       title: 'Nhu cầu dinh dưỡng',
       icon: 'assets/icons/chemistry.svg',
     },
@@ -76,7 +76,7 @@ export class MainComponent implements OnInit {
     },
     {
       path: 'foods',
-      title: 'Nguồn thức ăn',
+      title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
     },
     {

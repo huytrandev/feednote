@@ -5,9 +5,9 @@ import { ErrorInterceptor, JwtInterceptor } from './interceptors';
 import {
   AreaService,
   AuthService,
+  CommonService,
   CowBreedService,
   FoodService,
-  SnackbarService,
   UserService,
 } from './services';
 
@@ -27,8 +27,8 @@ import {
     AreaService,
     AuthService,
     CowBreedService,
+    CommonService,
     FoodService,
-    SnackbarService,
     UserService,
   ],
   declarations: [],

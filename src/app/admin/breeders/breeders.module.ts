@@ -7,15 +7,13 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { SharedModule } from 'src/app/shared';
 import { BreedersRoutingModule } from './breeders-routing.module';
 import { DetailComponent } from './detail/detail.component';
-import { CreateComponent } from './create/create.component';
-import { UpdateComponent } from './update/update.component';
+import { CreateUpdateComponent } from './create-update/create-update.component';
 
 @NgModule({
   declarations: [
     MainComponent,
     DetailComponent,
-    CreateComponent,
-    UpdateComponent
+    CreateUpdateComponent,
   ],
   imports: [
     CommonModule,
@@ -23,7 +21,7 @@ import { UpdateComponent } from './update/update.component';
     SharedModule,
     BreedersRoutingModule,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+  ],
 })
-export class BreedersModule { }
+export class BreedersModule {}

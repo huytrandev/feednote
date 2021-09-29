@@ -74,7 +74,7 @@ mat-form-field {
   text-transform: capitalize;
   height: fit-content;
   text-transform: none !important;
-  line-height: 2.6rem !important;
+  line-height: 2.5rem !important;
   padding: 0 20px !important;
 
   &-brown {
@@ -180,20 +180,23 @@ mat-form-field {
   box-shadow: 0 0 7px rgb(0 0 0 / 15%) !important;
 }
 
-.app-title {
-  margin-bottom: 25px;
-}
+// .app-title {
+//   margin-bottom: 25px;
+// }
 
-.green-snackbar {
-  background: $light-green;
-  color: $text-green;
-  // font-weight: 500;
-}
+.alert {
+  font-weight: 500 !important;
+  &-success {
+    background: $light-green;
+    color: $text-green;
+    // border: 1px solid $text-green;
+  }
 
-.red-snackbar {
-  background: $light-red;
-  color: $text-red;
-  // font-weight: 500;
+  &-failure {
+    background: $light-red;
+    color: $text-red;
+    // border: 1px solid $text-red;
+  }
 }
 
 .app-spacer {

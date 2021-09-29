@@ -1,8 +1,17 @@
 <app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
-  <div class="app-title">
-    <h2>{{ !!user ? 'Cập nhật' : 'Tạo mới' }} người dùng</h2>
+  <div class="d-flex m-bottom-25 align-items-center justify-content-between">
+    <div class="app-title">
+      <h2>{{ !!user ? "Cập nhật" : "Tạo mới" }} người dùng</h2>
+    </div>
+    <app-button
+      matTooltip="Khôi phục mật khẩu"
+      [iconName]="'restart_alt'"
+      [customClasses]="['app-button-option']"
+      (click)="resetPassword()"
+    ></app-button>
   </div>
+
   <div class="content">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field
@@ -60,6 +69,7 @@
       </mat-form-field>
 
       <mat-form-field
+        *ngIf="form.get('password')"
         appearance="outline"
         style="width: 100%"
         floatLabel="always"
@@ -81,11 +91,11 @@
           >{{ showPassword ? "visibility_off" : "visibility" }}</mat-icon
         >
         <mat-icon
+          *ngIf="userId"
           matSuffix
           matTooltip="Tạo mật khẩu"
           class="material-icons-outlined app-icon"
           style="cursor: pointer; margin-left: 5px"
-          (click)="generatePassword()"
           >autorenew</mat-icon
         >
         <mat-error *ngIf="f.password.errors?.required"

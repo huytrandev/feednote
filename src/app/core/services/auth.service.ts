@@ -68,6 +68,19 @@ export class AuthService {
     );
   }
 
+  resetPassword(userId: string) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-session-key': this.currentUserValue.token,
+    });
+
+    return this.http.put<any>(
+      `${env.apiUrl}/api/admin/user/${userId}/resetPassword`,
+      {},
+      { headers }
+    );
+  }
+
   getDecodeAccessToken(token: string) {
     try {
       return jwt_decode(token);

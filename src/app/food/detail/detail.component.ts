@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { FoodService, SnackbarService } from 'src/app/core/services';
+import { CommonService, FoodService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -22,7 +22,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private foodService: FoodService,
-    private snackbar: SnackbarService,
+    private commonService: CommonService,
     public dialog: MatDialog
   ) {
     this.foodIdParam = this.route.snapshot.paramMap.get('id')!;
@@ -72,14 +72,10 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.food.delete(this.foodIdParam).subscribe((res: any) => {
           const { status } = res;
           if (status === true) {
-            this.snackbar.openSnackBar(
-              'Xoá thức ăn thành công',
-              'success',
-              2000
-            );
+            this.commonService.openAlert('Xoá thức ăn thành công', 'success');
             this.router.navigate(['/foods']);
           } else {
-            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+            this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
         });
       }

@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatCommonModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -21,7 +19,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatRippleModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -35,13 +32,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 
+import { ClipboardModule } from '@angular/cdk/clipboard';
+
 const materialModules = [
   MatButtonModule,
-  MatAutocompleteModule,
   MatBadgeModule,
   MatCardModule,
   MatCheckboxModule,
-  MatChipsModule,
   MatCommonModule,
   MatDatepickerModule,
   MatDialogModule,
@@ -57,7 +54,6 @@ const materialModules = [
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatRadioModule,
-  MatRippleModule,
   MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
@@ -68,7 +64,8 @@ const materialModules = [
   MatTableModule,
   MatTabsModule,
   MatTooltipModule,
-  MatToolbarModule
+  MatToolbarModule,
+  ClipboardModule,
 ];
 
 @NgModule({
