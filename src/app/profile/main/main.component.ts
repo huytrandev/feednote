@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 import {
-  SnackbarService,
   AuthService,
   AreaService,
   UserService,
+  CommonService,
 } from 'src/app/core/services';
 import { User, Area } from 'src/app/core/models';
 import { Vietnamese, MustMatch } from 'src/app/core/validations';
@@ -34,7 +34,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private areaService: AreaService,
     private userService: UserService,
     private authService: AuthService,
-    private snackbarService: SnackbarService,
+    private commonService: CommonService,
     private router: Router
   ) {
     this.currentUser = this.authService.currentUserValue;
@@ -131,21 +131,13 @@ export class MainComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         const resData = { ...data };
         if (resData.status === true) {
-          this.snackbarService.openSnackBar(
-            'Cập nhật thành công',
-            'success',
-            2500
-          );
+          this.commonService.openAlert('Cập nhật thành công', 'success');
           this.submitted = false;
           setTimeout(() => {
-            this.reloadComponent();
-          }, 2500);
+            this.commonService.reloadComponent();
+          }, 2000);
         } else {
-          this.snackbarService.openSnackBar(
-            'Cập nhật không thành công',
-            'danger',
-            2500
-          );
+          this.commonService.openAlert('Cập nhật không thành công', 'danger');
           this.resetUserInfo();
         }
       });
@@ -164,31 +156,19 @@ export class MainComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         const resData = { ...data };
         if (resData.status === true) {
-          this.snackbarService.openSnackBar(
+          this.commonService.openAlert(
             'Đổi mật khẩu thành công. Vui lòng đăng nhập lại',
-            'success',
-            2500
+            'success'
           );
           this.submitted = false;
           setTimeout(() => {
             this.authService.logout();
           }, 2500);
         } else {
-          this.snackbarService.openSnackBar(
-            'Đổi mật không thành công',
-            'danger',
-            2500
-          );
+          this.commonService.openAlert('Đổi mật không thành công', 'danger');
           this.changePasswordForm.reset();
         }
       });
-  }
-
-  reloadComponent() {
-    let currentUrl = this.router.url;
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([currentUrl]);
   }
 
   transformDate(date: number) {

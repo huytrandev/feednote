@@ -1,7 +1,7 @@
 <app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <app-scroll-to-top></app-scroll-to-top>
-  <div class="app-title">
+  <div class="app-title m-bottom-25">
     <h2>{{ isCreate ? "Thêm mới" : "Cập nhật" }} thức ăn</h2>
   </div>
 
@@ -16,7 +16,6 @@
         <input
           type="text"
           matInput
-          placeholder="Ví dụ: Cỏ xanh"
           maxlength="100"
           formControlName="name"
         />
@@ -38,14 +37,15 @@
         floatLabel="always"
       >
         <mat-label>Đơn vị đo <span class="color-red">(*)</span></mat-label>
-        <mat-select formControlName="unit">
-          <mat-option *ngFor="let unit of units" [value]="unit">
-            {{ unit }}
-          </mat-option>
-        </mat-select>
+        <input
+          type="text"
+          matInput
+          maxlength="100"
+          formControlName="unit"
+        />
 
         <mat-error *ngIf="f.unit.errors?.required"
-          >Vui lòng chọn đơn vị.</mat-error
+          >Đơn vị đo không được trống.</mat-error
         >
       </mat-form-field>
 
@@ -56,6 +56,7 @@
       >
         <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
         <mat-select formControlName="idArea">
+          <mat-option>--</mat-option>
           <mat-option *ngFor="let area of areas" [value]="area._id">
             {{ area.name }}
           </mat-option>
@@ -96,7 +97,6 @@
                   type="text"
                   matInput
                   formControlName="name"
-                  placeholder="Ví dụ: Tinh bột"
                   maxlength="100"
                 />
 

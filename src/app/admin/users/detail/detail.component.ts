@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { AreaService, SnackbarService, UserService } from 'src/app/core/services';
+import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
@@ -26,7 +26,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     private areaService: AreaService,
-    private snackbar: SnackbarService,
+    private commonService: CommonService,
     public dialog: MatDialog
   ) {
     this.userId = this.route.snapshot.paramMap.get('id')!;
@@ -79,18 +79,13 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.userService.deleteUser(this.userId).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.snackbar.openSnackBar(
+            this.commonService.openAlert(
               'Xoá người dùng thành công',
-              'success',
-              2000
+              'success'
             );
             this.router.navigate(['/breeders']);
           } else {
-            this.snackbar.openSnackBar(
-              'Xoá người dùng thất bại',
-              'danger',
-              2000
-            );
+            this.commonService.openAlert('Xoá người dùng thất bại', 'danger');
           }
         });
       }

@@ -7,14 +7,16 @@ import { UsersRoutingModule } from './users-routing.module';
 import { MainComponent } from './main/main.component';
 import { MaterialModule } from 'src/app/material';
 import { SharedModule } from 'src/app/shared';
-import { CreateUpdateComponent } from './create-update/create-update.component';
+import { CreateUpdateComponent } from "./create-update/create-update.component";
 import { DetailComponent } from './detail/detail.component';
+import { ResetPasswordDialogComponent } from './reset-password-dialog/reset-password-dialog.component';
 
 @NgModule({
   declarations: [
     MainComponent,
     CreateUpdateComponent,
     DetailComponent,
+    ResetPasswordDialogComponent,
   ],
   imports: [
     CommonModule,

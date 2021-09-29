@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { AuthService, SnackbarService, UserService } from 'src/app/core/services';
+import { AuthService, CommonService, UserService } from 'src/app/core/services';
 import { User, FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
@@ -24,8 +24,7 @@ export class MainComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'id',
     'name',
-    'email',
-    'phone',
+    'areaName',
     'role',
     'actions',
   ];
@@ -39,7 +38,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     public dialog: MatDialog,
-    private snackbar: SnackbarService,
+    private commonService: CommonService,
     private authService: AuthService
   ) {
     this.currentUser = this.authService.getUserByToken();
@@ -109,7 +108,10 @@ export class MainComponent implements OnInit, OnDestroy {
     if (direction === '') {
       this.setParams(skip, limit, '', this.defaultSort);
     } else {
-      const sortQuery = `${active} ${direction}`;
+      let sortQuery = `${active} ${direction}`;
+      if (active === 'areaName') {
+        sortQuery = `idArea ${direction}`
+      }
       this.setParams(skip, limit, '', sortQuery);
     }
 
@@ -130,6 +132,7 @@ export class MainComponent implements OnInit, OnDestroy {
       width: '400px',
       disableClose: true,
       autoFocus: false,
+      restoreFocus: false,
     });
 
     const { _id } = element;
@@ -141,14 +144,13 @@ export class MainComponent implements OnInit, OnDestroy {
         this.userService.deleteUser(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.snackbar.openSnackBar(
+            this.commonService.openAlert(
               'Xoá người dùng thành công',
-              'success',
-              2000
+              'success'
             );
             this.getUsers();
           } else {
-            this.snackbar.openSnackBar('Xoá người dùng thất bại', 'danger', 2000);
+            this.commonService.openAlert('Xoá người dùng thất bại', 'danger');
           }
         });
       }

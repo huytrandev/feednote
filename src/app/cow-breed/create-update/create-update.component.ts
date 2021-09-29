@@ -6,14 +6,14 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import {
-  SnackbarService,
   CowBreedService,
+  CommonService,
 } from 'src/app/core/services';
-import { LessThan } from 'src/app/core/validations';
+import { LessThan, Vietnamese } from 'src/app/core/validations';
 import { DialogComponent } from 'src/app/shared';
 import { Subject } from 'rxjs';
 
@@ -36,10 +36,9 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
     private route: ActivatedRoute,
     private cowBreedService: CowBreedService,
-    private snackbarService: SnackbarService,
+    private commonService: CommonService,
     public dialog: MatDialog
   ) {
     this.cowBreedId = this.route.snapshot.paramMap.get('id')!;
@@ -88,11 +87,12 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         [
           Validators.required,
           Validators.minLength(5),
-          Validators.pattern(/^[\w\s]+$/),
         ],
       ],
       farmingTime: ['', [Validators.required, Validators.min(10)]],
       periods: this.fb.array([]),
+    },{
+      validator: [Vietnamese('name')]
     });
   }
 
@@ -112,39 +112,39 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   setPeriodsForm(cowBreedPeriods: any) {
     this.periods.clear();
     const periods = [...cowBreedPeriods];
-    periods.forEach((p) => {
-      let period: FormGroup = this.createPeriod();
+    periods.forEach((p, index) => {
+      let period: FormGroup = this.createPeriod(index);
       period.patchValue(p);
       this.periods.push(period);
     });
   }
 
-  createPeriod() {
+  createPeriod(serial: number) {
     return this.fb.group(
       {
         _id: [''],
+        serial: [serial + 1],
         name: [
           '',
           [
             Validators.required,
             Validators.minLength(5),
-            Validators.pattern(/^[\w\s]+$/),
           ],
         ],
-        serial: ['', [Validators.required]],
         startDay: ['', [Validators.required, Validators.min(1)]],
         endDay: ['', [Validators.required, Validators.min(1)]],
         weight: ['', [Validators.required, Validators.min(10)]],
       },
       {
-        validator: LessThan('startDay', 'endDay'),
+        validator: [LessThan('startDay', 'endDay'), Vietnamese('name')],
       }
     );
   }
 
   addPeriod(e: any) {
     e.preventDefault();
-    this.periods.push(this.createPeriod());
+    console.log(this.periods.length);
+    this.periods.push(this.createPeriod(this.periods.length));
   }
 
   removePeriod(index: number, period: any, e: any) {
@@ -168,20 +168,15 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         this.cowBreedService.deletePeriod(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.snackbarService.openSnackBar(
+            this.commonService.openAlert(
               'Xoá giai đoạn sinh trưởng thành công',
-              'success',
-              2000
+              'success'
             );
             this.periods.removeAt(index);
           } else {
-            this.snackbarService.openSnackBar(
-              'Xoá giai đoạn sinh trưởng',
-              'danger',
-              2000
-            );
+            this.commonService.openAlert('Xoá giai đoạn sinh trưởng', 'danger');
           }
-          this.reloadComponent();
+          this.commonService.reloadComponent();
         });
       }
     });
@@ -214,30 +209,18 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
             this.submitted = false;
             this.form.reset();
             this.formGroupDirective.resetForm();
-            this.snackbarService.openSnackBar(
-              failureNotification,
-              'danger',
-              2000
-            );
+            this.commonService.openAlert(failureNotification, 'danger');
             return;
           }
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.snackbarService.openSnackBar(
-            successNotification,
-            'success',
-            2000
-          );
+          this.commonService.openAlert(successNotification, 'success');
         },
         (error) => {
           this.submitted = false;
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.snackbarService.openSnackBar(
-            failureNotification,
-            'danger',
-            2000
-          );
+          this.commonService.openAlert(failureNotification, 'danger');
         }
       );
     } else {
@@ -248,41 +231,22 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           if (!status) {
             this.submitted = false;
             this.setValueForForm(this.cowBreed);
-            this.snackbarService.openSnackBar(
-              failureNotification,
-              'danger',
-              2000
-            );
+            this.commonService.openAlert(failureNotification, 'danger');
             return;
           }
 
           this.submitted = false;
-          this.reloadComponent();
-          this.snackbarService.openSnackBar(
-            successNotification,
-            'success',
-            2000
-          );
+          this.commonService.reloadComponent();
+          this.commonService.openAlert(successNotification, 'success');
         },
         (error) => {
           this.submitted = false;
           this.submitted = false;
           this.setValueForForm(this.cowBreed);
-          this.snackbarService.openSnackBar(
-            failureNotification,
-            'danger',
-            2000
-          );
+          this.commonService.openAlert(failureNotification, 'danger');
         }
       );
     }
-  }
-
-  reloadComponent() {
-    let currentUrl = this.router.url;
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([currentUrl]);
   }
 
   canSubmit(): boolean {

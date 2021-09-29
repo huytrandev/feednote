@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
-import { SnackbarService, UserService } from 'src/app/core/services';
+import { CommonService, UserService } from 'src/app/core/services';
 import { FilterDto, User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
@@ -39,7 +39,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     public dialog: MatDialog,
-    private snackbar: SnackbarService
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -137,14 +137,10 @@ export class MainComponent implements OnInit, OnDestroy {
         this.userService.deleteBreeder(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.snackbar.openSnackBar(
-              'Xoá thức ăn thành công',
-              'success',
-              2000
-            );
+            this.commonService.openAlert('Xoá thức ăn thành công', 'success');
             this.getBreeders();
           } else {
-            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+            this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
         });
       }

@@ -11,7 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CowBreedService, SnackbarService } from 'src/app/core/services';
+import { CommonService, CowBreedService } from 'src/app/core/services';
 import { FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
@@ -28,7 +28,7 @@ export class MainComponent implements OnInit, OnDestroy {
   cowBreeds: any = {};
   dataTableSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['id', 'name', 'farmingTime', 'actions'];
-  defaultPageSize = 5;
+  defaultPageSize = 10;
   paramsGetCowBreeds = {} as FilterDto;
   defaultSort = 'createdAt desc';
   totalCount: number;
@@ -37,8 +37,8 @@ export class MainComponent implements OnInit, OnDestroy {
   detailLoading: boolean = true;
 
   constructor(
-    private snackbar: SnackbarService,
     public dialog: MatDialog,
+    private commonService: CommonService,
     private cowBreedService: CowBreedService
   ) {}
 
@@ -128,14 +128,10 @@ export class MainComponent implements OnInit, OnDestroy {
         this.cowBreedService.delete(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.snackbar.openSnackBar(
-              'Xoá giống bò thành công',
-              'success',
-              2000
-            );
+            this.commonService.openAlert('Xoá giống bò thành công', 'success');
             this.getCowBreeds();
           } else {
-            this.snackbar.openSnackBar('Xoá giống bò thất bại', 'danger', 2000);
+            this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
           }
         });
       }

@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
-import { SnackbarService, FoodService } from 'src/app/core/services';
+import { CommonService, FoodService } from 'src/app/core/services';
 import { FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
@@ -32,7 +32,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   dataTableSource: MatTableDataSource<any>;
   resultLength = 0;
   paramsGetFoods = {} as FilterDto;
-  defaultPageSize = 5;
+  defaultPageSize = 10;
   defaultSort = 'createdAt desc';
   totalCount: number;
   expandedElement: any | null;
@@ -40,8 +40,8 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private router: Router,
     private foodService: FoodService,
+    private commonService: CommonService,
     public dialog: MatDialog,
-    private snackbar: SnackbarService
   ) {}
 
   ngOnInit(): void {}
@@ -136,14 +136,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
         this.foodService.delete(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.snackbar.openSnackBar(
-              'Xoá thức ăn thành công',
-              'success',
-              2000
-            );
+            this.commonService.openAlert('Xoá thức ăn thành công', 'success');
             this.getFoods();
           } else {
-            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+            this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
         });
       }

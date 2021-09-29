@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
-import { AreaService, SnackbarService, UserService } from 'src/app/core/services';
+import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 
@@ -27,7 +27,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private areaService: AreaService,
     public dialog: MatDialog,
-    private snackbar: SnackbarService
+    private commonService: CommonService
   ) {
     this.breederId = this.route.snapshot.paramMap.get('id')!;
   }
@@ -81,14 +81,10 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.userService.deleteBreeder(this.breederId).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.snackbar.openSnackBar(
-              'Xoá thức ăn thành công',
-              'success',
-              2000
-            );
+            this.commonService.openAlert('Xoá thức ăn thành công', 'success');
             this.router.navigate(['/breeders']);
           } else {
-            this.snackbar.openSnackBar('Xoá thức ăn thất bại', 'danger', 2000);
+            this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
         });
       }

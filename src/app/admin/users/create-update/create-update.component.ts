@@ -9,10 +9,16 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
-import { AreaService, SnackbarService, UserService } from 'src/app/core/services';
+import {
+  AreaService,
+  AuthService,
+  UserService,
+  CommonService
+} from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
 import { Vietnamese } from 'src/app/core/validations';
-import { GeneratePassword } from 'src/app/core/helpers';
+import { MatDialog } from '@angular/material/dialog';
+import { ResetPasswordDialogComponent } from '../reset-password-dialog/reset-password-dialog.component';
 
 @Component({
   selector: 'app-create',
@@ -36,9 +42,10 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private snackbarService: SnackbarService,
+    private commonService: CommonService,
     private userService: UserService,
-    private areaService: AreaService
+    private areaService: AreaService,
+    public dialog: MatDialog
   ) {
     this.userId = this.route.snapshot.paramMap.get('id')!;
   }
@@ -49,7 +56,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     this.getUsers();
     this.buildForm();
     if (!!this.userId) {
-      this.removeFields();
+      this.removeFormFields();
       this.getUser();
     }
   }
@@ -59,8 +66,9 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  removeFields() {
+  removeFormFields() {
     this.form.removeControl('username');
+    this.form.removeControl('password');
   }
 
   get f() {
@@ -224,50 +232,34 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           const { status } = res;
           if (!status) {
-            this.snackbarService.openSnackBar(
-              failureNotification,
-              'danger',
-              2000
-            );
+            this.commonService.openAlert(failureNotification, 'danger');
             this.submitted = false;
             return;
           }
 
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.snackbarService.openSnackBar(
-            successNotification,
-            'success',
-            2000
-          );
+          this.commonService.openAlert(successNotification, 'success');
         });
     } else {
       if (isManager) {
         this.form.value.idManager = null;
       }
-      console.log({ ...this.form.value, role });
 
       this.userService
         .updateUser(this.userId, { ...this.form.value, role })
         .subscribe((res) => {
           const { status } = res;
           if (!status) {
-            this.snackbarService.openSnackBar(
-              failureNotification,
-              'danger',
-              2000
-            );
+            this.commonService.openAlert(failureNotification, 'danger');
             this.submitted = false;
             return;
           }
 
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.snackbarService.openSnackBar(
-            successNotification,
-            'success',
-            2000
-          );
+          this.commonService.openAlert(successNotification, 'success');
+          this.commonService.reloadComponent();
         });
     }
   }
@@ -280,14 +272,20 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     this.setValueForForm(this.user);
   }
 
-  generatePassword() {
-    let generatedPassword = new GeneratePassword().generatePassword();
-    this.form.controls['password'].patchValue(generatedPassword);
-  }
-
   setValueForForm(user: any) {
     for (let propertyName in this.form.controls) {
       this.form.controls[propertyName].patchValue(user[propertyName]);
     }
+  }
+
+  resetPassword() {
+    const dialogRef = this.dialog.open(ResetPasswordDialogComponent, {
+      width: '500px',
+      disableClose: true,
+      autoFocus: false,
+      data: {
+        userId: this.userId
+      }
+    });
   }
 }

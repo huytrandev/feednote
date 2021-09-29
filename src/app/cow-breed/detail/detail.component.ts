@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CowBreedService, SnackbarService } from 'src/app/core/services';
+import { CommonService, CowBreedService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
 
 @Component({
@@ -21,12 +21,13 @@ export class DetailComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   error: boolean = false;
   cowBreedIdParam!: string;
+  showNutrition: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private cowBreedService: CowBreedService,
-    private snackbar: SnackbarService,
+    private commonService: CommonService,
     public dialog: MatDialog
   ) {
     this.cowBreedIdParam = this.route.snapshot.paramMap.get('id')!;
@@ -73,14 +74,10 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.cowBreedService.delete(this.cowBreed._id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.snackbar.openSnackBar(
-              'Xoá giống bò thành công',
-              'success',
-              2000
-            );
+            this.commonService.openAlert('Xoá giống bò thành công', 'success');
             this.router.navigate(['/cow-breeds']);
           } else {
-            this.snackbar.openSnackBar('Xoá giống bò thất bại', 'danger', 2000);
+            this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
           }
         });
       }

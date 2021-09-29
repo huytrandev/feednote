@@ -65,15 +65,14 @@
         <div class="left">
           <span>Khu vực</span>
         </div>
-        <div class="right">
-          <span class="font-weight-bold" *ngIf="area$ | async as area">{{
-            area.data.name
-          }}</span>
+        <div class="right" *ngIf="area$ | async as area">
+          <span class="font-weight-bold">
+            {{ area.data.name }}
+          </span>
           <a
             target="_blank"
             style="margin-left: 5px; color: #000"
             matTooltip="Bản đồ"
-            *ngIf="area$ | async as area"
             [href]="'https://www.google.com/maps/place/' + area.data.name"
             ><mat-icon class="material-icons-outlined app-icon"
               >place</mat-icon
