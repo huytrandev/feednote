@@ -30,7 +30,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   cowBreed: any;
   loading: boolean = false;
-  periodToRemove: any = [];
   isCreate: boolean = true;
   cowBreedId!: string;
 
@@ -176,7 +175,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           } else {
             this.commonService.openAlert('Xoá giai đoạn sinh trưởng', 'danger');
           }
-          this.commonService.reloadComponent();
+          // this.commonService.reloadComponent();
         });
       }
     });

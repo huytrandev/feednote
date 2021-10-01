@@ -1,20 +1,15 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <div class="wrapper bg-white shadow rounded">
-  <div class="table-search-container">
+  <div class="d-flex align-items-baseline justify-content-between">
     <app-button
       [customClasses]="['app-button-green']"
       [buttonContent]="'Thêm mới'"
       [routerLink]="['c']"
     ></app-button>
 
-    <mat-form-field appearance="outline" floatLabel="always">
+    <mat-form-field appearance="outline" floatLabel="always" class="m-bottom-0">
       <mat-label>Tìm kiếm</mat-label>
-      <input
-        type="search"
-        matInput
-        #input
-        (input)="onSearch($event)"
-      />
+      <input type="search" matInput #input (input)="onSearch($event)" />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
   </div>

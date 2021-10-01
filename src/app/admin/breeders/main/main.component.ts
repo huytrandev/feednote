@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -16,7 +22,7 @@ import { DialogComponent } from 'src/app/shared';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -35,6 +41,8 @@ export class MainComponent implements OnInit, OnDestroy {
   defaultPageSize = 10;
   totalCount: number = 0;
 
+  timeOutInput!: any;
+
   constructor(
     private router: Router,
     private userService: UserService,
@@ -42,14 +50,16 @@ export class MainComponent implements OnInit, OnDestroy {
     private commonService: CommonService
   ) {}
 
-  ngOnInit(): void {
-    this.setParams(0, this.defaultPageSize, '', this.defaultSort);
-    this.getBreeders();
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  ngAfterViewInit(): void {
+    this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+    this.getBreeders();
   }
 
   setParams(skip: number, limit: number, search: string, sort: string) {
@@ -82,18 +92,19 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   onSearch(e: any) {
+    clearTimeout(this.timeOutInput);
     const input = e.target.value;
+    
+    this.timeOutInput = setTimeout(() => {
+      if (input === '' || input.length === 0) {
+        this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+        this.getBreeders();
+        return;
+      }
 
-    if (input === '' || input.length === 0) {
-      this.setParams(0, this.defaultPageSize, '', this.defaultSort);
-      this.loading = true;
+      this.setParams(0, this.defaultPageSize, input, this.defaultSort);
       this.getBreeders();
-      return;
-    }
-
-    this.setParams(0, this.defaultPageSize, input, this.defaultSort);
-    this.loading = true;
-    this.getBreeders();
+    }, 500);
   }
 
   onSort(e: any) {

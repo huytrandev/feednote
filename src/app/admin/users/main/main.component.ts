@@ -21,18 +21,13 @@ export class MainComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   loading: boolean = true;
   dataTableSource: MatTableDataSource<User>;
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'areaName',
-    'role',
-    'actions',
-  ];
+  displayedColumns: string[] = ['id', 'name', 'areaName', 'role', 'actions'];
   paramGetUsers!: FilterDto;
   defaultSort: string = 'createdAt desc';
   defaultPageSize: number = 10;
   totalCount: number = 0;
   currentUser!: any;
+  timeOutInput!: any;
 
   constructor(
     private router: Router,
@@ -85,18 +80,21 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   onSearch(e: any) {
+    clearTimeout(this.timeOutInput);
     const input = e.target.value;
 
-    if (input === '' || input.length === 0) {
-      this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+    this.timeOutInput = setTimeout(() => {
+      if (input === '' || input.length === 0) {
+        this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+        this.loading = true;
+        this.getUsers();
+        return;
+      }
+
+      this.setParams(0, this.defaultPageSize, input, this.defaultSort);
       this.loading = true;
       this.getUsers();
-      return;
-    }
-
-    this.setParams(0, this.defaultPageSize, input, this.defaultSort);
-    this.loading = true;
-    this.getUsers();
+    }, 500);
   }
 
   onSort(e: any) {
@@ -110,7 +108,7 @@ export class MainComponent implements OnInit, OnDestroy {
     } else {
       let sortQuery = `${active} ${direction}`;
       if (active === 'areaName') {
-        sortQuery = `idArea ${direction}`
+        sortQuery = `idArea ${direction}`;
       }
       this.setParams(skip, limit, '', sortQuery);
     }

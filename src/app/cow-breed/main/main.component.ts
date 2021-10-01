@@ -1,9 +1,4 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -35,6 +30,7 @@ export class MainComponent implements OnInit, OnDestroy {
   currentCowBreedId!: string;
   selectedElement!: any;
   detailLoading: boolean = true;
+  timeOutInput!: any;
 
   constructor(
     public dialog: MatDialog,
@@ -74,18 +70,21 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   onSearch(e: any) {
+    clearTimeout(this.timeOutInput);
     const input = e.target.value;
 
-    if (input === '' || input.length === 0) {
-      this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+    this.timeOutInput = setTimeout(() => {
+      if (input === '' || input.length === 0) {
+        this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+        this.loading = true;
+        this.getCowBreeds();
+        return;
+      }
+
+      this.setParams(0, this.defaultPageSize, input, this.defaultSort);
       this.loading = true;
       this.getCowBreeds();
-      return;
-    }
-
-    this.setParams(0, this.defaultPageSize, input, this.defaultSort);
-    this.loading = true;
-    this.getCowBreeds();
+    }, 500);
   }
 
   onSort(e: any) {

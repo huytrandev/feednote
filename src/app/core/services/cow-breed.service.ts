@@ -4,12 +4,13 @@ import { environment as env } from 'src/environments/environment';
 import { FilterDto } from '../models';
 
 import { AuthService } from '.';
+import { share } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CowBreedService {
-  headers = new HttpHeaders()
+  private headers = new HttpHeaders()
     .set('Content-Type', 'application/json')
     .set('x-session-key', this.authService.currentUserValue.token);
 
@@ -34,6 +35,15 @@ export class CowBreedService {
     return this.http.get<any>(`${env.apiUrl}/api/cowBreed/${id}`, {
       headers: this.headers,
     });
+  }
+
+  getNutritionByCowBreed(cowBreedId: string) {
+    return this.http.get<any>(
+      `${env.apiUrl}/api/cowBreed/${cowBreedId}/nutrition`,
+      {
+        headers: this.headers,
+      }
+    );
   }
 
   create(cowBreed: any) {

@@ -243,6 +243,9 @@ mat-form-field {
   &-center {
     align-items: center;
   }
+  &-baseline {
+    align-items: baseline;
+  }
 }
 
 .m {
@@ -260,6 +263,9 @@ mat-form-field {
   }
 
   &-bottom {
+    &-0 {
+      margin-bottom: 0;
+    }
     &-10 {
       margin-bottom: 10px;
     }

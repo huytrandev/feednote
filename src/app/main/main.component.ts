@@ -23,7 +23,7 @@ export class MainComponent implements OnInit {
     },
     {
       path: 'standard-servings',
-      title: 'Khẩu phần ăn chuẩn',
+      title: 'Khẩu phần ăn',
       icon: 'assets/icons/scale.svg',
     },
     {
@@ -50,11 +50,6 @@ export class MainComponent implements OnInit {
 
   adminNav = [
     {
-      path: 'admin/users',
-      title: 'Người dùng',
-      icon: 'assets/icons/settings.svg',
-    },
-    {
       path: 'admin/feeding-diary',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
@@ -66,7 +61,7 @@ export class MainComponent implements OnInit {
     },
     {
       path: 'standard-servings',
-      title: 'Khẩu phần ăn chuẩn',
+      title: 'Khẩu phần ăn',
       icon: 'assets/icons/scale.svg',
     },
     {

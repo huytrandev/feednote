@@ -44,52 +44,6 @@ tr.app-element-row:not(.app-expanded-row):active {
   hyphens: auto;
 }
 
-.mat-column-name,
-.mat-column-email {
-  width: 22% !important;
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 22% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
-.mat-column-phone {
-  width: 15% !important;
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 15% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
-.mat-column-areaName {
-  width: calc(100% - 220px - 69%) !important;
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 calc(100% - 220px - 69%) !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
 .mat-column-actions {
   width: 100px !important;
   word-wrap: break-word !important;

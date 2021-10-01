@@ -35,13 +35,13 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   defaultPageSize = 10;
   defaultSort = 'createdAt desc';
   totalCount: number;
-  expandedElement: any | null;
+  timeOutInput!: any;
 
   constructor(
     private router: Router,
     private foodService: FoodService,
     private commonService: CommonService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {}
@@ -81,18 +81,21 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSearch(e: any) {
+    clearTimeout(this.timeOutInput);
     const input = e.target.value;
 
-    if (input === '' || input.length === 0) {
-      this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+    this.timeOutInput = setTimeout(() => {
+      if (input === '' || input.length === 0) {
+        this.setParams(0, this.defaultPageSize, '', this.defaultSort);
+        this.loading = true;
+        this.getFoods();
+        return;
+      }
+
+      this.setParams(0, this.defaultPageSize, input, this.defaultSort);
       this.loading = true;
       this.getFoods();
-      return;
-    }
-
-    this.setParams(0, this.defaultPageSize, input, this.defaultSort);
-    this.loading = true;
-    this.getFoods();
+    }, 500);
   }
 
   onSort(e: any) {

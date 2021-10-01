@@ -15,12 +15,6 @@ table {
   overflow: auto;
 }
 
-.table-search-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 tr.app-element-row:not(.app-expanded-row):hover {
   background: whitesmoke;
 }

@@ -1,0 +1,58 @@
+<app-loading *ngIf="loading"></app-loading>
+<ng-container *ngIf="!loading">
+  <h2 mat-dialog-title>
+    <div class="app-title m-bottom-25">Nhu cầu dinh dưỡng</div>
+  </h2>
+  <div mat-dialog-content>
+    <p>Period Id: {{ data.periodId }}</p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum magnam
+      voluptates, laboriosam optio aliquid rem delectus commodi beatae eligendi
+      sit. Autem eum eveniet illo consequatur alias modi rerum accusamus
+      molestias.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum magnam
+      voluptates, laboriosam optio aliquid rem delectus commodi beatae eligendi
+      sit. Autem eum eveniet illo consequatur alias modi rerum accusamus
+      molestias.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum magnam
+      voluptates, laboriosam optio aliquid rem delectus commodi beatae eligendi
+      sit. Autem eum eveniet illo consequatur alias modi rerum accusamus
+      molestias.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum magnam
+      voluptates, laboriosam optio aliquid rem delectus commodi beatae eligendi
+      sit. Autem eum eveniet illo consequatur alias modi rerum accusamus
+      molestias.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum magnam
+      voluptates, laboriosam optio aliquid rem delectus commodi beatae eligendi
+      sit. Autem eum eveniet illo consequatur alias modi rerum accusamus
+      molestias.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum magnam
+      voluptates, laboriosam optio aliquid rem delectus commodi beatae eligendi
+      sit. Autem eum eveniet illo consequatur alias modi rerum accusamus
+      molestias.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum magnam
+      voluptates, laboriosam optio aliquid rem delectus commodi beatae eligendi
+      sit. Autem eum eveniet illo consequatur alias modi rerum accusamus
+      molestias.
+    </p>
+  </div>
+  <div mat-dialog-actions class="button-group">
+    <app-button
+      [customClasses]="['app-button-grey']"
+      [buttonContent]="'Đóng'"
+      (click)="onClose()"
+    ></app-button>
+  </div>
+</ng-container>

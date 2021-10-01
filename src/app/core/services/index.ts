@@ -4,3 +4,6 @@ export * from './cow-breed.service';
 export * from './food.service';
 export * from './user.service';
 export * from './common.service';
+export * from './feeding-diary.service';
+export * from './cow.service';
+export * from './period.service';

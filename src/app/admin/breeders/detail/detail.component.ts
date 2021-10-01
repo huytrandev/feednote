@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
@@ -20,6 +20,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   error: boolean = false;
   breederId!: string;
   area$!: Observable<any>;
+  areaName!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,7 +42,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  getBreeder() {
+  getBreeder1() {
     this.loading = true;
     this.userService
       .getBreederById(this.breederId)
@@ -62,6 +63,25 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.breeder = data;
         this.loading = false;
       });
+  }
+
+  getBreeder() {
+    this.loading = true;
+    this.userService.getBreederById(this.breederId).pipe(
+      takeUntil(this.ngUnsubscribe),
+      switchMap((user) => {
+        return this.areaService.getById(user.data.idArea).pipe(
+          map((area) => {
+            return { ...user.data, areaName: area.data.name };
+          })
+        );
+      }),
+      catchError((_) => this.router.navigate(['not-found']))
+    )
+    .subscribe(val => {
+      this.breeder = val;
+      this.loading = false;
+    });
   }
 
   transformDate(date: number) {

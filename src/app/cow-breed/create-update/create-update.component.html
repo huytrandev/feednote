@@ -193,11 +193,7 @@
         <app-button
           [buttonType]="'submit'"
           [customClasses]="['app-button-brown']"
-          [disabledCondition]="
-            periodToRemove.length > 0
-              ? false
-              : !(form.valid && form.dirty) || submitted
-          "
+          [disabledCondition]="!(form.valid && form.dirty) || submitted"
           [showSpinner]="submitted"
           [buttonContent]="!!isCreate ? 'Tạo mới' : 'Cập nhật'"
         ></app-button>

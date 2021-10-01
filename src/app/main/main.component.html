@@ -5,10 +5,10 @@
     mode="indeterminate"
   ></mat-progress-bar>
   <mat-toolbar class="app-toolbar">
-    <button mat-icon-button (click)="isExpanded = !isExpanded">
+    <button style="margin-right: 6px;" mat-icon-button (click)="isExpanded = !isExpanded">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="app-name">FeedNote</h1>
+    <h1 class="app-name" [routerLink]="['/']">FeedNote</h1>
     <span class="app-spacer"></span>
     <div class="avatar" [matMenuTriggerFor]="profilePanel">
       <img src="assets/images/avatar.png" alt="" />
@@ -73,7 +73,7 @@
           </mat-list-item>
         </mat-nav-list>
 
-        <!-- <div class="my-side-nav-bottom" *ngIf="currentUser.role === 'admin'">
+        <div class="my-side-nav-bottom" *ngIf="currentUser.role === 'admin'">
           <mat-nav-list>
             <mat-list-item
               mat-list-item
@@ -89,7 +89,7 @@
               <span *ngIf="isExpanded" style="margin-left: 15px">Người dùng</span>
             </mat-list-item>
           </mat-nav-list>
-        </div> -->
+        </div>
       </div>
     </mat-sidenav>
 

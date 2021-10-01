@@ -2,10 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 
-import { CommonService, CowBreedService } from 'src/app/core/services';
+import {
+  CommonService,
+  CowBreedService,
+  PeriodService,
+} from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
+import { NutritionDialogComponent } from '../nutrition-dialog/nutrition-dialog.component';
 
 @Component({
   selector: 'app-detail',
@@ -21,13 +26,13 @@ export class DetailComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   error: boolean = false;
   cowBreedIdParam!: string;
-  showNutrition: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private cowBreedService: CowBreedService,
     private commonService: CommonService,
+    private periodService: PeriodService,
     public dialog: MatDialog
   ) {
     this.cowBreedIdParam = this.route.snapshot.paramMap.get('id')!;
@@ -46,7 +51,10 @@ export class DetailComponent implements OnInit, OnDestroy {
   getCowBreed(): void {
     this.cowBreedService
       .getById(this.cowBreedIdParam)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
       .subscribe((response) => {
         const { status } = response;
         if (!status) {
@@ -58,6 +66,28 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.cowBreed = data;
         this.loading = false;
       });
+  }
+
+  showNutrition(periodId: string) {
+    const dialogRef = this.dialog.open(NutritionDialogComponent, {
+      autoFocus: false,
+      width: '70%',
+      minWidth: '750px',
+      maxWidth: '1700px',
+      minHeight: '500px',
+      maxHeight: '500px',
+      restoreFocus: false,
+      data: {
+        periodId,
+      },
+    });
+    // this.periodService
+    //   .getNutritionByPeriod(periodId)
+    //   .pipe(
+    //     takeUntil(this.ngUnsubscribe),
+    //     catchError((_) => this.router.navigate(['not-found']))
+    //   )
+    //   .subscribe((res) => {});
   }
 
   onDelete() {

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RoleGuard } from '../core/guards';
 
-import { FeedingDiaryComponent } from './feeding-diary/feeding-diary.component';
 import { StatisticComponent } from './statistic/statistic.component';
 
 const routes: Routes = [
@@ -21,7 +20,10 @@ const routes: Routes = [
   },
   {
     path: 'feeding-diary',
-    component: FeedingDiaryComponent,
+    loadChildren: () =>
+      import('./feeding-diary/feeding-diary.module').then(
+        (m) => m.FeedingDiaryModule
+      ),
   },
   {
     path: '',
