@@ -1,9 +1,14 @@
 <app-loading *ngIf="loading"></app-loading>
-<ng-container *ngIf="!loading">
-  <h2 mat-dialog-title>
-    <div class="app-title m-bottom-25">Nhu cầu dinh dưỡng</div>
-  </h2>
-  <div mat-dialog-content>
+<ng-container class="wrapper" *ngIf="!loading">
+  <div class="d-flex align-items-center justify-content-between m-bottom-25">
+    <h2 mat-dialog-title>Nhu cầu dinh dưỡng</h2>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
+  </div>
+  <div mat-dialog-content class="dialog-content">
     <p>Period Id: {{ data.periodId }}</p>
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum magnam
@@ -47,12 +52,5 @@
       sit. Autem eum eveniet illo consequatur alias modi rerum accusamus
       molestias.
     </p>
-  </div>
-  <div mat-dialog-actions class="button-group">
-    <app-button
-      [customClasses]="['app-button-grey']"
-      [buttonContent]="'Đóng'"
-      (click)="onClose()"
-    ></app-button>
   </div>
 </ng-container>

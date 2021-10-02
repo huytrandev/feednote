@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
@@ -47,7 +47,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       .getUserById(this.userId)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError(_ => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['not-found']))
       )
       .subscribe((res) => {
         const { status } = res;
