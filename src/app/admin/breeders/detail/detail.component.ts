@@ -42,29 +42,6 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  getBreeder1() {
-    this.loading = true;
-    this.userService
-      .getBreederById(this.breederId)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
-      )
-      .subscribe((res) => {
-        const { status } = res;
-        if (!status) {
-          this.error = true;
-          this.loading = false;
-          return;
-        }
-
-        let data = { ...res.data };
-        this.area$ = this.areaService.getById(data.idArea);
-        this.breeder = data;
-        this.loading = false;
-      });
-  }
-
   getBreeder() {
     this.loading = true;
     this.userService.getBreederById(this.breederId).pipe(

@@ -10,11 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 
-import {
-  AreaService,
-  CommonService,
-  UserService,
-} from 'src/app/core/services';
+import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
 import { Vietnamese } from 'src/app/core/validations';
 
@@ -71,15 +67,18 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       .getAll()
       .pipe(
         takeUntil(this.ngUnsubscribe),
+        map((res) => {
+          const { status } = res;
+          if (!status) {
+            return [];
+          }
+          const { data } = res;
+          return [...data.items];
+        }),
         catchError((_) => this.router.navigate(['not-found']))
       )
-      .subscribe((res) => {
-        const { status } = res;
-        if (!status) {
-          return;
-        }
-        const { data } = res;
-        this.areas = data.items;
+      .subscribe((data: any) => {
+        this.areas = data;
         this.loading = false;
       });
   }
@@ -90,15 +89,18 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       .getAllBreeders()
       .pipe(
         takeUntil(this.ngUnsubscribe),
+        map((res) => {
+          const { status } = res;
+          if (!status) {
+            return [];
+          }
+          const { data } = res;
+          return [...data.items];
+        }),
         catchError((_) => this.router.navigate(['not-found']))
       )
-      .subscribe((res) => {
-        const { status } = res;
-        if (!status) {
-          return;
-        }
-        const { data } = res;
-        this.breeders = data.items;
+      .subscribe((data: any) => {
+        this.breeders = data;
         this.loading = false;
       });
   }
@@ -109,14 +111,17 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       .getBreederById(this.breederId)
       .pipe(
         takeUntil(this.ngUnsubscribe),
+        map((res) => {
+          const { status } = res;
+          if (!status) {
+            return null;
+          }
+          const { data } = res;
+          return { ...data };
+        }),
         catchError((_) => this.router.navigate(['not-found']))
       )
-      .subscribe((res) => {
-        const { status } = res;
-        if (!status) {
-          return;
-        }
-        const { data } = res;
+      .subscribe((data: any) => {
         this.breeder = data;
         this.setValueForForm({ ...this.breeder });
         this.loading = false;

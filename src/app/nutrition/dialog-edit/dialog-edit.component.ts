@@ -2,22 +2,22 @@ import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-nutrition-dialog',
-  templateUrl: './nutrition-dialog.component.html',
-  styleUrls: ['./nutrition-dialog.component.scss'],
+  selector: 'app-dialog-edit',
+  templateUrl: './dialog-edit.component.html',
+  styleUrls: ['./dialog-edit.component.scss'],
 })
-export class NutritionDialogComponent implements OnInit {
+export class DialogEditComponent implements OnInit {
   loading: boolean = true;
 
   constructor(
-    public dialogRef: MatDialogRef<NutritionDialogComponent>,
+    public dialogRef: MatDialogRef<DialogEditComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
     setTimeout(() => {
       this.loading = false;
-    }, 1000);
+    }, 500);
   }
 
   onClose() {

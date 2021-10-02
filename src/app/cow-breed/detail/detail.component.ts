@@ -2,12 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { catchError, map, takeUntil } from 'rxjs/operators';
 
 import {
   CommonService,
   CowBreedService,
-  PeriodService,
 } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
 import { NutritionDialogComponent } from '../nutrition-dialog/nutrition-dialog.component';
@@ -32,7 +31,6 @@ export class DetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private cowBreedService: CowBreedService,
     private commonService: CommonService,
-    private periodService: PeriodService,
     public dialog: MatDialog
   ) {
     this.cowBreedIdParam = this.route.snapshot.paramMap.get('id')!;
@@ -53,17 +51,18 @@ export class DetailComponent implements OnInit, OnDestroy {
       .getById(this.cowBreedIdParam)
       .pipe(
         takeUntil(this.ngUnsubscribe),
+        map((res) => {
+          const { status } = res;
+          if (!status) {
+            return { data: null };
+          }
+          const { data } = res;
+          return { data };
+        }),
         catchError((_) => this.router.navigate(['not-found']))
       )
-      .subscribe((response) => {
-        const { status } = response;
-        if (!status) {
-          this.loading = false;
-          this.error = true;
-          return;
-        }
-        const { data } = response;
-        this.cowBreed = data;
+      .subscribe((value: any) => {
+        this.cowBreed = value.data;
         this.loading = false;
       });
   }
