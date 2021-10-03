@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 import { CommonService, CowBreedService } from 'src/app/core/services';
-import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
+import { DialogCreateNutritionComponent } from '../dialog-create-nutrition/dialog-create-nutrition.component';
+import { DialogUpdateNutritionComponent } from '../dialog-update-nutrition/dialog-update-nutrition.component';
 
 @Component({
   selector: 'app-detail',
@@ -15,29 +16,10 @@ export class DetailComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   loading: boolean = true;
   cowBreedIdParam!: string;
-  nutrition: any[] = [];
+  periods: any[] = [];
+  cowBreed$!: Observable<any>;
 
   displayedColumns = ['id', 'name', 'amount', 'unit'];
-  dataTableSource = [
-    {
-      name: 'vitamin AA',
-      unit: 'g',
-      amount: '21',
-      idNutrition: 'jTUMRLFQr',
-    },
-    {
-      name: 'vitamin BB2',
-      unit: 'g',
-      amount: '24',
-      idNutrition: 'FQGzWovWw-',
-    },
-    {
-      name: 'vitamin B2',
-      unit: 'g',
-      amount: '24',
-      idNutrition: '1mzj-SsxkK',
-    },
-  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -50,6 +32,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.cowBreed$ = this.cowBreedService.getById(this.cowBreedIdParam);
     this.getNutrition();
   }
 
@@ -73,21 +56,48 @@ export class DetailComponent implements OnInit, OnDestroy {
         catchError((_) => this.router.navigate(['not-found']))
       )
       .subscribe((data) => {
-        this.nutrition = data;
+        this.periods = data;
         this.loading = false;
       });
   }
 
-  editNutrition(nutritionId: string) {
-    this.dialog.open(DialogEditComponent, {
+  createNutrition(periodId: string) {
+    const dialogRef = this.dialog.open(DialogCreateNutritionComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '550px',
+      minHeight: '200px',
+      maxHeight: '100vh',
+      disableClose: true,
+      data: {
+        periodId,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data.success) {
+        this.commonService.reloadComponent();
+      }
+    });
+  }
+
+  updateNutrition(periodId: string, nutrition: any) {
+    const dialogRef = this.dialog.open(DialogUpdateNutritionComponent, {
       autoFocus: false,
       restoreFocus: false,
       width: '500px',
       minHeight: '200px',
       disableClose: true,
       data: {
-        nutritionId,
+        periodId,
+        nutrition,
       },
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data.success) {
+        this.commonService.reloadComponent();
+      }
     });
   }
 }

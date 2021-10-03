@@ -1,12 +1,7 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <div class="wrapper bg-white shadow rounded">
 
-  <div class="d-flex align-items-baseline justify-content-between">
-    <app-button
-      [customClasses]="['app-button-green']"
-      [buttonContent]="'Thêm mới'"
-    ></app-button>
-
+  <div class="d-flex align-items-baseline justify-content-end">
     <mat-form-field appearance="outline" style="width: 40%" floatLabel="always" class="m-bottom-0">
       <mat-label>Tìm kiếm</mat-label>
       <input

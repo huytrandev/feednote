@@ -1,0 +1,77 @@
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <div class="d-flex align-items-center justify-content-between m-bottom-25">
+    <h2 mat-dialog-title>Cập nhật chất dinh dưỡng</h2>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
+  </div>
+  <div mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <input type="hidden" formControlName="idNutrition" />
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label
+          >Tên chất dinh dưỡng <span class="color-red">(*)</span></mat-label
+        >
+        <input type="text" matInput maxlength="100" formControlName="name" />
+
+        <mat-error *ngIf="f.name.hasError('required')"
+          >Tên chất dinh dưỡng không được trống.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Hàm lượng <span class="color-red">(*)</span></mat-label>
+        <input type="number" matInput min="0" formControlName="amount" />
+
+        <mat-error *ngIf="f.amount.hasError('required')"
+          >Hàm lượng không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.amount.hasError('min')"
+          >Hàm lượng không phải lớn hơn 0.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Đơn vị đo <span class="color-red">(*)</span></mat-label>
+        <input type="text" matInput maxlength="100" formControlName="unit" />
+
+        <mat-error *ngIf="f.unit.hasError('required')"
+          >Đơn vị đo không được trống.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-divider></mat-divider>
+      <div class="button-group">
+        <app-button
+          [buttonType]="'submit'"
+          [customClasses]="['app-button-brown']"
+          [disabledCondition]="disableSubmitButton()"
+          [showSpinner]="submitted"
+          [buttonContent]="'Cập nhật'"
+        ></app-button>
+
+        <app-button
+          [buttonType]="'button'"
+          [customClasses]="['app-button-grey']"
+          [buttonContent]="'Huỷ bỏ'"
+          (click)="onReset()"
+        ></app-button>
+      </div>
+    </form>
+  </div>
+</div>

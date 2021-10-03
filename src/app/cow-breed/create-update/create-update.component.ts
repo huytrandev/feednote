@@ -26,7 +26,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   form!: FormGroup;
-  isAddPeriod: boolean = false;
   submitted: boolean = false;
   cowBreed: any;
   loading: boolean = false;

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogEditComponent } from './dialog-edit.component';
+import { DialogUpdateNutritionComponent } from './dialog-update-nutrition.component';
 
 describe('DialogEditComponent', () => {
-  let component: DialogEditComponent;
-  let fixture: ComponentFixture<DialogEditComponent>;
+  let component: DialogUpdateNutritionComponent;
+  let fixture: ComponentFixture<DialogUpdateNutritionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DialogEditComponent ]
+      declarations: [ DialogUpdateNutritionComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogEditComponent);
+    fixture = TestBed.createComponent(DialogUpdateNutritionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
