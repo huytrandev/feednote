@@ -62,11 +62,29 @@ export class CowBreedService {
     );
   }
 
+  createNutritionByPeriod(periodId: string, nutrition: any) {
+    return this.http.post<any>(
+      `${env.apiUrl}/api/period/${periodId}/nutrition`,
+      JSON.stringify(nutrition),
+      { headers: this.headers }
+    );
+  }
+
   update(id: string, cowBreed: any) {
     return this.http.put<any>(
       `${env.apiUrl}/api/cowBreed/${id}`,
       JSON.stringify(cowBreed),
       { headers: this.headers }
+    );
+  }
+
+  updateNutrition(periodId: string, nutrition: any) {
+    return this.http.put<any>(
+      `${env.apiUrl}/api/period/${periodId}/nutrition/${nutrition.idNutrition}`,
+      JSON.stringify(nutrition),
+      {
+        headers: this.headers,
+      }
     );
   }
 

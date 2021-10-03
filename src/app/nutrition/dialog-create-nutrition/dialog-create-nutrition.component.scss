@@ -1,0 +1,42 @@
+@import "../../../variable";
+
+.dialog-title {
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.dialog-content {
+  overflow-y: auto;
+}
+.button-group {
+  width: 100%;
+  display: inline-flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  border-top: 1px solid #d9d9d9;
+
+  & :not(:last-child) {
+    margin-right: 20px;
+  }
+}
+
+.nutrition-list {
+  &-item {
+    border: 1px solid #d9d9d9;
+    border-radius: $border-radius;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+
+    &-header {
+      height: 50px;
+      border-bottom: 1px solid #d9d9d9;
+      border-top-left-radius: $border-radius;
+      border-top-right-radius: $border-radius;
+      background-color: #f5f5f5;
+      margin-bottom: 20px;
+      padding: 0 15px;
+    }
+  }
+}

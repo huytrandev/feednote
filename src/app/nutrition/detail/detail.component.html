@@ -10,7 +10,13 @@
       m-bottom-25
     "
   >
-    <h2>Chi tiết</h2>
+    <h2>
+      Nhu cầu dinh dưỡng:
+      <span *ngIf="cowBreed$ | async as cowBreed; else elseText">{{
+        cowBreed.data.name
+      }}</span>
+      <ng-template #elseText>...</ng-template>
+    </h2>
     <app-button
       [matMenuTriggerFor]="optionsPanel"
       [iconName]="'more_horiz'"
@@ -31,7 +37,7 @@
   </div>
   <div class="content">
     <div class="period-list">
-      <div class="period-list-item" *ngFor="let nu of nutrition">
+      <div class="period-list-item" *ngFor="let period of periods">
         <div
           class="
             d-flex
@@ -40,7 +46,25 @@
             period-list-item-header
           "
         >
-          <h4>Giai đoạn: {{ nu.name }}</h4>
+          <h4>Giai đoạn: {{ period.name }}</h4>
+          <app-button-icon
+            [matMenuTriggerFor]="nutritionPanel"
+            [iconName]="'more_horiz'"
+            matTooltip="Tuỳ chọn"
+          ></app-button-icon>
+
+          <mat-menu #nutritionPanel="matMenu" xPosition="before">
+            <app-menu-item
+              [iconName]="'add'"
+              [menuItemContent]="'Thêm mới'"
+              (click)="createNutrition(period._id)"
+            ></app-menu-item>
+            <mat-divider></mat-divider>
+            <app-menu-item
+              [iconName]="'delete_outline'"
+              [menuItemContent]="'Xoá tất cả'"
+            ></app-menu-item>
+          </mat-menu>
         </div>
 
         <div class="period-list-item-content">
@@ -48,7 +72,7 @@
             style="width: 95%; margin: 0 auto"
             class="table-container p-bottom-25"
           >
-            <table mat-table [dataSource]="nu.nutrition">
+            <table mat-table [dataSource]="period.nutrition">
               <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef>STT</th>
                 <td mat-cell *matCellDef="let element; let i = index">
@@ -81,7 +105,7 @@
                 *matRowDef="let element; columns: displayedColumns"
                 style="cursor: pointer"
                 class="app-element-row"
-                (click)="editNutrition(element.idNutrition)"
+                (click)="updateNutrition(period._id, element)"
               ></tr>
               <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="4">Chưa có dữ liệu</td>

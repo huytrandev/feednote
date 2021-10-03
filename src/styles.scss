@@ -55,6 +55,17 @@ mat-form-field {
   color: #fff;
 }
 
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track { 
+  border-radius: $border-radius;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d1d1; 
+  border-radius: $border-radius;
+}
+
 .mat-menu-panel {
   border-radius: $border-radius !important;
 }
