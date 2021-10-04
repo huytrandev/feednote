@@ -17,11 +17,6 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: 'nutrition',
-      title: 'Nhu cầu dinh dưỡng',
-      icon: 'assets/icons/chemistry.svg',
-    },
-    {
       path: 'standard-servings',
       title: 'Khẩu phần ăn',
       icon: 'assets/icons/scale.svg',
@@ -53,11 +48,6 @@ export class MainComponent implements OnInit {
       path: 'admin/feeding-diary',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
-    },
-    {
-      path: 'nutrition',
-      title: 'Nhu cầu dinh dưỡng',
-      icon: 'assets/icons/chemistry.svg',
     },
     {
       path: 'standard-servings',

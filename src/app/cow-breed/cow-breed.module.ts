@@ -10,9 +10,11 @@ import { MaterialModule } from '../material/material.module';
 import { DetailComponent } from './detail/detail.component';
 import { CreateUpdateComponent } from './create-update/create-update.component';
 import { NutritionDialogComponent } from './nutrition-dialog/nutrition-dialog.component';
+import { DialogUpdateNutritionComponent } from './dialog-update-nutrition/dialog-update-nutrition.component';
+import { DialogCreateNutritionComponent } from './dialog-create-nutrition/dialog-create-nutrition.component';
 
 @NgModule({
-  declarations: [MainComponent, DetailComponent, CreateUpdateComponent, NutritionDialogComponent],
+  declarations: [MainComponent, DetailComponent, CreateUpdateComponent, NutritionDialogComponent, DialogUpdateNutritionComponent, DialogCreateNutritionComponent],
   imports: [
     CommonModule,
     CowBreedRoutingModule,

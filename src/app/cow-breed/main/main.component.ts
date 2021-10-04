@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CommonService, CowBreedService } from 'src/app/core/services';
 import { FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
+import { CreateUpdateComponent } from '../create-update/create-update.component';
 
 @Component({
   selector: 'app-main',

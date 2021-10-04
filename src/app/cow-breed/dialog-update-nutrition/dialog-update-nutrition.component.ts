@@ -1,14 +1,10 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommonService, CowBreedService } from 'src/app/core/services';
 
 @Component({
-  selector: 'app-dialog-edit',
+  selector: 'app-dialog-update-nutrition',
   templateUrl: './dialog-update-nutrition.component.html',
   styleUrls: ['./dialog-update-nutrition.component.scss'],
 })
@@ -16,6 +12,7 @@ export class DialogUpdateNutritionComponent implements OnInit {
   loading: boolean = false;
   submitted: boolean = false;
   form!: FormGroup;
+  nutrition!: any;
 
   constructor(
     private fb: FormBuilder,
@@ -24,6 +21,7 @@ export class DialogUpdateNutritionComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogUpdateNutritionComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.nutrition = this.data.nutrition;
   }
 
   ngOnInit(): void {
@@ -36,16 +34,13 @@ export class DialogUpdateNutritionComponent implements OnInit {
 
   buildForm(): void {
     this.form = this.fb.group({
-      idNutrition: [this.data.nutrition.idNutrition],
+      idNutrition: [this.nutrition.idNutrition],
       name: [
-        this.data.nutrition.name,
+        this.nutrition.name,
         [Validators.required, Validators.minLength(5)],
       ],
-      amount: [
-        this.data.nutrition.amount,
-        [Validators.required, Validators.min(1)],
-      ],
-      unit: [this.data.nutrition.unit, [Validators.required]],
+      amount: [this.nutrition.amount, [Validators.required, Validators.min(1)]],
+      unit: [this.nutrition.unit, [Validators.required]],
     });
   }
 

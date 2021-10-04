@@ -12,6 +12,7 @@ export class DialogCreateNutritionComponent implements OnInit {
   form!: FormGroup;
   loading: boolean = false;
   submitted: boolean = false;
+  periodId!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -19,7 +20,9 @@ export class DialogCreateNutritionComponent implements OnInit {
     private commonService: CommonService,
     public dialogRef: MatDialogRef<DialogCreateNutritionComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.periodId = this.data.periodId;
+  }
 
   ngOnInit(): void {
     this.buildFormArray();
@@ -70,7 +73,7 @@ export class DialogCreateNutritionComponent implements OnInit {
     const nutrition = [...this.form.value.nutrition];
     this.submitted = true;
     this.cowBreedService
-      .createNutritionByPeriod(this.data.periodId, nutrition)
+      .createNutritionByPeriod(this.periodId, nutrition)
       .subscribe((res) => {
         if (!res.status) {
           this.submitted = false;
