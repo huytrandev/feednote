@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogUpdateNutritionComponent } from './dialog-update-nutrition.component';
 
-describe('DialogEditComponent', () => {
+describe('DialogUpdateNutritionComponent', () => {
   let component: DialogUpdateNutritionComponent;
   let fixture: ComponentFixture<DialogUpdateNutritionComponent>;
 

@@ -47,7 +47,7 @@ export class CowBreedService {
   }
 
   getNutritionByPeriod(periodId: string) {
-    return this.http.get<any>(`${env.apiUrl}/period/${periodId}`, {
+    return this.http.get<any>(`${env.apiUrl}/api/period/${periodId}`, {
       headers: this.headers,
     });
   }
@@ -74,6 +74,14 @@ export class CowBreedService {
     return this.http.put<any>(
       `${env.apiUrl}/api/cowBreed/${id}`,
       JSON.stringify(cowBreed),
+      { headers: this.headers }
+    );
+  }
+
+  updatePeriod(periodId: string, period: any) {
+    return this.http.put<any>(
+      `${env.apiUrl}/api/period/${periodId}`,
+      JSON.stringify(period),
       { headers: this.headers }
     );
   }

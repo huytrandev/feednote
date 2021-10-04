@@ -1,5 +1,63 @@
 @import "../../../variable";
 
+table {
+  width: 100%;
+}
+
+tr.app-element-row:not(.app-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.app-element-row:not(.app-expanded-row):active {
+  background: #efefef;
+}
+.mat-column-id,
+.mat-column-unit {
+  width: 75px !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 75px !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-amount {
+  width: 120px !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 120px !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-name {
+  width: calc(100% - 150px - 120px) !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 calc(100% - 150px - 120px) !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+
 .wrapper {
   padding: 30px;
   margin: 0 auto;

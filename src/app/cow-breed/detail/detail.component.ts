@@ -4,12 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 
-import {
-  CommonService,
-  CowBreedService,
-} from 'src/app/core/services';
+import { CommonService, CowBreedService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
-import { NutritionDialogComponent } from '../nutrition-dialog/nutrition-dialog.component';
+import { DialogCreateNutritionComponent } from '../dialog-create-nutrition/dialog-create-nutrition.component';
+import { DialogUpdateNutritionComponent } from '../dialog-update-nutrition/dialog-update-nutrition.component';
 
 @Component({
   selector: 'app-detail',
@@ -25,6 +23,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   error: boolean = false;
   cowBreedIdParam!: string;
+  displayedColumns = ['id', 'name', 'amount', 'unit'];
 
   constructor(
     private route: ActivatedRoute,
@@ -67,28 +66,6 @@ export class DetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  showNutrition(periodId: string) {
-    const dialogRef = this.dialog.open(NutritionDialogComponent, {
-      autoFocus: false,
-      width: '70%',
-      minWidth: '750px',
-      maxWidth: '1700px',
-      minHeight: '500px',
-      maxHeight: '500px',
-      restoreFocus: false,
-      data: {
-        periodId,
-      },
-    });
-    // this.periodService
-    //   .getNutritionByPeriod(periodId)
-    //   .pipe(
-    //     takeUntil(this.ngUnsubscribe),
-    //     catchError((_) => this.router.navigate(['not-found']))
-    //   )
-    //   .subscribe((res) => {});
-  }
-
   onDelete() {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '400px',
@@ -109,6 +86,46 @@ export class DetailComponent implements OnInit, OnDestroy {
             this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
           }
         });
+      }
+    });
+  }
+
+  createNutrition(periodId: string) {
+    const dialogRef = this.dialog.open(DialogCreateNutritionComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '550px',
+      minHeight: '200px',
+      maxHeight: '100vh',
+      disableClose: true,
+      data: {
+        periodId,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data.success) {
+        this.commonService.reloadComponent();
+      }
+    });
+  }
+
+  updateNutrition(periodId: string, nutrition: any) {
+    const dialogRef = this.dialog.open(DialogUpdateNutritionComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '500px',
+      minHeight: '200px',
+      disableClose: true,
+      data: {
+        periodId,
+        nutrition,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data.success) {
+        this.getCowBreed();
       }
     });
   }

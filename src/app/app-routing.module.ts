@@ -51,11 +51,6 @@ const routes: Routes = [
             (m) => m.StandardServingsModule
           ),
       },
-      {
-        path: 'nutrition',
-        loadChildren: () =>
-          import('./nutrition/nutrition.module').then((m) => m.NutritionModule),
-      },
     ],
   },
   {
