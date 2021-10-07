@@ -10,69 +10,50 @@
       <div class="app-title">
         <h2>Chi tiết</h2>
       </div>
-      <app-button
-        [matMenuTriggerFor]="optionsPanel"
-        [iconName]="'more_horiz'"
-        [customClasses]="['app-button-option']"
-      ></app-button>
+      <app-button [matMenuTriggerFor]="optionsPanel" [iconName]="'more_horiz'" [customClasses]="['app-button-option']">
+      </app-button>
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
-        <app-menu-item
-          [iconName]="'drive_file_rename_outline'"
-          [menuItemContent]="'Cập nhật'"
-          [routerLink]="['/foods', 'u', food._id]"
-        ></app-menu-item>
+        <app-menu-item [iconName]="'drive_file_rename_outline'" [menuItemContent]="'Cập nhật'"
+          [routerLink]="['/foods', 'u', food._id]"></app-menu-item>
         <mat-divider></mat-divider>
-        <app-menu-item
-          [iconName]="'delete_outline'"
-          [menuItemContent]="'Xoá'"
-          (click)="onDelete()"
-        ></app-menu-item>
+        <app-menu-item [iconName]="'delete_outline'" [menuItemContent]="'Xoá'" (click)="onDelete()"></app-menu-item>
       </mat-menu>
     </div>
     <div class="content">
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Tên thức ăn</span>
+          <span class="font-weight-bold">Tên thức ăn</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{ food.name }}</span>
+          <span>{{ food.name }}</span>
         </div>
       </div>
 
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Đơn vị</span>
+          <span class="font-weight-bold">Đơn vị</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{ food.unit }}</span>
+          <span>{{ food.unit }}</span>
         </div>
       </div>
 
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Khu vực</span>
+          <span class="font-weight-bold">Khu vực</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{ food.areaName }}</span>
-          <a
-            target="_blank"
-            style="margin-left: 5px; color: #000"
-            matTooltip="Bản đồ"
-            *ngIf="!!food.areaName"
-            [href]="'https://www.google.com/maps/place/' + food.areaName"
-            ><mat-icon class="material-icons-outlined app-icon"
-              >place</mat-icon
-            ></a
-          >
+          <span>{{ food.areaName }}</span>
+          <a target="_blank" style="margin-left: 5px; color: #000" matTooltip="Xem trên bản đồ" *ngIf="!!food.areaName"
+            [href]="'https://www.google.com/maps/place/' + food.areaName">
+            <mat-icon class="material-icons-outlined app-icon">place</mat-icon>
+          </a>
         </div>
       </div>
 
       <div class="ingredient-list">
-        <div
-          class="ingredient-list-item"
-          *ngFor="let _ingredient of food.ingredient; index as i"
-        >
+        <div class="ingredient-list-item" *ngFor="let _ingredient of food.ingredient; index as i">
           <div class="d-flex align-items-center ingredient-list-item-header">
             <h4>Thành phần thứ {{ i + 1 }}</h4>
           </div>
@@ -80,10 +61,10 @@
             <div style="width: 85%; margin: 0 auto">
               <div class="d-flex justify-content-center m-bottom-20">
                 <div class="left">
-                  <span>Tên thành phần</span>
+                  <span class="font-weight-bold">Tên thành phần</span>
                 </div>
                 <div class="right">
-                  <span class="font-weight-bold">{{ _ingredient.name }}</span>
+                  <span>{{ _ingredient.name }}</span>
                 </div>
               </div>
             </div>
@@ -91,12 +72,10 @@
             <div style="width: 85%; margin: 0 auto">
               <div class="d-flex justify-content-center m-bottom-20">
                 <div class="left">
-                  <span>Hàm lượng</span>
+                  <span class="font-weight-bold">Hàm lượng</span>
                 </div>
                 <div class="right">
-                  <span class="font-weight-bold"
-                    >{{ _ingredient.amount }}%</span
-                  >
+                  <span>{{ _ingredient.amount }}%</span>
                 </div>
               </div>
             </div>

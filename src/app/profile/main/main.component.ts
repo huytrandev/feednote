@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
+import * as moment from 'moment';
 import {
   AuthService,
   AreaService,
@@ -172,7 +173,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   transformDate(date: number) {
-    return new Date(date);
+    return moment(date).locale('vi').format('LL');
   }
 
   transformRoleName(role: string) {

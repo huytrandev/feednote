@@ -14,7 +14,7 @@ import { SharedModule } from 'src/app/shared';
     CommonModule,
     FeedingDiaryRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class FeedingDiaryModule { }

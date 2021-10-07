@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
+import * as moment from 'moment';
 import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
@@ -93,7 +94,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   transformDate(date: number) {
-    return new Date(date);
+    return moment(date).locale('vi').format('LL');
   }
 
   transformRoleName(role: string) {

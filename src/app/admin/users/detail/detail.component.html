@@ -10,106 +10,91 @@
       <div class="app-title">
         <h2>Chi tiết</h2>
       </div>
-      <app-button
-        [matMenuTriggerFor]="optionsPanel"
-        [iconName]="'more_horiz'"
-        [customClasses]="['app-button-option']"
-      ></app-button>
+      <app-button [matMenuTriggerFor]="optionsPanel" [iconName]="'more_horiz'" [customClasses]="['app-button-option']">
+      </app-button>
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
-        <app-menu-item
-          [iconName]="'drive_file_rename_outline'"
-          [menuItemContent]="'Cập nhật'"
-          [routerLink]="['/admin/users', 'u', user._id]"
-        ></app-menu-item>
+        <app-menu-item [iconName]="'drive_file_rename_outline'" [menuItemContent]="'Cập nhật'"
+          [routerLink]="['/admin/users', 'u', user._id]"></app-menu-item>
         <mat-divider></mat-divider>
-        <app-menu-item
-          [iconName]="'delete_outline'"
-          [menuItemContent]="'Xoá'"
-          (click)="onDelete()"
-        ></app-menu-item>
+        <app-menu-item [iconName]="'delete_outline'" [menuItemContent]="'Xoá'" (click)="onDelete()"></app-menu-item>
       </mat-menu>
     </div>
     <div class="content">
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Tên người dùng</span>
+          <span class="font-weight-bold">Tên người dùng</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{ user.name }}</span>
+          <span>{{ user.name }}</span>
         </div>
       </div>
 
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Chức vụ</span>
+          <span class="font-weight-bold">Chức vụ</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{
+          <span>{{
             transformRoleName(user.role)
-          }}</span>
+            }}</span>
         </div>
       </div>
 
       <div class="d-flex m-bottom-20" *ngIf="!!user.idManager">
         <div class="left">
-          <span>Cán bộ phụ trách</span>
+          <span class="font-weight-bold">Cán bộ phụ trách</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold" *ngIf="manager$ | async as manager">{{
+          <span *ngIf="manager$ | async as manager">{{
             manager.data.name
-          }}</span>
+            }}</span>
         </div>
       </div>
 
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Email</span>
+          <span class="font-weight-bold">Email</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{
+          <span>{{
             !!user.email ? user.email : "..."
-          }}</span>
+            }}</span>
         </div>
       </div>
 
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Số điện thoại</span>
+          <span class="font-weight-bold">Số điện thoại</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{
+          <span>{{
             !!user.phone ? user.phone : "..."
-          }}</span>
+            }}</span>
         </div>
       </div>
 
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Khu vực</span>
+          <span class="font-weight-bold">Khu vực</span>
         </div>
         <div class="right" *ngIf="area$ | async as area">
-          <span class="font-weight-bold">{{ area.data.name }}</span>
-          <a
-            target="_blank"
-            style="margin-left: 5px; color: #000"
-            matTooltip="Bản đồ"
-            [href]="'https://www.google.com/maps/place/' + area.data.name"
-            ><mat-icon class="material-icons-outlined app-icon"
-              >place</mat-icon
-            ></a
-          >
+          <span>{{ area.data.name }}</span>
+          <a target="_blank" style="margin-left: 5px; color: #000" matTooltip="Bản đồ"
+            [href]="'https://www.google.com/maps/place/' + area.data.name">
+            <mat-icon class="material-icons-outlined app-icon">place</mat-icon>
+          </a>
         </div>
       </div>
 
       <div class="d-flex m-bottom-20">
         <div class="left">
-          <span>Tham gia vào</span>
+          <span class="font-weight-bold">Ngày tham gia</span>
         </div>
         <div class="right">
-          <span class="font-weight-bold">{{
-            transformDate(user.createdAt) | date: "dd/MM/YYYY"
-          }}</span>
+          <span>{{
+            transformDate(user.createdAt)
+            }}</span>
         </div>
       </div>
     </div>
