@@ -107,4 +107,11 @@ export class CowBreedService {
       headers: this.headers,
     });
   }
+
+  deleteNutrition(periodId: string, nutritionId: string) {
+    return this.http.delete<any>(
+      `${env.apiUrl}/api/period/${periodId}/nutrition/${nutritionId}`,
+      { headers: this.headers }
+    );
+  }
 }

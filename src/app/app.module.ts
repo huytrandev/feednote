@@ -26,7 +26,7 @@ import { MainModule } from './main/main.module';
     HttpClientModule,
     SharedModule,
     CoreModule,
-    MainModule
+    MainModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

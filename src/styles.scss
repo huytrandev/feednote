@@ -1,13 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
-// @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
 
 @import "./variable";
 @import "~@angular/material/theming";
 $custom-typography: mat-typography-config(
-  $font-family: "Be Vietnam Pro",
+  $font-family: "Be Vietnam Pro, Roboto, Oxygen, Ubuntu, sans-serif",
 );
 @include mat-core($custom-typography);
+
+// $display-4: mat-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+// $display-3: mat-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+// $display-2: mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+// $display-1: mat-typography-level(34px, 40px, 400),
+// $headline: mat-typography-level(24px, 32px, 400),
+// $title: mat-typography-level(20px, 32px, 500),
+// $subheading-2: mat-typography-level(16px, 28px, 400),
+// $subheading-1: mat-typography-level(15px, 24px, 400),
+// $body-2: mat-typography-level(14px, 24px, 500),
+// $body-1: mat-typography-level(14px, 20px, 400),
+// $caption: mat-typography-level(12px, 20px, 400),
+// $button: mat-typography-level(14px, 14px, 500),
+// $input: mat-typography-level(inherit, 1.125, 400)
 
 html,
 body {
@@ -64,6 +78,11 @@ mat-form-field {
 ::-webkit-scrollbar-thumb {
   background: #d1d1d1; 
   border-radius: $border-radius;
+}
+
+.mat-sidenav-content {
+  background-color: #f0f2f5;
+  // overflow: auto;
 }
 
 .mat-menu-panel {

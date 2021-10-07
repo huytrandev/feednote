@@ -23,7 +23,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   error: boolean = false;
   cowBreedIdParam!: string;
-  displayedColumns = ['id', 'name', 'amount', 'unit'];
+  displayedColumns = ['id', 'name', 'amount', 'unit', 'actions'];
 
   constructor(
     private route: ActivatedRoute,
@@ -86,6 +86,35 @@ export class DetailComponent implements OnInit, OnDestroy {
             this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
           }
         });
+      }
+    });
+  }
+
+  onDeleteNutrition(periodId: string, nutritionId: string) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '400px',
+      disableClose: true,
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action } = result;
+      if (action === 'delete') {
+        this.loading = true;
+        this.cowBreedService
+          .deleteNutrition(periodId, nutritionId)
+          .subscribe((res) => {
+            const { status } = res;
+            if (status === true) {
+              this.commonService.openAlert(
+                'Xoá thành phần dinh dưỡng thành công',
+                'success'
+              );
+              this.getCowBreed();
+            } else {
+              this.commonService.openAlert('Xoá thành phần dinh dưỡng thất bại', 'danger');
+            }
+          });
       }
     });
   }
