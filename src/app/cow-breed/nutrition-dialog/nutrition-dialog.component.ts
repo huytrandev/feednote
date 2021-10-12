@@ -35,7 +35,7 @@ export class NutritionDialogComponent implements OnInit {
   getNutrition() {
     this.loading = true;
     this.cowBreedService
-      .getNutritionByPeriod(this.periodId)
+      .getPeriod(this.periodId)
       .pipe(
         map((res) => {
           if (!res.status) {

@@ -1,6 +1,6 @@
-<app-loading *ngIf="loading"></app-loading>
+<app-page-loading *ngIf="loading"></app-page-loading>
+<app-progress-bar *ngIf="loading"></app-progress-bar>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
-  <app-scroll-to-top></app-scroll-to-top>
   <div class="app-title m-bottom-25">
     <h2>{{ isCreate ? "Thêm mới" : "Cập nhật" }} thức ăn</h2>
   </div>

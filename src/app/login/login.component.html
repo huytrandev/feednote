@@ -40,7 +40,6 @@
             type="text"
             formControlName="username"
             autocomplete="username"
-            autofocus
           />
 
           <mat-error *ngIf="f.username.errors?.required"
@@ -59,10 +58,18 @@
           <mat-label>Mật khẩu</mat-label>
           <input
             matInput
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             autocomplete="current-password"
             formControlName="password"
           />
+          <mat-icon
+            matSuffix
+            [matTooltip]="showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'"
+            class="material-icons-outlined app-icon"
+            style="cursor: pointer"
+            (click)="showPassword = !showPassword"
+            >{{ showPassword ? "visibility_off" : "visibility" }}</mat-icon
+          >
 
           <mat-error *ngIf="f.password.errors?.required"
             >Mật khẩu không được trống.</mat-error

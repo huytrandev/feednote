@@ -8,5 +8,4 @@ import { Component, HostListener, Inject } from '@angular/core';
 })
 export class ScrollToTopComponent {
   constructor() {}
-
 }

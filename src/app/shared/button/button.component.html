@@ -6,11 +6,13 @@
   [disabled]="disabledCondition"
   [autofocus]="false"
 >
-  <mat-icon *ngIf="!!iconName" class="material-icons-outlined app-icon">{{ iconName }}</mat-icon>
+  <mat-icon *ngIf="!!iconName" class="material-icons-outlined app-icon">{{
+    iconName
+  }}</mat-icon>
   <mat-spinner
     diameter="16"
     style="display: inline-flex; margin-right: 10px"
     *ngIf="showSpinner"
   ></mat-spinner>
-  {{ buttonContent }}
+  <span>{{ buttonContent }}</span>
 </button>

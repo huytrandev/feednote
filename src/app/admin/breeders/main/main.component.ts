@@ -1,8 +1,11 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   Component,
+  EventEmitter,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -50,7 +53,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     private commonService: CommonService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
@@ -94,7 +98,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   onSearch(e: any) {
     clearTimeout(this.timeOutInput);
     const input = e.target.value;
-    
+
     this.timeOutInput = setTimeout(() => {
       if (input === '' || input.length === 0) {
         this.setParams(0, this.defaultPageSize, '', this.defaultSort);
@@ -127,7 +131,9 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   onPagination(e: any) {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
-    this.setParams(skip, limit, '', this.defaultSort);
+    const { active, direction } = this.sort;
+    const currentSort = `${active} ${direction}`;
+    this.setParams(skip, limit, '', currentSort);
     this.loading = true;
     this.getBreeders();
   }

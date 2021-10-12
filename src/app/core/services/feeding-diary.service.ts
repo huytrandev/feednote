@@ -22,7 +22,8 @@ export class FeedingDiaryService {
       .set('search', inputParams?.search?.toString() || '')
       .set('sort', inputParams?.sort?.toString() || '')
       .set('from', inputParams?.from?.toString() || '')
-      .set('to', inputParams?.to?.toString() || '');
+      .set('to', inputParams?.to?.toString() || '')
+      .set('filter', JSON.stringify(inputParams?.filter) || '');
 
     const options = {
       headers: this.headers,
@@ -30,5 +31,11 @@ export class FeedingDiaryService {
     };
 
     return this.http.get<any>(`${env.apiUrl}/api/diaryFeed`, options);
+  }
+
+  getById(feedingDiaryId: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/diaryFeed/${feedingDiaryId}`, {
+      headers: this.headers,
+    });
   }
 }

@@ -36,7 +36,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loading = true;
     this.getCowBreed();
   }
 
@@ -46,6 +45,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   getCowBreed(): void {
+    this.loading = true;
     this.cowBreedService
       .getById(this.cowBreedIdParam)
       .pipe(
@@ -112,7 +112,10 @@ export class DetailComponent implements OnInit, OnDestroy {
               );
               this.getCowBreed();
             } else {
-              this.commonService.openAlert('Xoá thành phần dinh dưỡng thất bại', 'danger');
+              this.commonService.openAlert(
+                'Xoá thành phần dinh dưỡng thất bại',
+                'danger'
+              );
             }
           });
       }

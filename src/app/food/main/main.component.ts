@@ -57,6 +57,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getFoods() {
+    this.loading = true;
     this.foodService
       .getAll(this.paramsGetFoods)
       .pipe(
@@ -87,13 +88,11 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.timeOutInput = setTimeout(() => {
       if (input === '' || input.length === 0) {
         this.setParams(0, this.defaultPageSize, '', this.defaultSort);
-        this.loading = true;
         this.getFoods();
         return;
       }
 
       this.setParams(0, this.defaultPageSize, input, this.defaultSort);
-      this.loading = true;
       this.getFoods();
     }, 500);
   }
@@ -111,15 +110,15 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setParams(skip, limit, '', sortQuery);
     }
 
-    this.loading = true;
     this.getFoods();
   }
 
   onPagination(e: any) {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
-    this.setParams(skip, limit, '', this.defaultSort);
-    this.loading = true;
+    const { active, direction } = this.sort;
+    const currentSort = `${active} ${direction}`;
+    this.setParams(skip, limit, '', currentSort);
     this.getFoods();
   }
 

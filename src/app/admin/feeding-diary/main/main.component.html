@@ -1,16 +1,154 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
-<app-page-loading *ngIf="loading"></app-page-loading>
-<div *ngIf="!loading" id="diaries-container">
-  <!-- <div class="search-wrapper bg-white shadow rounded">
-    <div class="d-flex justify-content-end align-items-baseline">
-      <mat-form-field appearance="outline" style="width: 40%" floatLabel="always" class="m-bottom-0">
+<div>
+  <div class="search-wrapper bg-white shadow rounded">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <app-button
+        [buttonContent]="'Bộ lọc'"
+        [iconName]="'tune'"
+        [customClasses]="['app-button-grey']"
+        [buttonType]="'button'"
+        (click)="showAdvancedFilter()"
+      ></app-button>
+      <mat-form-field
+        appearance="outline"
+        style="width: 40%"
+        floatLabel="always"
+        class="m-bottom-0"
+      >
         <mat-label>Tìm kiếm</mat-label>
         <input type="search" matInput #input (input)="onSearch($event)" />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
-  </div> -->
-  <div class="diaries-wrapper">
+    <ng-container *ngIf="isShowAdvancedFilter && !loadingFilter">
+      <mat-divider style="margin-bottom: 20px"></mat-divider>
+      <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="20px">
+        <mat-form-field
+          appearance="outline"
+          style="width: 30%"
+          floatLabel="always"
+        >
+          <mat-label>Chọn khoảng thời gian</mat-label>
+          <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
+            <input
+              matStartDate
+              formControlName="from"
+              placeholder="Ngày bắt đầu"
+            />
+            <input
+              matEndDate
+              formControlName="to"
+              placeholder="Ngày kết thúc"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker
+            #picker
+            [disabled]="false"
+          ></mat-date-range-picker>
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          style="width: 30%"
+          floatLabel="always"
+        >
+          <mat-label>Hộ chăn nuôi</mat-label>
+          <mat-select [(ngModel)]="selectedBreeder" name="breeder">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let breeder of breeders" [value]="breeder._id">
+              {{ breeder.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <app-button
+          [buttonContent]="'Khôi phục'"
+          [buttonType]="'button'"
+          [customClasses]="['app-button-grey']"
+          (click)="resetFilter()"
+        ></app-button>
+
+        <app-button
+          [buttonContent]="'Lọc'"
+          [buttonType]="'button'"
+          [customClasses]="['app-button-brown']"
+          (click)="applyFilter()"
+        ></app-button>
+      </div>
+
+      <mat-divider style="margin-top: 20px"></mat-divider>
+    </ng-container>
+
+    <div class="table-container">
+      <table
+        mat-table
+        matSort
+        [dataSource]="dataTableSource"
+        (matSortChange)="onSort($event)"
+      >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>STT</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            {{
+              paginator.pageIndex == 0
+                ? i + 1
+                : 1 + i + paginator.pageIndex * paginator.pageSize
+            }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="idCow">
+          <th mat-header-cell *matHeaderCellDef>Tên</th>
+          <td mat-cell *matCellDef="let element">{{ element.idCow }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Thời gian</th>
+          <td mat-cell *matCellDef="let element">
+            {{ transformDate(element.createdAt) }}
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let element; columns: displayedColumns"
+          (click)="showDetail(element)"
+          style="cursor: pointer"
+          class="app-element-row"
+        ></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="6">
+            Chưa có dữ liệu <strong>{{ input.value }}</strong>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [length]="totalCount"
+        [pageSizeOptions]="[10, 20, 50]"
+        [pageSize]="defaultPageSize"
+        (page)="onPagination($event)"
+        class="mat-paginator-sticky"
+      ></mat-paginator>
+    </div>
+  </div>
+
+  <!-- <div class="diaries-wrapper">
+    <div class="diary bg-white shadow rounded" *ngIf="diaries.length === 0">
+      <p style="text-align: center;" class="font-weight-bold">Không có dữ liệu</p>
+    </div>
     <div class="diary bg-white shadow rounded" *ngFor="let diary of diaries">
       <div class="diary__header">
         <h3>Bò {{ diary.idCow }}</h3>
@@ -74,5 +212,5 @@
       >
       </app-button>
     </div>
-  </div>
+  </div> -->
 </div>

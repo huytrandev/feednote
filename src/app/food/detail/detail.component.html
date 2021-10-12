@@ -1,80 +1,102 @@
-<app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-page-loading *ngIf="loading"></app-page-loading>
-<app-scroll-to-top></app-scroll-to-top>
+<app-progress-bar *ngIf="loading"></app-progress-bar>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy thức ăn</h2>
   </div>
   <div *ngIf="!error">
-    <div class="d-flex align-items-center justify-content-between m-bottom-25">
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      class="m-bottom-25"
+    >
       <div class="app-title">
         <h2>Chi tiết</h2>
       </div>
-      <app-button [matMenuTriggerFor]="optionsPanel" [iconName]="'more_horiz'" [customClasses]="['app-button-option']">
+      <app-button
+        [matMenuTriggerFor]="optionsPanel"
+        [iconName]="'more_horiz'"
+        [customClasses]="['app-button-option']"
+      >
       </app-button>
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
-        <app-menu-item [iconName]="'drive_file_rename_outline'" [menuItemContent]="'Cập nhật'"
-          [routerLink]="['/foods', 'u', food._id]"></app-menu-item>
+        <app-menu-item
+          [iconName]="'drive_file_rename_outline'"
+          [menuItemContent]="'Cập nhật'"
+          [routerLink]="['/foods', 'u', food._id]"
+        ></app-menu-item>
         <mat-divider></mat-divider>
-        <app-menu-item [iconName]="'delete_outline'" [menuItemContent]="'Xoá'" (click)="onDelete()"></app-menu-item>
+        <app-menu-item
+          [iconName]="'delete_outline'"
+          [menuItemContent]="'Xoá'"
+          (click)="onDelete()"
+        ></app-menu-item>
       </mat-menu>
     </div>
     <div class="content">
-      <div class="d-flex m-bottom-20">
-        <div class="left">
+      <div fxLayout="row" class="m-bottom-20">
+        <div fxFlex="25">
           <span class="font-weight-bold">Tên thức ăn</span>
         </div>
-        <div class="right">
+        <div fxFlex>
           <span>{{ food.name }}</span>
         </div>
       </div>
 
-      <div class="d-flex m-bottom-20">
-        <div class="left">
+      <div fxLayout="row" class="m-bottom-20">
+        <div fxFlex="25">
           <span class="font-weight-bold">Đơn vị</span>
         </div>
-        <div class="right">
+        <div fxFlex>
           <span>{{ food.unit }}</span>
         </div>
       </div>
 
-      <div class="d-flex m-bottom-20">
-        <div class="left">
+      <div fxLayout="row" fxLayoutAlign=" center" class="m-bottom-20">
+        <div fxFlex="25">
           <span class="font-weight-bold">Khu vực</span>
         </div>
-        <div class="right">
+        <div fxFlex>
           <span>{{ food.areaName }}</span>
-          <a target="_blank" style="margin-left: 5px; color: #000" matTooltip="Xem trên bản đồ" *ngIf="!!food.areaName"
-            [href]="'https://www.google.com/maps/place/' + food.areaName">
-            <mat-icon class="material-icons-outlined app-icon">place</mat-icon>
+          <a
+            target="_blank"
+            style="margin-left: 5px; color: #000"
+            matTooltip="Xem trên bản đồ"
+            *ngIf="!!food.areaName"
+            [href]="'https://www.google.com/maps/place/' + food.areaName"
+          >
+            <mat-icon class="material-icons-outlined app-icon" style="font-size: 1rem;">place</mat-icon>
           </a>
         </div>
       </div>
 
       <div class="ingredient-list">
-        <div class="ingredient-list-item" *ngFor="let _ingredient of food.ingredient; index as i">
-          <div class="d-flex align-items-center ingredient-list-item-header">
-            <h4>Thành phần thứ {{ i + 1 }}</h4>
+        <div
+          class="ingredient-list-item"
+          *ngFor="let _ingredient of food.ingredient; index as i"
+        >
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="ingredient-list-item-header">
+            <span class="font-weight-bold">Thành phần thứ {{ i + 1 }}</span>
           </div>
           <div class="period-list-item-content">
             <div style="width: 85%; margin: 0 auto">
-              <div class="d-flex justify-content-center m-bottom-20">
-                <div class="left">
+              <div fxLayout="row" class="m-bottom-20">
+                <div fxFlex="25">
                   <span class="font-weight-bold">Tên thành phần</span>
                 </div>
-                <div class="right">
+                <div fxFlex>
                   <span>{{ _ingredient.name }}</span>
                 </div>
               </div>
             </div>
 
             <div style="width: 85%; margin: 0 auto">
-              <div class="d-flex justify-content-center m-bottom-20">
-                <div class="left">
+              <div fxLayout="row" class="m-bottom-20">
+                <div fxFlex="25">
                   <span class="font-weight-bold">Hàm lượng</span>
                 </div>
-                <div class="right">
+                <div fxFlex>
                   <span>{{ _ingredient.amount }}%</span>
                 </div>
               </div>

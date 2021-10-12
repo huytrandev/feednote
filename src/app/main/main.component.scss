@@ -49,10 +49,11 @@ mat-toolbar .avatar img {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-left: 10px;
 }
 mat-toolbar .avatar span {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  margin-left: 10px;
 }
 .menu-avatar {
   display: inline-flex;
@@ -101,7 +102,7 @@ mat-nav-list {
 mat-nav-list mat-list-item {
   transition: all 200ms ease;
   border-radius: $border-radius;
-  font-size: 14px;
+  font-size: 13px !important;
 }
 mat-nav-list mat-list-item:not(:last-child) {
   margin-bottom: 7px;
@@ -110,6 +111,7 @@ mat-nav-list mat-list-item:not(:last-child) {
   background: $brown-primary !important;
   box-shadow: $box-shadow;
   color: #fff;
+  font-weight: 500;
   border-radius: $border-radius;
 }
 .active img {
