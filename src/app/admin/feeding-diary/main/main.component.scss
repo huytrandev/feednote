@@ -10,6 +10,36 @@ table {
   position: relative;
 }
 
+.advanced-filter-container {
+  position: relative;
+  width: 50%;
+  text-align: end;
+  margin-right: 10px;
+
+  & .filter {
+    position: absolute;
+    width: 90%;
+    background: white;
+    padding: 20px;
+    box-shadow: $box-shadow;
+    border-radius: $border-radius;
+    top: 50px;
+    right: 0;
+  }
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.buttons-group :not(:last-child) {
+  margin-right: 20px;
+}
+
 .diaries-wrapper {
   margin: 0 auto;
   width: 60%;

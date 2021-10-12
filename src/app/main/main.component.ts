@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {  Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/services';
 
 @Component({
@@ -8,6 +7,7 @@ import { AuthService } from '../core/services';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
+  loading: boolean;
   currentUser: any = null;
   isExpanded: boolean = true;
   managerNav = [
@@ -18,7 +18,7 @@ export class MainComponent implements OnInit {
     },
     {
       path: 'standard-servings',
-      title: 'Khẩu phần ăn',
+      title: 'Khẩu phần ăn chuẩn',
       icon: 'assets/icons/scale.svg',
     },
     {
@@ -51,7 +51,7 @@ export class MainComponent implements OnInit {
     },
     {
       path: 'standard-servings',
-      title: 'Khẩu phần ăn',
+      title: 'Khẩu phần ăn chuẩn',
       icon: 'assets/icons/scale.svg',
     },
     {
@@ -70,19 +70,17 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/statistics.svg',
     },
   ];
-
-  loading: boolean = true;
   currentYear = new Date().getFullYear();
 
-  constructor(private authService: AuthService, private router: Router) {
-    // this.currentUser = this.authService.currentUserValue;
+  constructor(
+    private authService: AuthService,
+  ) {
     this.authService.currentUser.subscribe((user) => (this.currentUser = user));
   }
 
   ngOnInit(): void {}
 
   logout(): void {
-    // this.authService.revokeToken();
     this.authService.logout();
   }
 }

@@ -29,7 +29,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loading = true;
     this.getCowBreed();
   }
 
@@ -39,6 +38,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   getCowBreed(): void {
+    this.loading = true;
     this.foodService
       .getById(this.foodIdParam)
       .pipe(

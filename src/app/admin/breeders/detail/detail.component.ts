@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
@@ -14,7 +20,7 @@ import { DialogComponent } from 'src/app/shared';
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss'],
 })
-export class DetailComponent implements OnInit, OnDestroy {
+export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   breeder!: User;
   loading: boolean = true;
@@ -34,32 +40,36 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.breederId = this.route.snapshot.paramMap.get('id')!;
   }
 
-  ngOnInit(): void {
-    this.getBreeder();
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
+  ngAfterViewInit(): void {
+    this.getBreeder();
+  }
+
   getBreeder() {
     this.loading = true;
-    this.userService.getBreederById(this.breederId).pipe(
-      takeUntil(this.ngUnsubscribe),
-      switchMap((user) => {
-        return this.areaService.getById(user.data.idArea).pipe(
-          map((area) => {
-            return { ...user.data, areaName: area.data.name };
-          })
-        );
-      }),
-      catchError((_) => this.router.navigate(['not-found']))
-    )
-    .subscribe(val => {
-      this.breeder = val;
-      this.loading = false;
-    });
+    this.userService
+      .getBreederById(this.breederId)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        switchMap((user) => {
+          return this.areaService.getById(user.data.idArea).pipe(
+            map((area) => {
+              return { ...user.data, areaName: area.data.name };
+            })
+          );
+        }),
+        catchError((_) => this.router.navigate(['not-found']))
+      )
+      .subscribe((val) => {
+        this.breeder = val;
+        this.loading = false;
+      });
   }
 
   transformDate(date: number) {

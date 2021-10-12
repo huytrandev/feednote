@@ -59,6 +59,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   getCowBreeds(): void {
+    this.loading = true;
     this.cowBreedService
       .getAll(this.paramsGetCowBreeds)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -77,13 +78,11 @@ export class MainComponent implements OnInit, OnDestroy {
     this.timeOutInput = setTimeout(() => {
       if (input === '' || input.length === 0) {
         this.setParams(0, this.defaultPageSize, '', this.defaultSort);
-        this.loading = true;
         this.getCowBreeds();
         return;
       }
 
       this.setParams(0, this.defaultPageSize, input, this.defaultSort);
-      this.loading = true;
       this.getCowBreeds();
     }, 500);
   }
@@ -101,15 +100,15 @@ export class MainComponent implements OnInit, OnDestroy {
       this.setParams(skip, limit, '', sortQuery);
     }
 
-    this.loading = true;
     this.getCowBreeds();
   }
 
   onPagination(e: any) {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
-    this.setParams(skip, limit, '', this.defaultSort);
-    this.loading = true;
+    const { active, direction } = this.sort;
+    const currentSort = `${active} ${direction}`;
+    this.setParams(skip, limit, '', currentSort);
     this.getCowBreeds();
   }
 

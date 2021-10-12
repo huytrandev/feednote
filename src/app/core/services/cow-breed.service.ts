@@ -46,8 +46,14 @@ export class CowBreedService {
     );
   }
 
-  getNutritionByPeriod(periodId: string) {
+  getPeriod(periodId: string) {
     return this.http.get<any>(`${env.apiUrl}/api/period/${periodId}`, {
+      headers: this.headers,
+    });
+  }
+
+  getFoodByCowBreed(cowBreedId: string) {
+    return this.http.get<any>(`${env.apiUrl}/api/cowBreed/${cowBreedId}/foods`, {
       headers: this.headers,
     });
   }

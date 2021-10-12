@@ -1,9 +1,4 @@
 <div class="app-container">
-  <mat-progress-bar
-    *ngIf="false"
-    class="app-progress"
-    mode="indeterminate"
-  ></mat-progress-bar>
   <mat-toolbar class="app-toolbar">
     <button
       style="margin-right: 6px"
@@ -14,24 +9,10 @@
     </button>
     <h1 class="app-name" [routerLink]="['/']">FeedNote</h1>
     <span class="app-spacer"></span>
-    <div class="avatar" [matMenuTriggerFor]="profilePanel">
-      <img src="assets/images/avatar.png" alt="" />
+    <div class="avatar" [matMenuTriggerFor]="profilePanel" routerLinkActive="avatar-active">
       <span class="user-name">{{ currentUser.name }}</span>
+      <img src="assets/images/avatar.png" alt="" />
     </div>
-    <button
-      mat-icon-button
-      class="nav-icon favorite-icon"
-      style="margin-left: 5px"
-      [matMenuTriggerFor]="notifications"
-    >
-      <mat-icon
-        class="material-icons-outlined app-icon"
-        matBadge="2"
-        matBadgeColor="warn"
-        matBadgeSize="small"
-        >notifications</mat-icon
-      >
-    </button>
     <mat-menu #profilePanel="matMenu" xPosition="before">
       <button mat-menu-item [routerLink]="['profile']">
         <mat-icon class="material-icons-outlined app-icon"
@@ -43,14 +24,6 @@
       <button mat-menu-item (click)="logout()">
         <mat-icon class="material-icons-outlined app-icon">logout</mat-icon>
         <span>Đăng xuất</span>
-      </button>
-    </mat-menu>
-    <mat-menu #notifications="matMenu" xPosition="before">
-      <button mat-menu-item>
-        <span>Thông báo 1</span>
-      </button>
-      <button mat-menu-item>
-        <span>Thông báo 1</span>
       </button>
     </mat-menu>
   </mat-toolbar>
@@ -102,6 +75,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
+      <!-- <app-scroll-to-top></app-scroll-to-top> -->
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

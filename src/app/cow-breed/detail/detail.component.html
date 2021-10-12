@@ -1,19 +1,15 @@
-<app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-page-loading *ngIf="loading"></app-page-loading>
-<app-scroll-to-top></app-scroll-to-top>
+<app-progress-bar *ngIf="loading"></app-progress-bar>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy giống bò</h2>
   </div>
   <div *ngIf="!error">
     <div
-      class="
-        d-flex
-        align-items-center
-        justify-content-between
-        app-title
-        m-bottom-25
-      "
+      div
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      class="app-title m-bottom-25"
     >
       <h2>Chi tiết</h2>
       <app-button
@@ -38,20 +34,20 @@
       </mat-menu>
     </div>
     <div class="content">
-      <div class="d-flex m-bottom-20">
-        <div class="left">
+      <div fxLayout="row" class="m-bottom-20">
+        <div fxFlex="25">
           <span class="font-weight-bold">Tên giống bò</span>
         </div>
-        <div class="right">
+        <div fxFlex>
           <span>{{ cowBreed.name }}</span>
         </div>
       </div>
 
-      <div class="d-flex m-bottom-20">
-        <div class="left">
+      <div fxLayout="row" class="m-bottom-20">
+        <div fxFlex="25">
           <span class="font-weight-bold">Thời gian nuôi</span>
         </div>
-        <div class="right">
+        <div fxFlex>
           <span>{{ cowBreed.farmingTime }} ngày</span>
         </div>
       </div>
@@ -62,6 +58,8 @@
           *ngFor="let period of cowBreed.periods; index as i"
         >
           <div
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
             class="
               d-flex
               justify-content-between
@@ -69,37 +67,49 @@
               period-list-item-header
             "
           >
-            <h4>Giai đoạn: {{ period.name }}</h4>
+            <span class="font-weight-bold">Giai đoạn: {{ period.name }}</span>
           </div>
           <div class="period-list-item-content">
             <div style="width: 85%; margin: 0 auto">
-              <div class="d-flex justify-content-center m-bottom-20">
-                <div class="left">
+              <div
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+                class="m-bottom-20"
+              >
+                <div fxFlex="25">
                   <span class="font-weight-bold">Ngày bắt đầu</span>
                 </div>
-                <div class="right">
+                <div fxFlex>
                   <span>{{ period.startDay }}</span>
                 </div>
               </div>
             </div>
 
             <div style="width: 85%; margin: 0 auto">
-              <div class="d-flex justify-content-center m-bottom-20">
-                <div class="left">
+              <div
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+                class="m-bottom-20"
+              >
+                <div fxFlex="25">
                   <span class="font-weight-bold">Ngày kết thúc</span>
                 </div>
-                <div class="right">
+                <div fxFlex>
                   <span>{{ period.endDay }}</span>
                 </div>
               </div>
             </div>
 
             <div style="width: 85%; margin: 0 auto">
-              <div class="d-flex justify-content-center m-bottom-25">
-                <div class="left">
+              <div
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+                class="m-bottom-20"
+              >
+                <div fxFlex="25">
                   <span class="font-weight-bold">Cân nặng</span>
                 </div>
-                <div class="right">
+                <div fxFlex>
                   <span>{{ period.weight }} kg</span>
                 </div>
               </div>
@@ -108,12 +118,9 @@
             <mat-divider></mat-divider>
             <div style="width: 85%; margin: 0 auto">
               <div
-                class="
-                  d-flex
-                  justify-content-between
-                  align-items-center
-                  m-bottom-10 m-top-10
-                "
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+                class="m-bottom-10 m-top-10"
               >
                 <span class="font-weight-bold">Bảng nhu cầu dinh dưỡng</span>
                 <app-button-icon
@@ -178,7 +185,10 @@
                       <td mat-cell *matCellDef="let element">
                         <app-button-icon
                           matTooltip="Xoá"
-                          (click)="$event.stopPropagation(); onDeleteNutrition(period._id, element.idNutrition)"
+                          (click)="
+                            $event.stopPropagation();
+                            onDeleteNutrition(period._id, element.idNutrition)
+                          "
                           [iconName]="'delete_outline'"
                           [customClasses]="['color-red']"
                         ></app-button-icon>

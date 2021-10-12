@@ -159,7 +159,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
   removeIngredient(index: number, ingredient: any, e: any) {
     e.preventDefault();
-    if (!!this.isCreate || !this.food['ingredient']) {
+    if (!!this.isCreate || !this.food['ingredient'] || index > this.food['ingredient'].length - 1) {
       this.ingredient.removeAt(index);
       return;
     }

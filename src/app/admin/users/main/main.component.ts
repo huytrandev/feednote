@@ -113,15 +113,15 @@ export class MainComponent implements OnInit, OnDestroy {
       this.setParams(skip, limit, '', sortQuery);
     }
 
-    this.loading = true;
     this.getUsers();
   }
 
   onPagination(e: any) {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
-    this.setParams(skip, limit, '', this.defaultSort);
-    this.loading = true;
+    const { active, direction } = this.sort;
+    const currentSort = `${active} ${direction}`;
+    this.setParams(skip, limit, '', currentSort);
     this.getUsers();
   }
 
