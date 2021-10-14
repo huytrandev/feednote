@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Optional,
+  ViewChild,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -6,15 +13,15 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import {
-  AreaService,
-  CommonService,
-  FoodService,
-} from 'src/app/core/services';
+import { AreaService, CommonService, FoodService } from 'src/app/core/services';
 import { Vietnamese } from 'src/app/core/validations';
 import { DialogComponent } from 'src/app/shared';
 
@@ -28,31 +35,29 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   form!: FormGroup;
   submitted: boolean = false;
-  food: any;
+  food!: any;
   loading: boolean = false;
   ingredientToRemove: any = [];
-  isCreate: boolean = true;
-  foodId!: string;
   areas: any = [];
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
     private foodService: FoodService,
     private areaService: AreaService,
     private commonService: CommonService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public dialogRef: MatDialogRef<CreateUpdateComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.foodId = this.route.snapshot.paramMap.get('id')!;
-    this.isCreate = !this.foodId;
+    this.food = data.food;
   }
 
   ngOnInit(): void {
     this.getAreas();
     this.buildForm();
-    if (!this.isCreate) {
-      this.getCowBreed();
+    if (!!this.food) {
+      this.setValueForForm(this.food);
     }
   }
 
@@ -78,20 +83,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         this.areas = data.items;
         this.loading = false;
       });
-  }
-
-  getCowBreed(): void {
-    this.loading = true;
-    this.foodService.getById(this.foodId).subscribe((res) => {
-      const { data, status } = res;
-      if (!status) {
-        this.loading = false;
-        return;
-      }
-      this.food = data;
-      this.setValueForForm(this.food);
-      this.loading = false;
-    });
   }
 
   get f() {
@@ -159,7 +150,11 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
   removeIngredient(index: number, ingredient: any, e: any) {
     e.preventDefault();
-    if (!!this.isCreate || !this.food['ingredient'] || index > this.food['ingredient'].length - 1) {
+    if (
+      !this.food ||
+      !this.food['ingredient'] ||
+      index > this.food['ingredient'].length - 1
+    ) {
       this.ingredient.removeAt(index);
       return;
     }
@@ -176,7 +171,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.foodService
-          .deleteIngredient(this.foodId, idIngredient)
+          .deleteIngredient(this.food._id, idIngredient)
           .subscribe((res) => {
             const { status } = res;
             if (!!status) {
@@ -198,7 +193,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    if (!!this.isCreate) {
+    if (!!this.food) {
       this.buildForm();
     } else {
       this.setValueForForm(this.food);
@@ -208,14 +203,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (!this.form.valid) return;
 
-    const successNotification = !!this.isCreate
-      ? 'Tạo mới thức ăn thành công'
-      : 'Cập nhật thức ăn thành công';
-    const failureNotification = !!this.isCreate
-      ? 'Tạo mới thức ăn thất bại'
-      : 'Cập nhật thức ăn thất bại';
-
-    if (!!this.isCreate) {
+    if (!this.food) {
       this.submitted = true;
       this.foodService.create(this.form.value).subscribe(
         (res: any) => {
@@ -224,41 +212,57 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
             this.submitted = false;
             this.form.reset();
             this.formGroupDirective.resetForm();
-            this.commonService.openAlert(failureNotification, 'danger');
+            this.dialogRef.close({
+              type: 'create',
+              status: 'fail',
+            });
             return;
           }
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.commonService.openAlert(successNotification, 'success');
+          this.dialogRef.close({
+            type: 'create',
+            status: 'success',
+          });
         },
         (error: any) => {
           this.submitted = false;
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.commonService.openAlert(failureNotification, 'danger');
+          this.dialogRef.close({
+            type: 'create',
+            status: 'fail',
+          });
         }
       );
     } else {
       this.submitted = true;
-      this.foodService.update(this.foodId, this.form.value).subscribe(
+      this.foodService.update(this.food._id, this.form.value).subscribe(
         (res) => {
           const { status } = res;
           if (!status) {
             this.submitted = false;
-            this.setValueForForm(this.food);
-            this.commonService.openAlert(failureNotification, 'danger');
+            this.dialogRef.close({
+              type: 'update',
+              status: 'fail',
+            });
             return;
           }
 
           this.submitted = false;
-          this.commonService.reloadComponent();
-          this.commonService.openAlert(successNotification, 'success');
+          this.dialogRef.close({
+            type: 'update',
+            status: 'success',
+          });
         },
         (error) => {
           this.submitted = false;
           this.submitted = false;
           this.setValueForForm(this.food);
-          this.commonService.openAlert(failureNotification, 'danger');
+          this.dialogRef.close({
+            type: 'update',
+            status: 'fail',
+          });
         }
       );
     }
@@ -272,5 +276,11 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       return false;
     }
     return true;
+  }
+
+  onClose() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    this.dialogRef.close({ type: 'close', status: null });
   }
 }

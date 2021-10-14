@@ -31,14 +31,11 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Hàm lượng <span class="color-red">(*)</span></mat-label>
-        <input type="number" matInput min="0" formControlName="amount" />
+        <mat-label>Đơn vị đo <span class="color-red">(*)</span></mat-label>
+        <input type="text" matInput maxlength="100" formControlName="unit" />
 
-        <mat-error *ngIf="f.amount.hasError('required')"
-          >Hàm lượng không được trống.</mat-error
-        >
-        <mat-error *ngIf="f.amount.hasError('min')"
-          >Hàm lượng không phải lớn hơn 0.</mat-error
+        <mat-error *ngIf="f.unit.hasError('required')"
+          >Đơn vị đo không được trống.</mat-error
         >
       </mat-form-field>
 
@@ -47,11 +44,14 @@
         style="width: 100%"
         floatLabel="always"
       >
-        <mat-label>Đơn vị đo <span class="color-red">(*)</span></mat-label>
-        <input type="text" matInput maxlength="100" formControlName="unit" />
+        <mat-label>Hàm lượng <span class="color-red">(*)</span></mat-label>
+        <input type="number" matInput min="0" formControlName="amount" />
 
-        <mat-error *ngIf="f.unit.hasError('required')"
-          >Đơn vị đo không được trống.</mat-error
+        <mat-error *ngIf="f.amount.hasError('required')"
+          >Hàm lượng không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.amount.hasError('min')"
+          >Hàm lượng không phải lớn hơn 0.</mat-error
         >
       </mat-form-field>
 

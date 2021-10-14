@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Optional,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -13,6 +20,7 @@ import { catchError, map, takeUntil } from 'rxjs/operators';
 import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
 import { Vietnamese } from 'src/app/core/validations';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-update',
@@ -29,17 +37,16 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   areas: Area[] = [];
   breeders: User[] = [];
   showPassword: boolean = false;
-  breederId!: string;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
     private userService: UserService,
     private areaService: AreaService,
-    private commonService: CommonService
+    public dialogRef: MatDialogRef<CreateUpdateComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.breederId = this.route.snapshot.paramMap.get('id')!;
+    this.breeder = data.breeder;
   }
 
   get f() {
@@ -50,9 +57,9 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     this.getAreas();
     this.getBreeders();
     this.buildForm();
-    if (!!this.breederId) {
+    if (!!this.breeder) {
       this.removeFormFields();
-      this.getBreeder();
+      this.setValueForForm(this.breeder);
     }
   }
 
@@ -105,29 +112,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       });
   }
 
-  getBreeder() {
-    this.loading = true;
-    this.userService
-      .getBreederById(this.breederId)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        map((res) => {
-          const { status } = res;
-          if (!status) {
-            return null;
-          }
-          const { data } = res;
-          return { ...data };
-        }),
-        catchError((_) => this.router.navigate(['not-found']))
-      )
-      .subscribe((data: any) => {
-        this.breeder = data;
-        this.setValueForForm({ ...this.breeder });
-        this.loading = false;
-      });
-  }
-
   validateUsernameExist(control: AbstractControl) {
     return this.userService.getAllBreeders().pipe(
       map((res) => {
@@ -174,49 +158,51 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (!this.form.valid) return;
-
-    const successNotification = !this.breederId
-      ? 'Tạo mới hộ dân thành công'
-      : 'Cập nhật hộ dân thành công';
-    const failureNotification = !this.breederId
-      ? 'Tạo mới hộ dân thất bại'
-      : 'Cập nhật hộ dân thất bại';
     this.submitted = true;
-
-    if (!this.breederId) {
+    if (!this.breeder) {
       this.userService.createBreeder(this.form.value).subscribe((res) => {
         const { status } = res;
         if (!status) {
-          this.commonService.openAlert(failureNotification, 'danger');
           this.submitted = false;
+          this.dialogRef.close({
+            type: 'create',
+            status: 'fail',
+          });
           return;
         }
 
         this.submitted = false;
-        this.formGroupDirective.resetForm();
-        this.commonService.openAlert(successNotification, 'success');
+        this.dialogRef.close({
+          type: 'create',
+          status: 'success',
+        });
       });
     } else {
       this.userService
-        .updateBreeder(this.breederId, this.form.value)
+        .updateBreeder(this.breeder._id, this.form.value)
         .subscribe((res) => {
           const { status } = res;
           if (!status) {
-            this.commonService.openAlert(failureNotification, 'danger');
             this.submitted = false;
+            this.dialogRef.close({
+              type: 'update',
+              status: 'fail',
+            });
             return;
           }
 
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.commonService.openAlert(successNotification, 'success');
-          this.commonService.reloadComponent();
+          this.dialogRef.close({
+            type: 'update',
+            status: 'success',
+          });
         });
     }
   }
 
   onReset() {
-    if (!this.breederId) {
+    if (!this.breeder) {
       this.buildForm();
       return;
     }
@@ -227,5 +213,11 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     for (let propertyName in this.form.controls) {
       this.form.controls[propertyName].patchValue(breeder[propertyName]);
     }
+  }
+
+  onClose() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    this.dialogRef.close({ type: 'close', status: null });
   }
 }

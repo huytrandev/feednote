@@ -7,6 +7,8 @@ import * as moment from 'moment';
 import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
+import { CreateUpdateComponent } from '../create-update/create-update.component';
+import { ResetPasswordDialogComponent } from '../reset-password-dialog/reset-password-dialog.component';
 
 @Component({
   selector: 'app-detail',
@@ -94,7 +96,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   transformDate(date: number) {
-    return moment(date).locale('vi').format('LL');
+    return moment(date).locale('vi').format('L');
   }
 
   transformRoleName(role: string) {
@@ -108,5 +110,43 @@ export class DetailComponent implements OnInit, OnDestroy {
       default:
         return 'Hộ nông dân';
     }
+  }
+
+  updateUser(user: any) {
+    const dialogRef = this.dialog.open(CreateUpdateComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '50%',
+      minWidth: '550px',
+      maxWidth: '700px',
+      minHeight: '250px',
+      maxHeight: '100vh',
+      disableClose: true,
+      data: {
+        user
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      const { type, status } = res;
+      if (type === 'update' && status === 'success') {
+        this.commonService.openAlert('Cập nhật người dùng thành công', 'success');
+        this.getUser();
+      } else if (type === 'update' && status === 'failure') {
+        this.commonService.openAlert('Cập nhật người dùng thất bại', 'danger');
+      }
+    });
+  }
+
+  resetPassword(user: any) {
+    this.dialog.open(ResetPasswordDialogComponent, {
+      width: '500px',
+      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false,
+      data: {
+        user
+      },
+    });
   }
 }

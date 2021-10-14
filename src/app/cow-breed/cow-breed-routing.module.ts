@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreateUpdateComponent } from './create-update/create-update.component';
 import { DetailComponent } from './detail/detail.component';
 import { MainComponent } from './main/main.component';
+import { PeriodDetailComponent } from './period-detail/period-detail.component';
 
 const routes: Routes = [
   {
@@ -10,17 +10,14 @@ const routes: Routes = [
     component: MainComponent,
   },
   {
-    path: 'c',
-    component: CreateUpdateComponent,
-  },
-  {
-    path: 'u/:id',
-    component: CreateUpdateComponent,
-  },
-  {
     path: 'd/:id',
     component: DetailComponent,
   },
+  {
+    path: 'd/:idCowBreed/period/:id',
+    component: PeriodDetailComponent,
+    pathMatch: 'full',
+  }
 ];
 
 @NgModule({

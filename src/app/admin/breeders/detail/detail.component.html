@@ -1,5 +1,6 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-page-loading *ngIf="loading"></app-page-loading>
+<app-back-button [routerLink]="['/admin/breeders']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy hộ dân</h2>
@@ -24,7 +25,7 @@
         <app-menu-item
           [iconName]="'drive_file_rename_outline'"
           [menuItemContent]="'Cập nhật'"
-          [routerLink]="['/admin/breeders', 'u', breeder._id]"
+          (click)="updateBreeder(breeder)"
         ></app-menu-item>
         <mat-divider></mat-divider>
         <app-menu-item

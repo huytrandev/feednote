@@ -81,6 +81,10 @@ export class DialogCreateNutritionComponent implements OnInit {
             'Thêm nhu cầu dinh dưỡng thất bại',
             'danger'
           );
+          this.dialogRef.close({
+            type: 'create',
+            status: 'fail'
+          });
           return;
         }
 
@@ -89,7 +93,10 @@ export class DialogCreateNutritionComponent implements OnInit {
           'Thêm nhu cầu dinh dưỡng thành công',
           'success'
         );
-        this.dialogRef.close({ success: true });
+        this.dialogRef.close({
+          type: 'create',
+          status: 'success'
+        });
       });
   }
 
@@ -98,6 +105,9 @@ export class DialogCreateNutritionComponent implements OnInit {
   }
 
   onClose() {
-    this.dialogRef.close();
+    this.dialogRef.close({
+      type: 'close',
+      status: null
+    });
   }
 }

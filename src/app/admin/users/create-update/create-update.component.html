@@ -1,20 +1,16 @@
-<app-progress-bar *ngIf="loading"></app-progress-bar>
-<app-page-loading *ngIf="loading"></app-page-loading>
-<div *ngIf="!loading" class="wrapper bg-white rounded shadow">
-  <div class="d-flex m-bottom-25 align-items-center justify-content-between">
-    <div class="app-title">
-      <h2>{{ !!user ? "Cập nhật" : "Tạo mới" }} người dùng</h2>
-    </div>
-    <app-button
-      matTooltip="Khôi phục mật khẩu"
-      [iconName]="'restart_alt'"
-      [customClasses]="['app-button-option']"
-      (click)="resetPassword()"
-    ></app-button>
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <div fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
+    <h2>{{ !!user ? "Cập nhật" : "Tạo mới" }} người dùng</h2>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
   </div>
 
-  <div class="content">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="dialog-content">
       <mat-form-field
         appearance="outline"
         style="width: 100%"
@@ -90,14 +86,6 @@
           style="cursor: pointer"
           (click)="showPassword = !showPassword"
           >{{ showPassword ? "visibility_off" : "visibility" }}</mat-icon
-        >
-        <mat-icon
-          *ngIf="userId"
-          matSuffix
-          matTooltip="Tạo mật khẩu"
-          class="material-icons-outlined app-icon"
-          style="cursor: pointer; margin-left: 5px"
-          >autorenew</mat-icon
         >
         <mat-error *ngIf="f.password.errors?.required"
           >Mật khẩu không được trống.</mat-error
@@ -189,24 +177,22 @@
           >Vui lòng chọn khu vực.</mat-error
         >
       </mat-form-field>
+    </div>
+    <div class="button-group" mat-dialog-actions>
+      <app-button
+        [buttonType]="'submit'"
+        [disabledCondition]="!form.valid || !form.dirty || submitted"
+        [customClasses]="['app-button-brown']"
+        [buttonContent]="!!user ? 'Cập nhật' : 'Tạo mới'"
+        [showSpinner]="submitted"
+      ></app-button>
 
-      <mat-divider></mat-divider>
-      <div class="button-group">
-        <app-button
-          [buttonType]="'submit'"
-          [disabledCondition]="!form.valid || !form.dirty || submitted"
-          [customClasses]="['app-button-brown']"
-          [buttonContent]="!!user ? 'Cập nhật' : 'Tạo mới'"
-          [showSpinner]="submitted"
-        ></app-button>
-
-        <app-button
-          [buttonType]="'button'"
-          [customClasses]="['app-button-grey']"
-          [buttonContent]="'Huỷ bỏ'"
-          (click)="onReset()"
-        ></app-button>
-      </div>
-    </form>
-  </div>
+      <app-button
+        [buttonType]="'button'"
+        [customClasses]="['app-button-grey']"
+        [buttonContent]="'Huỷ bỏ'"
+        (click)="onReset()"
+      ></app-button>
+    </div>
+  </form>
 </div>

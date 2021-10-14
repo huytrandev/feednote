@@ -16,6 +16,7 @@ import { catchError, takeUntil } from 'rxjs/operators';
 import { CommonService, FoodService } from 'src/app/core/services';
 import { FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
+import { CreateUpdateComponent } from '../create-update/create-update.component';
 
 @Component({
   selector: 'app-main',
@@ -117,8 +118,8 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
     const { active, direction } = this.sort;
-    const currentSort = `${active} ${direction}`;
-    this.setParams(skip, limit, '', currentSort);
+    let sortQuery = active ? `${active} ${direction}` : this.defaultSort;
+    this.setParams(skip, limit, '', sortQuery);
     this.getFoods();
   }
 
@@ -144,6 +145,37 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
         });
+      }
+    });
+  }
+
+  createUpdateFood(food?: any) {
+    const dialogRef = this.dialog.open(CreateUpdateComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '50%',
+      minWidth: '550px',
+      maxWidth: '700px',
+      minHeight: '250px',
+      maxHeight: '100vh',
+      disableClose: true,
+      data: {
+        food
+      }
+    });
+    
+    dialogRef.afterClosed().subscribe((res) => {
+      const { type, status } = res;
+      if (type === 'create' && status === 'success') {
+        this.commonService.openAlert('Tạo thức ăn thành công', 'success');
+        this.getFoods();
+      } else if (type === 'create' && status === 'failure') {
+        this.commonService.openAlert('Tạo thức ăn thất bại', 'danger');
+      } else if (type === 'update' && status === 'success') {
+        this.commonService.openAlert('Cập nhật thức ăn thành công', 'success');
+        this.getFoods();
+      } else if (type === 'update' && status === 'failure') {
+        this.commonService.openAlert('Cập nhật thức ăn thất bại', 'danger');
       }
     });
   }

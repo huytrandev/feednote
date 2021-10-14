@@ -30,11 +30,11 @@ export class FeedingDiaryService {
       params,
     };
 
-    return this.http.get<any>(`${env.apiUrl}/api/diaryFeed`, options);
+    return this.http.get<any>(`${env.apiUrl}/diaryFeed`, options);
   }
 
   getById(feedingDiaryId: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/diaryFeed/${feedingDiaryId}`, {
+    return this.http.get<any>(`${env.apiUrl}/diaryFeed/${feedingDiaryId}`, {
       headers: this.headers,
     });
   }

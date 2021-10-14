@@ -1,11 +1,8 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   Component,
-  EventEmitter,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,6 +16,7 @@ import { catchError, takeUntil } from 'rxjs/operators';
 import { CommonService, UserService } from 'src/app/core/services';
 import { FilterDto, User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
+import { CreateUpdateComponent } from '../create-update/create-update.component';
 
 @Component({
   selector: 'app-main',
@@ -132,8 +130,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
     const { active, direction } = this.sort;
-    const currentSort = `${active} ${direction}`;
-    this.setParams(skip, limit, '', currentSort);
+    let sortQuery = active ? `${active} ${direction}` : this.defaultSort;
+    this.setParams(skip, limit, '', sortQuery);
     this.loading = true;
     this.getBreeders();
   }
@@ -143,6 +141,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '400px',
       disableClose: true,
       autoFocus: false,
+      restoreFocus: false,
     });
 
     const { _id } = element;
@@ -160,6 +159,37 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
             this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
         });
+      }
+    });
+  }
+
+  createUpdateBreeder(breeder?: any) {
+    const dialogRef = this.dialog.open(CreateUpdateComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '50%',
+      minWidth: '550px',
+      maxWidth: '700px',
+      minHeight: '250px',
+      maxHeight: '100vh',
+      disableClose: true,
+      data: {
+        breeder
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      const { type, status } = res;
+      if (type === 'create' && status === 'success') {
+        this.commonService.openAlert('Tạo hộ chăn nuôi thành công', 'success');
+        this.getBreeders();
+      } else if (type === 'create' && status === 'failure') {
+        this.commonService.openAlert('Tạo hộ chăn nuôi thất bại', 'danger');
+      } else if (type === 'update' && status === 'success') {
+        this.commonService.openAlert('Cập nhật hộ chăn nuôi thành công', 'success');
+        this.getBreeders();
+      } else if (type === 'update' && status === 'failure') {
+        this.commonService.openAlert('Cập nhật hộ chăn nuôi thất bại', 'danger');
       }
     });
   }

@@ -33,29 +33,29 @@ export class UserService {
       params,
     };
 
-    return this.http.get<any>(`${env.apiUrl}/api/admin/user`, options);
+    return this.http.get<any>(`${env.apiUrl}/admin/user`, options);
   }
 
   getUserById(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/admin/user/${id}`, {
+    return this.http.get<any>(`${env.apiUrl}/admin/user/${id}`, {
       headers: this.headers,
     });
   }
 
   createUser(user: User) {
-    return this.http.post<any>(`${env.apiUrl}/api/admin/user`, user, {
+    return this.http.post<any>(`${env.apiUrl}/admin/user`, user, {
       headers: this.headers,
     });
   }
 
   updateUser(userId: string, user: User) {
-    return this.http.put<any>(`${env.apiUrl}/api/admin/user/${userId}`, user, {
+    return this.http.put<any>(`${env.apiUrl}/admin/user/${userId}`, user, {
       headers: this.headers,
     });
   }
 
   deleteUser(userId: string) {
-    return this.http.delete<any>(`${env.apiUrl}/api/admin/user/${userId}`, {
+    return this.http.delete<any>(`${env.apiUrl}/admin/user/${userId}`, {
       headers: this.headers,
     });
   }
@@ -73,31 +73,31 @@ export class UserService {
       params,
     };
 
-    return this.http.get<any>(`${env.apiUrl}/api/user/getAllBreeder`, options);
+    return this.http.get<any>(`${env.apiUrl}/user/getAllBreeder`, options);
   }
 
   getBreederById(breederId: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/user/${breederId}`, {
+    return this.http.get<any>(`${env.apiUrl}/user/${breederId}`, {
       headers: this.headers,
     });
   }
 
   createBreeder(breeder: User) {
     return this.http.post<any>(
-      `${env.apiUrl}/api/user`,
+      `${env.apiUrl}/user`,
       JSON.stringify(breeder),
       { headers: this.headers }
     );
   }
 
   updateBreeder(breederId: string, breeder: User) {
-    return this.http.put<any>(`${env.apiUrl}/api/user/${breederId}`, breeder, {
+    return this.http.put<any>(`${env.apiUrl}/user/${breederId}`, breeder, {
       headers: this.headers,
     });
   }
 
   deleteBreeder(breederId: string) {
-    return this.http.delete<any>(`${env.apiUrl}/api/user/${breederId}`, {
+    return this.http.delete<any>(`${env.apiUrl}/user/${breederId}`, {
       headers: this.headers,
     });
   }
@@ -114,19 +114,19 @@ export class UserService {
       params,
     };
 
-    return this.http.get<any>(`${env.apiUrl}/api/admin/user`, options);
+    return this.http.get<any>(`${env.apiUrl}/admin/user`, options);
   }
 
   // Personal
   getPersonalInfo() {
-    return this.http.get<any>(`${env.apiUrl}/api/user/info`, {
+    return this.http.get<any>(`${env.apiUrl}/user/info`, {
       headers: this.headers,
     });
   }
 
   updatePersonalInfo(input: any) {
     return this.http.put<any>(
-      `${env.apiUrl}/api/user/update`,
+      `${env.apiUrl}/user/update`,
       JSON.stringify(input),
       {
         headers: this.headers,

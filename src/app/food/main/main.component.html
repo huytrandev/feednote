@@ -4,7 +4,7 @@
     <app-button
       [customClasses]="['app-button-green']"
       [buttonContent]="'Thêm mới'"
-      [routerLink]="['c']"
+      (click)="createUpdateFood()"
     ></app-button>
 
     <mat-form-field appearance="outline" floatLabel="always" class="m-bottom-0">
@@ -48,8 +48,8 @@
           <app-button-icon
             matTooltip="Cập nhật"
             (click)="$event.stopPropagation()"
-            [routerLink]="['u', element._id]"
             [iconName]="'drive_file_rename_outline'"
+            (click)="createUpdateFood(element)"
           ></app-button-icon>
 
           <app-button-icon

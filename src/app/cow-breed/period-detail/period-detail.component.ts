@@ -1,30 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { catchError, map, takeUntil } from 'rxjs/operators';
-
+import { Observable, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { CommonService, CowBreedService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
-import { CreateUpdateComponent } from '../create-update/create-update.component';
 import { DialogCreateNutritionComponent } from '../dialog-create-nutrition/dialog-create-nutrition.component';
 import { DialogUpdateNutritionComponent } from '../dialog-update-nutrition/dialog-update-nutrition.component';
 
 @Component({
-  selector: 'app-detail',
-  templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss'],
+  selector: 'app-period-detail',
+  templateUrl: './period-detail.component.html',
+  styleUrls: ['./period-detail.component.scss'],
 })
-export class DetailComponent implements OnInit, OnDestroy {
+export class PeriodDetailComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
-  isEditing: boolean = false;
-  type: string = 'detail';
-  periodItems: any[] = [];
-  cowBreed: any = {};
+  nutritionColumns = ['id', 'name', 'amount', 'unit', 'actions'];
+  foodColumns = ['id', 'name', 'amount', 'unit'];
+  periodId!: string;
+  cowBreedId!: string;
+  period!: any;
+  cowBreed$: Observable<any>;
   loading: boolean = true;
-  error: boolean = false;
-  cowBreedIdParam!: string;
-  displayedColumns = ['id', 'name', 'amount', 'unit', 'actions'];
 
   constructor(
     private route: ActivatedRoute,
@@ -33,11 +30,12 @@ export class DetailComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     public dialog: MatDialog
   ) {
-    this.cowBreedIdParam = this.route.snapshot.paramMap.get('id')!;
+    this.periodId = this.route.snapshot.paramMap.get('id')!;
+    this.cowBreedId = this.route.snapshot.paramMap.get('idCowBreed')!;
   }
 
   ngOnInit(): void {
-    this.getCowBreed();
+    this.getPeriod();
   }
 
   ngOnDestroy(): void {
@@ -45,29 +43,32 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  getCowBreed(): void {
+  onNavigate(event: any) {
+    console.log(event.target.value);
+  }
+
+  getPeriod(): void {
     this.loading = true;
     this.cowBreedService
-      .getById(this.cowBreedIdParam)
+      .getPeriod(this.periodId)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        map((res) => {
-          const { status } = res;
-          if (!status) {
-            return { data: null };
-          }
-          const { data } = res;
-          return { data };
-        }),
         catchError((_) => this.router.navigate(['not-found']))
       )
-      .subscribe((value: any) => {
-        this.cowBreed = value.data;
+      .subscribe((res) => {
+        const { status, data } = res;
+        if (!status) {
+          this.router.navigate(['/not-found']);
+          return;
+        }
+
+        this.cowBreed$ = this.cowBreedService.getById(this.cowBreedId);
+        this.period = data;
         this.loading = false;
       });
   }
 
-  onDelete() {
+  onDeletePeriod() {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '400px',
       disableClose: true,
@@ -78,13 +79,13 @@ export class DetailComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.loading = true;
-        this.cowBreedService.delete(this.cowBreed._id).subscribe((res) => {
+        this.cowBreedService.deletePeriod(this.periodId).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.commonService.openAlert('Xoá giống bò thành công', 'success');
+            this.commonService.openAlert('Xoá giai đoạn thành công', 'success');
             this.router.navigate(['/cow-breeds']);
           } else {
-            this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
+            this.commonService.openAlert('Xoá giai đoạn thất bại', 'danger');
           }
         });
       }
@@ -112,7 +113,7 @@ export class DetailComponent implements OnInit, OnDestroy {
                 'Xoá thành phần dinh dưỡng thành công',
                 'success'
               );
-              this.getCowBreed();
+              this.getPeriod();
             } else {
               this.commonService.openAlert(
                 'Xoá thành phần dinh dưỡng thất bại',
@@ -137,13 +138,18 @@ export class DetailComponent implements OnInit, OnDestroy {
       },
     });
 
-    dialogRef.afterClosed().subscribe((data) => {
-      if (data.success) {
-        this.commonService.reloadComponent();
+    dialogRef.afterClosed().subscribe((res) => {
+      const { type, status } = res;
+      if (type === 'create' && status === 'fail') {
+        this.commonService.openAlert('Thêm chất dinh dưỡng thất bại', 'danger');
+      } else if (type === 'create' && status === 'success') {
+        this.commonService.openAlert('Thêm chất dinh dưỡng thành công', 'success');
+        this.getPeriod();
+      } else {
+        return;
       }
     });
   }
-
 
   updateNutrition(periodId: string, nutrition: any) {
     const dialogRef = this.dialog.open(DialogUpdateNutritionComponent, {
@@ -160,47 +166,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((data) => {
       if (data.success) {
-        this.getCowBreed();
-      }
-    });
-  }
-
-  getStandardServing() {
-    this.cowBreedService
-      .getStandardServingFile(this.cowBreedIdParam)
-      .subscribe((res) => {
-        console.log(res);
-        const blob = new Blob([res], { type: 'application/pdf' });
-        var downloadURL = window.URL.createObjectURL(res);
-        var link = document.createElement('a');
-        link.href = downloadURL;
-        link.download = 'khau-phan-an-chuan.pdf';
-        link.click();
-      });
-  }
-
-  updateCowBreed(cowBreedId: string) {
-    const dialogRef = this.dialog.open(CreateUpdateComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '50%',
-      minWidth: '550px',
-      maxWidth: '700px',
-      minHeight: '250px',
-      maxHeight: '100vh',
-      disableClose: true,
-      data: {
-        cowBreedId,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      const { type, status } = res;
-      if (type === 'update' && status === 'success') {
-        this.commonService.openAlert('Cập nhật giống bò thành công', 'success');
-        this.getCowBreed();
-      } else if (type === 'update' && status === 'failure') {
-        this.commonService.openAlert('Cập nhật giống bò thất bại', 'danger');
+        this.getPeriod();
       }
     });
   }

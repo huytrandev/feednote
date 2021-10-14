@@ -15,13 +15,13 @@ export class AreaService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getAll() {
-    return this.http.get<any>(`${env.apiUrl}/api/area`, {
+    return this.http.get<any>(`${env.apiUrl}/area`, {
       headers: this.headers,
     });
   }
 
   getById(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/area/${id}`, {
+    return this.http.get<any>(`${env.apiUrl}/area/${id}`, {
       headers: this.headers,
     });
   }
