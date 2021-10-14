@@ -9,12 +9,19 @@ import { MainComponent } from './main/main.component';
 import { MaterialModule } from '../material/material.module';
 import { DetailComponent } from './detail/detail.component';
 import { CreateUpdateComponent } from './create-update/create-update.component';
-import { NutritionDialogComponent } from './nutrition-dialog/nutrition-dialog.component';
 import { DialogUpdateNutritionComponent } from './dialog-update-nutrition/dialog-update-nutrition.component';
 import { DialogCreateNutritionComponent } from './dialog-create-nutrition/dialog-create-nutrition.component';
+import { PeriodDetailComponent } from './period-detail/period-detail.component';
 
 @NgModule({
-  declarations: [MainComponent, DetailComponent, CreateUpdateComponent, NutritionDialogComponent, DialogUpdateNutritionComponent, DialogCreateNutritionComponent],
+  declarations: [
+    MainComponent,
+    DetailComponent,
+    CreateUpdateComponent,
+    DialogUpdateNutritionComponent,
+    DialogCreateNutritionComponent,
+    PeriodDetailComponent,
+  ],
   imports: [
     CommonModule,
     CowBreedRoutingModule,
@@ -22,7 +29,7 @@ import { DialogCreateNutritionComponent } from './dialog-create-nutrition/dialog
     ReactiveFormsModule,
     SharedModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
 })
 export class CowBreedModule {}

@@ -27,24 +27,24 @@ export class FoodService {
       params,
     };
 
-    return this.http.get<any>(`${env.apiUrl}/api/food`, options);
+    return this.http.get<any>(`${env.apiUrl}/food`, options);
   }
 
   getById(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/food/${id}`, {
+    return this.http.get<any>(`${env.apiUrl}/food/${id}`, {
       headers: this.headers,
     });
   }
 
   create(food: any) {
-    return this.http.post<any>(`${env.apiUrl}/api/food`, JSON.stringify(food), {
+    return this.http.post<any>(`${env.apiUrl}/food`, JSON.stringify(food), {
       headers: this.headers,
     });
   }
 
   update(id: string, food: any) {
     return this.http.put<any>(
-      `${env.apiUrl}/api/food/${id}`,
+      `${env.apiUrl}/food/${id}`,
       JSON.stringify(food),
       {
         headers: this.headers,
@@ -53,14 +53,14 @@ export class FoodService {
   }
 
   delete(id: string) {
-    return this.http.delete<any>(`${env.apiUrl}/api/food/${id}`, {
+    return this.http.delete<any>(`${env.apiUrl}/food/${id}`, {
       headers: this.headers,
     });
   }
 
   deleteIngredient(foodId: string, ingredientId: string) {
     return this.http.delete<any>(
-      `${env.apiUrl}/api/food/${foodId}/ingredient/${ingredientId}`,
+      `${env.apiUrl}/food/${foodId}/ingredient/${ingredientId}`,
       { headers: this.headers }
     );
   }

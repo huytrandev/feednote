@@ -27,7 +27,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http
-      .post<any>(`${env.apiUrl}/api/auth/login`, { username, password })
+      .post<any>(`${env.apiUrl}/auth/login`, { username, password })
       .pipe(
         map((response) => {
           if (response.status === false) {
@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   revokeToken() {
-    return this.http.get<any>(`${env.apiUrl}/api/auth/logout`, {
+    return this.http.get<any>(`${env.apiUrl}/auth/logout`, {
       headers: this.currentUserValue.token,
     });
   }
@@ -62,7 +62,7 @@ export class AuthService {
     });
 
     return this.http.put<any>(
-      `${env.apiUrl}/api/auth/changePassword`,
+      `${env.apiUrl}/auth/changePassword`,
       { password: password },
       { headers: headers }
     );
@@ -75,7 +75,7 @@ export class AuthService {
     });
 
     return this.http.put<any>(
-      `${env.apiUrl}/api/admin/user/${userId}/resetPassword`,
+      `${env.apiUrl}/admin/user/${userId}/resetPassword`,
       {},
       { headers }
     );

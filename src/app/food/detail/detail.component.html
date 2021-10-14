@@ -1,5 +1,6 @@
 <app-page-loading *ngIf="loading"></app-page-loading>
 <app-progress-bar *ngIf="loading"></app-progress-bar>
+<app-back-button [routerLink]="['/foods']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy thức ăn</h2>
@@ -24,7 +25,7 @@
         <app-menu-item
           [iconName]="'drive_file_rename_outline'"
           [menuItemContent]="'Cập nhật'"
-          [routerLink]="['/foods', 'u', food._id]"
+          (click)="updateFood(food)"
         ></app-menu-item>
         <mat-divider></mat-divider>
         <app-menu-item

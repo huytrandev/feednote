@@ -11,33 +11,38 @@ export class ResetPasswordDialogComponent implements OnInit {
   password: string = '';
   showPassword: boolean = false;
   loading: boolean = false;
+  user!: any;
 
   constructor(
     private authService: AuthService,
     private commonService: CommonService,
     public dialogRef: MatDialogRef<ResetPasswordDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.user = data.user;
+  }
 
   ngOnInit(): void {}
 
   resetPassword() {
     this.loading = true;
-    this.authService.resetPassword(this.data.userId).subscribe((res) => {
+    this.authService.resetPassword(this.user._id).subscribe((res) => {
       const { status } = res;
       if (!status) {
-        this.commonService.openAlert('Khôi phục mật khẩu thất bại', 'danger');
+        this.dialogRef.close({
+          type: 'resetPassword',
+          status: 'fail',
+        });
         return;
       }
 
       const { data } = res;
       this.password = data;
-      this.commonService.openAlert('Khôi phục mật khẩu thành công', 'success');
       this.loading = false;
     });
   }
 
   onClose() {
-    this.dialogRef.close();
+    this.dialogRef.close({ type: 'close', status: null });
   }
 }

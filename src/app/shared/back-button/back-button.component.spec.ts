@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NutritionDialogComponent } from './nutrition-dialog.component';
+import { BackButtonComponent } from './back-button.component';
 
-describe('NutritionDialogComponent', () => {
-  let component: NutritionDialogComponent;
-  let fixture: ComponentFixture<NutritionDialogComponent>;
+describe('BackButtonComponent', () => {
+  let component: BackButtonComponent;
+  let fixture: ComponentFixture<BackButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NutritionDialogComponent ]
+      declarations: [ BackButtonComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NutritionDialogComponent);
+    fixture = TestBed.createComponent(BackButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

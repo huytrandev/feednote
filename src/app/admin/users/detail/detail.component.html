@@ -1,5 +1,6 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-page-loading *ngIf="loading"></app-page-loading>
+<app-back-button [routerLink]="['/admin/users']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy người dùng</h2>
@@ -17,14 +18,21 @@
         [matMenuTriggerFor]="optionsPanel"
         [iconName]="'more_horiz'"
         [customClasses]="['app-button-option']"
+        *ngIf="user.role !== 'admin'"
       >
       </app-button>
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
         <app-menu-item
+          [iconName]="'password'"
+          [menuItemContent]="'Thay đổi mật khẩu'"
+          (click)="resetPassword(user)"
+        ></app-menu-item>
+        <mat-divider></mat-divider>
+        <app-menu-item
           [iconName]="'drive_file_rename_outline'"
           [menuItemContent]="'Cập nhật'"
-          [routerLink]="['/admin/users', 'u', user._id]"
+          (click)="updateUser(user)"
         ></app-menu-item>
         <mat-divider></mat-divider>
         <app-menu-item

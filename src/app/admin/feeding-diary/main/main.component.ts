@@ -218,8 +218,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     const limit = event.pageSize;
     const skip = event.pageIndex * limit;
     const { active, direction } = this.sort;
-    const currentSort = `${active} ${direction}`;
-    this.setParams(skip, limit, undefined, currentSort);
+    let sortQuery = active ? `${active} ${direction}` : this.defaultSort;
+    this.setParams(skip, limit, undefined, sortQuery);
     this.getFeedingDiaries();
   }
 

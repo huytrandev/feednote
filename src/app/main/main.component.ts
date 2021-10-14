@@ -17,11 +17,6 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: 'standard-servings',
-      title: 'Khẩu phần ăn chuẩn',
-      icon: 'assets/icons/scale.svg',
-    },
-    {
       path: 'admin/breeders',
       title: 'Hộ chăn nuôi',
       icon: 'assets/icons/farmer.svg',
@@ -48,11 +43,6 @@ export class MainComponent implements OnInit {
       path: 'admin/feeding-diary',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
-    },
-    {
-      path: 'standard-servings',
-      title: 'Khẩu phần ăn chuẩn',
-      icon: 'assets/icons/scale.svg',
     },
     {
       path: 'cow-breeds',

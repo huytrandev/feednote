@@ -107,8 +107,8 @@ export class MainComponent implements OnInit, OnDestroy {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
     const { active, direction } = this.sort;
-    const currentSort = `${active} ${direction}`;
-    this.setParams(skip, limit, '', currentSort);
+    let sortQuery = active ? `${active} ${direction}` : this.defaultSort;
+    this.setParams(skip, limit, '', sortQuery);
     this.getCowBreeds();
   }
 
@@ -117,6 +117,7 @@ export class MainComponent implements OnInit, OnDestroy {
       width: '400px',
       disableClose: true,
       autoFocus: false,
+      restoreFocus: false
     });
 
     const { _id } = element;
@@ -133,6 +134,37 @@ export class MainComponent implements OnInit, OnDestroy {
             this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
           }
         });
+      }
+    });
+  }
+
+  createUpdateCowBreed(cowBreedId?: string) {
+    const dialogRef = this.dialog.open(CreateUpdateComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '50%',
+      minWidth: '550px',
+      maxWidth: '700px',
+      minHeight: '250px',
+      maxHeight: '100vh',
+      disableClose: true,
+      data: {
+        cowBreedId
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      const { type, status } = res;
+      if (type === 'create' && status === 'success') {
+        this.commonService.openAlert('Tạo giống bò thành công', 'success');
+        this.getCowBreeds();
+      } else if (type === 'create' && status === 'failure') {
+        this.commonService.openAlert('Tạo giống bò thất bại', 'danger');
+      } else if (type === 'update' && status === 'success') {
+        this.commonService.openAlert('Cập nhật giống bò thành công', 'success');
+        this.getCowBreeds();
+      } else if (type === 'update' && status === 'failure') {
+        this.commonService.openAlert('Cập nhật giống bò thất bại', 'danger');
       }
     });
   }

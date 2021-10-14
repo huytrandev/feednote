@@ -1,12 +1,12 @@
-<app-page-loading *ngIf="loading"></app-page-loading>
-<app-progress-bar *ngIf="loading"></app-progress-bar>
-<div *ngIf="!loading" class="wrapper bg-white rounded shadow">
-  <div class="app-title m-bottom-25">
-    <h2>{{ isCreate ? "Thêm mới" : "Chỉnh sửa" }} giống bò</h2>
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <div fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
+    <h2>{{ isCreate ? "Thêm mới" : "Cập nhật thông tin" }} giống bò</h2>
+    <app-button-icon [iconName]="'close'" matTooltip="Đóng" (click)="onClose()"></app-button-icon>
   </div>
 
-  <div class="content">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="dialog-content">
       <mat-form-field
         appearance="outline"
         style="width: 100%"
@@ -64,7 +64,7 @@
                 [customClasses]="['color-red']"
                 matTooltip="Xoá"
                 (click)="removePeriod(i, period.value, $event)"
-                [iconName]="'highlight_off'"
+                [iconName]="'close'"
               ></app-button-icon>
             </div>
             <input type="hidden" formControlName="_id" />
@@ -111,7 +111,6 @@
                 >
                 <input type="number" matInput formControlName="startDay" />
 
-                <mat-hint>Đơn vị: ngày</mat-hint>
                 <mat-error
                   *ngIf="
                     periods.controls[i].get('startDay')?.hasError('required')
@@ -135,7 +134,6 @@
                   >Ngày kết thúc <span class="color-red">(*)</span></mat-label
                 >
                 <input type="number" matInput formControlName="endDay" />
-                <mat-hint>Đơn vị: ngày</mat-hint>
                 <mat-error
                   *ngIf="
                     periods.controls[i].get('endDay')?.hasError('required')
@@ -177,30 +175,30 @@
           </ng-container>
         </div>
 
-        <app-button
-          [customClasses]="['app-button-green']"
-          [buttonContent]="'Thêm giai đoạn'"
-          [buttonType]="'button'"
-          (click)="addPeriod($event)"
-        ></app-button>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <app-button
+            [customClasses]="['app-button-green']"
+            [buttonContent]="'Thêm giai đoạn'"
+            [buttonType]="'button'"
+            (click)="addPeriod($event)"
+          ></app-button>
+        </div>
       </div>
+    </div>
+    <div class="button-group" mat-dialog-actions>
+      <app-button
+        [buttonType]="'submit'"
+        [customClasses]="['app-button-brown']"
+        [disabledCondition]="!(form.valid && form.dirty) || submitted"
+        [showSpinner]="submitted"
+        [buttonContent]="!!isCreate ? 'Tạo mới' : 'Cập nhật'"
+      ></app-button>
 
-      <mat-divider></mat-divider>
-      <div class="button-group">
-        <app-button
-          [buttonType]="'submit'"
-          [customClasses]="['app-button-brown']"
-          [disabledCondition]="!(form.valid && form.dirty) || submitted"
-          [showSpinner]="submitted"
-          [buttonContent]="!!isCreate ? 'Tạo mới' : 'Cập nhật'"
-        ></app-button>
-
-        <app-button
-          [buttonType]="'button'"
-          [customClasses]="['app-button-grey']"
-          [buttonContent]="'Huỷ bỏ'"
-        ></app-button>
-      </div>
-    </form>
-  </div>
+      <app-button
+        [buttonType]="'button'"
+        [customClasses]="['app-button-grey']"
+        [buttonContent]="'Huỷ bỏ'"
+      ></app-button>
+    </div>
+  </form>
 </div>

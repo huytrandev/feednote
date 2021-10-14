@@ -1,216 +1,223 @@
 <app-page-loading *ngIf="loading"></app-page-loading>
 <app-progress-bar *ngIf="loading"></app-progress-bar>
+<app-back-button [routerLink]="['/cow-breeds']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
-  <div *ngIf="error">
-    <h2>Không thể tìm thấy giống bò</h2>
-  </div>
-  <div *ngIf="!error">
-    <div
-      div
-      fxLayout="row"
-      fxLayoutAlign="space-between center"
-      class="app-title m-bottom-25"
+  <div
+    div
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    class="app-title m-bottom-25"
+  >
+    <h2>Thông tin giống bò</h2>
+    <app-button
+      [matMenuTriggerFor]="optionsPanel"
+      [iconName]="'more_horiz'"
+      [customClasses]="['app-button-option']"
     >
-      <h2>Chi tiết</h2>
-      <app-button
-        [matMenuTriggerFor]="optionsPanel"
-        [iconName]="'more_horiz'"
-        [customClasses]="['app-button-option']"
-      >
-      </app-button>
+    </app-button>
 
-      <mat-menu #optionsPanel="matMenu" xPosition="before">
-        <app-menu-item
-          [iconName]="'drive_file_rename_outline'"
-          [menuItemContent]="'Cập nhật'"
-          [routerLink]="['/cow-breeds', 'u', cowBreed._id]"
-        ></app-menu-item>
-        <mat-divider></mat-divider>
-        <app-menu-item
-          [iconName]="'delete_outline'"
-          [menuItemContent]="'Xoá'"
-          (click)="onDelete()"
-        ></app-menu-item>
-      </mat-menu>
+    <mat-menu #optionsPanel="matMenu" xPosition="before">
+      <app-menu-item
+        [iconName]="'file_download'"
+        [menuItemContent]="'Khẩu phần ăn chuẩn'"
+        (click)="getStandardServing()"
+      ></app-menu-item>
+      <mat-divider></mat-divider>
+      <app-menu-item
+        [iconName]="'edit'"
+        [menuItemContent]="'Cập nhật'"
+        (click)="updateCowBreed(cowBreed._id)"
+      ></app-menu-item>
+      <mat-divider></mat-divider>
+      <app-menu-item
+        [iconName]="'delete_outline'"
+        [menuItemContent]="'Xoá'"
+        (click)="onDelete()"
+      ></app-menu-item>
+    </mat-menu>
+  </div>
+  <div class="content">
+    <div fxLayout="row" class="m-bottom-20">
+      <div fxFlex="25">
+        <span class="font-weight-bold">Tên giống bò</span>
+      </div>
+      <div fxFlex>
+        <span>{{ cowBreed.name }}</span>
+      </div>
     </div>
-    <div class="content">
-      <div fxLayout="row" class="m-bottom-20">
-        <div fxFlex="25">
-          <span class="font-weight-bold">Tên giống bò</span>
-        </div>
-        <div fxFlex>
-          <span>{{ cowBreed.name }}</span>
-        </div>
-      </div>
 
-      <div fxLayout="row" class="m-bottom-20">
-        <div fxFlex="25">
-          <span class="font-weight-bold">Thời gian nuôi</span>
-        </div>
-        <div fxFlex>
-          <span>{{ cowBreed.farmingTime }} ngày</span>
-        </div>
+    <div fxLayout="row" class="m-bottom-20">
+      <div fxFlex="25">
+        <span class="font-weight-bold">Thời gian nuôi</span>
       </div>
+      <div fxFlex>
+        <span>{{ cowBreed.farmingTime }} ngày</span>
+      </div>
+    </div>
 
-      <div class="period-list">
+    <div class="period-list">
+      <div
+        class="period-list-item"
+        *ngFor="let period of cowBreed.periods; index as i"
+      >
         <div
-          class="period-list-item"
-          *ngFor="let period of cowBreed.periods; index as i"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+          class="period-list-item-header"
         >
-          <div
-            fxLayout="row"
-            fxLayoutAlign="space-between center"
-            class="
-              d-flex
-              justify-content-between
-              align-items-center
-              period-list-item-header
-            "
-          >
-            <span class="font-weight-bold">Giai đoạn: {{ period.name }}</span>
+          <span class="font-weight-bold">Giai đoạn: {{ period.name }}</span>
+          <app-button-icon
+            [iconName]="'info'"
+            matTooltip="Thông tin"
+            [routerLink]="['period', period._id]"
+          ></app-button-icon>
+        </div>
+        <div class="period-list-item-content">
+          <div style="width: 85%; margin: 0 auto">
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+              class="m-bottom-20"
+            >
+              <div fxFlex="25">
+                <span class="font-weight-bold">Ngày bắt đầu</span>
+              </div>
+              <div fxFlex>
+                <span>{{ period.startDay }}</span>
+              </div>
+            </div>
           </div>
-          <div class="period-list-item-content">
-            <div style="width: 85%; margin: 0 auto">
-              <div
-                fxLayout="row"
-                fxLayoutAlign="space-between center"
-                class="m-bottom-20"
-              >
-                <div fxFlex="25">
-                  <span class="font-weight-bold">Ngày bắt đầu</span>
-                </div>
-                <div fxFlex>
-                  <span>{{ period.startDay }}</span>
-                </div>
-              </div>
-            </div>
 
-            <div style="width: 85%; margin: 0 auto">
-              <div
-                fxLayout="row"
-                fxLayoutAlign="space-between center"
-                class="m-bottom-20"
-              >
-                <div fxFlex="25">
-                  <span class="font-weight-bold">Ngày kết thúc</span>
-                </div>
-                <div fxFlex>
-                  <span>{{ period.endDay }}</span>
-                </div>
+          <div style="width: 85%; margin: 0 auto">
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+              class="m-bottom-20"
+            >
+              <div fxFlex="25">
+                <span class="font-weight-bold">Ngày kết thúc</span>
+              </div>
+              <div fxFlex>
+                <span>{{ period.endDay }}</span>
               </div>
             </div>
+          </div>
 
-            <div style="width: 85%; margin: 0 auto">
-              <div
-                fxLayout="row"
-                fxLayoutAlign="space-between center"
-                class="m-bottom-20"
-              >
-                <div fxFlex="25">
-                  <span class="font-weight-bold">Cân nặng</span>
-                </div>
-                <div fxFlex>
-                  <span>{{ period.weight }} kg</span>
-                </div>
+          <div style="width: 85%; margin: 0 auto">
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+              class="m-bottom-20"
+            >
+              <div fxFlex="25">
+                <span class="font-weight-bold">Cân nặng</span>
+              </div>
+              <div fxFlex>
+                <span>{{ period.weight }} kg</span>
               </div>
             </div>
+          </div>
 
-            <mat-divider></mat-divider>
-            <div style="width: 85%; margin: 0 auto">
-              <div
-                fxLayout="row"
-                fxLayoutAlign="space-between center"
-                class="m-bottom-10 m-top-10"
-              >
-                <span class="font-weight-bold">Bảng nhu cầu dinh dưỡng</span>
-                <app-button-icon
-                  [iconName]="'menu'"
-                  [matMenuTriggerFor]="nutritionOptions"
-                ></app-button-icon>
-                <mat-menu #nutritionOptions="matMenu" xPosition="before">
-                  <app-menu-item
-                    [iconName]="'add'"
-                    [menuItemContent]="'Thêm mới'"
-                    (click)="createNutrition(period._id)"
-                  ></app-menu-item>
-                  <mat-divider></mat-divider>
-                  <app-menu-item
-                    [iconName]="'delete_outline'"
-                    [menuItemContent]="'Xoá tất cả'"
-                  >
-                  </app-menu-item>
-                </mat-menu>
-              </div>
-            </div>
-            <div style="width: 85%; margin: 0 auto">
-              <div class="d-flex justify-content-center m-bottom-20">
-                <div
-                  style="width: 95%; margin: 0 auto"
-                  class="table-container p-bottom-25"
+          <!-- <mat-divider></mat-divider>
+          <div style="width: 85%; margin: 0 auto">
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+              class="m-bottom-10 m-top-10"
+            >
+              <span class="font-weight-bold">Bảng nhu cầu dinh dưỡng</span>
+              <app-button-icon
+                [iconName]="'menu'"
+                [matMenuTriggerFor]="nutritionOptions"
+              ></app-button-icon>
+              <mat-menu #nutritionOptions="matMenu" xPosition="before">
+                <app-menu-item
+                  [iconName]="'add'"
+                  [menuItemContent]="'Thêm mới'"
+                  (click)="createNutrition(period._id)"
+                ></app-menu-item>
+                <mat-divider></mat-divider>
+                <app-menu-item
+                  [iconName]="'delete_outline'"
+                  [menuItemContent]="'Xoá tất cả'"
                 >
-                  <table
-                    mat-table
-                    [dataSource]="period.nutrition ? period.nutrition : []"
-                  >
-                    <ng-container matColumnDef="id">
-                      <th mat-header-cell *matHeaderCellDef>STT</th>
-                      <td mat-cell *matCellDef="let element; let i = index">
-                        {{ i + 1 }}
-                      </td>
-                    </ng-container>
+                </app-menu-item>
+              </mat-menu>
+            </div>
+          </div>
+          <div style="width: 85%; margin: 0 auto">
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+              class="m-bottom-20"
+            >
+              <div
+                style="width: 95%; margin: 0 auto"
+                class="table-container p-bottom-25"
+              >
+                <table
+                  mat-table
+                  [dataSource]="period.nutrition ? period.nutrition : []"
+                >
+                  <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>STT</th>
+                    <td mat-cell *matCellDef="let element; let i = index">
+                      {{ i + 1 }}
+                    </td>
+                  </ng-container>
 
-                    <ng-container matColumnDef="name">
-                      <th mat-header-cell *matHeaderCellDef>Tên</th>
-                      <td mat-cell *matCellDef="let element">
-                        {{ element.name }}
-                      </td>
-                    </ng-container>
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Tên</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.name }}
+                    </td>
+                  </ng-container>
 
-                    <ng-container matColumnDef="amount">
-                      <th mat-header-cell *matHeaderCellDef>Hàm lượng</th>
-                      <td mat-cell *matCellDef="let element">
-                        {{ element.amount }}
-                      </td>
-                    </ng-container>
+                  <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef>Hàm lượng</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.amount }}
+                    </td>
+                  </ng-container>
 
-                    <ng-container matColumnDef="unit">
-                      <th mat-header-cell *matHeaderCellDef>Đơn vị đo</th>
-                      <td mat-cell *matCellDef="let element">
-                        {{ element.unit }}
-                      </td>
-                    </ng-container>
+                  <ng-container matColumnDef="unit">
+                    <th mat-header-cell *matHeaderCellDef>Đơn vị đo</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.unit }}
+                    </td>
+                  </ng-container>
 
-                    <ng-container matColumnDef="actions">
-                      <th mat-header-cell *matHeaderCellDef colspan="2"></th>
-                      <td mat-cell *matCellDef="let element">
-                        <app-button-icon
-                          matTooltip="Xoá"
-                          (click)="
-                            $event.stopPropagation();
-                            onDeleteNutrition(period._id, element.idNutrition)
-                          "
-                          [iconName]="'delete_outline'"
-                          [customClasses]="['color-red']"
-                        ></app-button-icon>
-                      </td>
-                    </ng-container>
+                  <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef colspan="2"></th>
+                    <td mat-cell *matCellDef="let element">
+                      <app-button-icon
+                        matTooltip="Xoá"
+                        (click)="
+                          $event.stopPropagation();
+                          onDeleteNutrition(period._id, element.idNutrition)
+                        "
+                        [iconName]="'close'"
+                        [customClasses]="['color-red']"
+                      ></app-button-icon>
+                    </td>
+                  </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr
-                      mat-row
-                      *matRowDef="let element; columns: displayedColumns"
-                      style="cursor: pointer"
-                      class="app-element-row"
-                      (click)="updateNutrition(period._id, element)"
-                    ></tr>
-                    <tr class="mat-row" *matNoDataRow>
-                      <td class="mat-cell" colspan="4">Chưa có dữ liệu</td>
-                    </tr>
-                  </table>
-                </div>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="let element; columns: displayedColumns"
+                    style="cursor: pointer"
+                    class="app-element-row"
+                    (click)="updateNutrition(period._id, element)"
+                  ></tr>
+                  <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="5">Chưa có dữ liệu</td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
+        </div> -->
         </div>
       </div>
     </div>

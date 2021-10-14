@@ -44,13 +44,6 @@ const routes: Routes = [
         loadChildren: () =>
           import('./cow-breed/cow-breed.module').then((m) => m.CowBreedModule),
       },
-      {
-        path: 'standard-servings',
-        loadChildren: () =>
-          import('./standard-servings/standard-servings.module').then(
-            (m) => m.StandardServingsModule
-          ),
-      },
     ],
   },
   {

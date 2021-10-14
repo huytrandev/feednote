@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Optional,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -13,11 +20,15 @@ import {
   AreaService,
   AuthService,
   UserService,
-  CommonService
+  CommonService,
 } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
 import { Vietnamese } from 'src/app/core/validations';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { ResetPasswordDialogComponent } from '../reset-password-dialog/reset-password-dialog.component';
 
 @Component({
@@ -31,7 +42,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   form!: FormGroup;
   loading: boolean = false;
   submitted: boolean = false;
-  userId!: string;
   user!: any;
   areas: Area[] = [];
   users: User[] = [];
@@ -45,9 +55,11 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private userService: UserService,
     private areaService: AreaService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public dialogRef: MatDialogRef<CreateUpdateComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.userId = this.route.snapshot.paramMap.get('id')!;
+    this.user = data.user;
   }
 
   ngOnInit(): void {
@@ -55,9 +67,9 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     this.getManagers();
     this.getUsers();
     this.buildForm();
-    if (!!this.userId) {
+    if (!!this.user) {
       this.removeFormFields();
-      this.getUser();
+      this.setValueForForm(this.user);
     }
   }
 
@@ -109,27 +121,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         }
         const { data } = res;
         this.users = data.items;
-        this.loading = false;
-      });
-  }
-
-  getUser() {
-    this.loading = true;
-    this.userService
-      .getUserById(this.userId)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
-      )
-      .subscribe((res) => {
-        const { status } = res;
-        if (!status) {
-          return;
-        }
-        const { data } = res;
-        this.user = data;
-        const isManager = this.user.idManager ? false : true;
-        this.setValueForForm({ ...this.user, isManager });
         this.loading = false;
       });
   }
@@ -206,7 +197,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       this.form.controls['idManager'].updateValueAndValidity();
     });
 
-    if (!!this.userId) {
+    if (!!this.user) {
       this.form.controls['password'].setValidators([Validators.minLength(5)]);
       this.form.controls['password'].updateValueAndValidity();
     }
@@ -217,29 +208,28 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
     const { isManager } = this.form.value;
     const role = isManager ? 'manager' : 'breeder';
-
-    const successNotification = !this.userId
-      ? 'Tạo mới người dùng thành công'
-      : 'Cập nhật người dùng thành công';
-    const failureNotification = !this.userId
-      ? 'Tạo mới người dùng thất bại'
-      : 'Cập nhật người dùng thất bại';
     this.submitted = true;
 
-    if (!this.userId) {
+    if (!this.user) {
       this.userService
         .createUser({ ...this.form.value, role })
         .subscribe((res) => {
           const { status } = res;
           if (!status) {
-            this.commonService.openAlert(failureNotification, 'danger');
             this.submitted = false;
+            this.dialogRef.close({
+              type: 'create',
+              status: 'fail',
+            });
             return;
           }
 
-          this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.commonService.openAlert(successNotification, 'success');
+          this.submitted = false;
+          this.dialogRef.close({
+            type: 'create',
+            status: 'success',
+          });
         });
     } else {
       if (isManager) {
@@ -247,25 +237,30 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       }
 
       this.userService
-        .updateUser(this.userId, { ...this.form.value, role })
+        .updateUser(this.user._id, { ...this.form.value, role })
         .subscribe((res) => {
           const { status } = res;
           if (!status) {
-            this.commonService.openAlert(failureNotification, 'danger');
             this.submitted = false;
+            this.dialogRef.close({
+              type: 'update',
+              status: 'fail',
+            });
             return;
           }
 
           this.submitted = false;
           this.formGroupDirective.resetForm();
-          this.commonService.openAlert(successNotification, 'success');
-          this.commonService.reloadComponent();
+          this.dialogRef.close({
+            type: 'update',
+            status: 'success',
+          });
         });
     }
   }
 
   onReset() {
-    if (!this.userId) {
+    if (!this.user) {
       this.buildForm();
       return;
     }
@@ -278,14 +273,9 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     }
   }
 
-  resetPassword() {
-    const dialogRef = this.dialog.open(ResetPasswordDialogComponent, {
-      width: '500px',
-      disableClose: true,
-      autoFocus: false,
-      data: {
-        userId: this.userId
-      }
-    });
+  onClose() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    this.dialogRef.close({ type: 'close', status: null });
   }
 }

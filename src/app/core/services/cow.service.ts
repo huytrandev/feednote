@@ -15,7 +15,7 @@ export class CowService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getById(cowId: string) {
-    return this.http.get<any>(`${env.apiUrl}/api/cow/${cowId}`, {
+    return this.http.get<any>(`${env.apiUrl}/cow/${cowId}`, {
       headers: this.headers,
     });
   }

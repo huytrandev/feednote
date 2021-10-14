@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { CommonService, FoodService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
+import { CreateUpdateComponent } from '../create-update/create-update.component';
 
 @Component({
   selector: 'app-detail',
@@ -29,7 +30,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getCowBreed();
+    this.getFood();
   }
 
   ngOnDestroy(): void {
@@ -37,7 +38,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  getCowBreed(): void {
+  getFood(): void {
     this.loading = true;
     this.foodService
       .getById(this.foodIdParam)
@@ -78,6 +79,32 @@ export class DetailComponent implements OnInit, OnDestroy {
             this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
         });
+      }
+    });
+  }
+
+  updateFood(food: any) {
+    const dialogRef = this.dialog.open(CreateUpdateComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '50%',
+      minWidth: '550px',
+      maxWidth: '700px',
+      minHeight: '250px',
+      maxHeight: '100vh',
+      disableClose: true,
+      data: {
+        food
+      }
+    });
+    
+    dialogRef.afterClosed().subscribe((res) => {
+      const { type, status } = res;
+      if (type === 'update' && status === 'success') {
+        this.commonService.openAlert('Cập nhật thức ăn thành công', 'success');
+        this.getFood();
+      } else if (type === 'update' && status === 'failure') {
+        this.commonService.openAlert('Cập nhật thức ăn thất bại', 'danger');
       }
     });
   }

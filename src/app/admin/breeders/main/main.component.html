@@ -3,8 +3,8 @@
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <app-button
       [customClasses]="['app-button-green']"
-      [routerLink]="['c']"
       [buttonContent]="'Thêm mới'"
+      (click)="createUpdateBreeder()"
     ></app-button>
 
     <mat-form-field appearance="outline" style="width: 40%" floatLabel="always" class="m-bottom-0">
@@ -63,8 +63,7 @@
         <td mat-cell *matCellDef="let element">
           <app-button-icon
             matTooltip="Cập nhật"
-            [routerLink]="['u', element._id]"
-            (click)="$event.stopPropagation()"
+            (click)="$event.stopPropagation(); createUpdateBreeder(element)"
             [iconName]="'drive_file_rename_outline'"
           ></app-button-icon>
 

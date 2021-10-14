@@ -11,6 +11,7 @@ import { ButtonComponent } from './button/button.component';
 import { MenuComponent } from './menu/menu.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 import { MaterialModule } from '../material';
+import { BackButtonComponent } from './back-button/back-button.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MaterialModule } from '../material';
     ButtonComponent,
     MenuComponent,
     MenuItemComponent,
+    BackButtonComponent,
   ],
   imports: [
     CommonModule,
@@ -37,7 +39,8 @@ import { MaterialModule } from '../material';
     ButtonIconComponent,
     ButtonComponent,
     MenuComponent,
-    MenuItemComponent
+    MenuItemComponent,
+    BackButtonComponent
   ],
 })
 export class SharedModule {}

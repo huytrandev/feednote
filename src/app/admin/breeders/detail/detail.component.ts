@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
+import { CreateUpdateComponent } from '../create-update/create-update.component';
 
 @Component({
   selector: 'app-detail',
@@ -73,7 +74,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   transformDate(date: number) {
-    return moment(date).locale('vi').format('LL');
+    return moment(date).locale('vi').format('L');
   }
 
   onDelete() {
@@ -95,6 +96,32 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
             this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
         });
+      }
+    });
+  }
+
+  updateBreeder(breeder: any) {
+    const dialogRef = this.dialog.open(CreateUpdateComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      width: '50%',
+      minWidth: '550px',
+      maxWidth: '700px',
+      minHeight: '250px',
+      maxHeight: '100vh',
+      disableClose: true,
+      data: {
+        breeder
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      const { type, status } = res;
+      if (type === 'update' && status === 'success') {
+        this.commonService.openAlert('Cập nhật hộ chăn nuôi thành công', 'success');
+        this.getBreeder();
+      } else if (type === 'update' && status === 'failure') {
+        this.commonService.openAlert('Cập nhật hộ chăn nuôi thất bại', 'danger');
       }
     });
   }

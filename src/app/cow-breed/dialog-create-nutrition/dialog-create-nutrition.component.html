@@ -1,81 +1,157 @@
 <app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading">
-  <div class="d-flex align-items-center justify-content-between m-bottom-25">
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="m-bottom-25 app-dialog-header">
     <h2 mat-dialog-title>Thêm mới chất dinh dưỡng</h2>
-    <app-button-icon [iconName]="'close'" matTooltip="Đóng" (click)="onClose()"></app-button-icon>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
   </div>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div mat-dialog-content class="dialog-content">
+    <div mat-dialog-content class="app-dialog-content">
       <div formArrayName="nutrition" class="nutrition-list">
-        <div *ngFor="let _nutrition of nutritionForm.controls; index as i" class="nutrition-list-item">
-          <div class="d-flex align-items-center justify-content-between nutrition-list-item-header">
+        <div
+          *ngFor="let _nutrition of nutritionForm.controls; index as i"
+          class="nutrition-list-item m-bottom-20"
+        >
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            class="nutrition-list-item-header"
+          >
             <h4>Thành phần thứ {{ i + 1 }}</h4>
-            <app-button-icon *ngIf="nutritionForm.controls.length > 1" [customClasses]="['color-red']" matTooltip="Xoá"
-              (click)="removeNutrition(i, $event)" [iconName]="'highlight_off'"></app-button-icon>
+            <app-button-icon
+              *ngIf="nutritionForm.controls.length > 1"
+              [customClasses]="['color-red']"
+              matTooltip="Xoá"
+              (click)="removeNutrition(i, $event)"
+              [iconName]="'close'"
+            ></app-button-icon>
           </div>
 
           <ng-container [formGroupName]="i">
-            <div class="d-flex justify-content-center">
-              <mat-form-field appearance="outline" style="width: 90%" floatLabel="always">
+            <div fxLayout="row" fxLayoutAlign="center">
+              <mat-form-field
+                appearance="outline"
+                style="width: 90%"
+                floatLabel="always"
+              >
                 <mat-label>
                   Tên chất dinh dưỡng <span class="color-red">(*)</span>
                 </mat-label>
-                <input type="text" matInput maxlength="100" formControlName="name" />
+                <input
+                  type="text"
+                  matInput
+                  maxlength="100"
+                  formControlName="name"
+                />
 
-                <mat-error *ngIf="nutritionForm.controls[i].get('name')?.hasError('required')">
+                <mat-error
+                  *ngIf="
+                    nutritionForm.controls[i].get('name')?.hasError('required')
+                  "
+                >
                   Tên chất dinh dưỡng không được trống.
                 </mat-error>
-                <mat-error *ngIf="nutritionForm.controls[i].get('name')?.hasError('minlength')">
+                <mat-error
+                  *ngIf="
+                    nutritionForm.controls[i].get('name')?.hasError('minlength')
+                  "
+                >
                   Tên chất dinh dưỡng ít nhất 5 ký tự.
                 </mat-error>
               </mat-form-field>
             </div>
 
-            <div class="d-flex justify-content-center">
-              <mat-form-field appearance="outline" style="width: 90%" floatLabel="always">
+            <div fxLayout="row" fxLayoutAlign="center">
+              <mat-form-field
+                appearance="outline"
+                style="width: 90%"
+                floatLabel="always"
+              >
                 <mat-label>
                   Đơn vị đo <span class="color-red">(*)</span>
                 </mat-label>
-                <input type="text" matInput maxlength="100" formControlName="unit" />
+                <input
+                  type="text"
+                  matInput
+                  maxlength="100"
+                  formControlName="unit"
+                />
 
-                <mat-error *ngIf="nutritionForm.controls[i].get('unit')?.hasError('required')">
+                <mat-error
+                  *ngIf="
+                    nutritionForm.controls[i].get('unit')?.hasError('required')
+                  "
+                >
                   Tên chất dinh dưỡng không được trống.
                 </mat-error>
               </mat-form-field>
             </div>
 
-            <div class="d-flex justify-content-center">
-              <mat-form-field appearance="outline" style="width: 90%" floatLabel="always">
+            <div fxLayout="row" fxLayoutAlign="center">
+              <mat-form-field
+                appearance="outline"
+                style="width: 90%"
+                floatLabel="always"
+              >
                 <mat-label>
-                  Hàm lượng <span class="color-red">(*)</span>
+                  Số lượng <span class="color-red">(*)</span>
                 </mat-label>
-                <input type="text" matInput maxlength="100" formControlName="amount" />
+                <input
+                  type="text"
+                  matInput
+                  maxlength="100"
+                  formControlName="amount"
+                />
 
-                <mat-error *ngIf="nutritionForm.controls[i].get('amount')?.hasError('required')">
-                  Hàm lượng không được trống.
+                <mat-error
+                  *ngIf="
+                    nutritionForm.controls[i]
+                      .get('amount')
+                      ?.hasError('required')
+                  "
+                >
+                  Số lượng không được trống.
                 </mat-error>
-                <mat-error *ngIf="nutritionForm.controls[i].get('amount')?.hasError('min')">
-                  Hàm lượng phải lớn hơn 0.
+                <mat-error
+                  *ngIf="
+                    nutritionForm.controls[i].get('amount')?.hasError('min')
+                  "
+                >
+                  Số lượng phải lớn hơn 0.
                 </mat-error>
               </mat-form-field>
             </div>
-
           </ng-container>
         </div>
 
         <div class="m-bottom-25">
-          <app-button [buttonContent]="'Thêm chất dinh dưỡng'" [customClasses]="['app-button-green']"
-            (click)="addNutrition($event)"></app-button>
+          <app-button
+            [buttonContent]="'Thêm chất dinh dưỡng'"
+            [customClasses]="['app-button-green']"
+            (click)="addNutrition($event)"
+          ></app-button>
         </div>
       </div>
     </div>
-    <div class="button-group" mat-dialog-actions>
-      <app-button [buttonType]="'submit'" [customClasses]="['app-button-brown']"
-        [disabledCondition]="disableSubmitButton()" [showSpinner]="submitted" [buttonContent]="'Thêm mới'">
+    <div class="button-group app-dialog-actions" mat-dialog-actions>
+      <app-button
+        [buttonType]="'submit'"
+        [customClasses]="['app-button-brown']"
+        [disabledCondition]="disableSubmitButton()"
+        [showSpinner]="submitted"
+        [buttonContent]="'Thêm mới'"
+      >
       </app-button>
 
-      <app-button [buttonType]="'button'" [customClasses]="['app-button-grey']" [buttonContent]="'Huỷ bỏ'"
-        (click)="onReset()"></app-button>
+      <app-button
+        [buttonType]="'button'"
+        [customClasses]="['app-button-grey']"
+        [buttonContent]="'Huỷ bỏ'"
+        (click)="onReset()"
+      ></app-button>
     </div>
   </form>
 </div>

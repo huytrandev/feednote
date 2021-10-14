@@ -82,9 +82,13 @@ mat-form-field {
 .mat-tab-group {
   width: 100%;
 }
+.mat-menu-item .mat-icon {
+  margin-right: 10px !important;
+}
 .mat-dialog-container {
   border-radius: $border-radius !important;
 }
+
 // Customize class
 .app-button {
   border-radius: $border-radius !important;
