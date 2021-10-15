@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    this.router.navigate(['/dangnhap']);
+    this.router.navigate(['/dang-nhap']);
     return false;
   }
 }
