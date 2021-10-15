@@ -11,6 +11,7 @@ const routes: Routes = [
   },
   {
     path: '404',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./not-found/not-found.module').then((m) => m.NotFoundModule),
   },
