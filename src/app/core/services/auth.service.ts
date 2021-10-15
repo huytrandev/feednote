@@ -11,73 +11,70 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+  protected headers = new HttpHeaders().set('Content-Type', 'application/json');
+
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
+  private currentTokenSubject: BehaviorSubject<any>;
+  public currentToken: Observable<any>;
+
   constructor(private http: HttpClient, private router: Router) {
-    this.currentUserSubject = new BehaviorSubject<any>(
-      JSON.parse(localStorage.getItem('currentUser')!)
+    this.currentTokenSubject = new BehaviorSubject<any>(
+      localStorage.getItem('token')
     );
-    this.currentUser = this.currentUserSubject.asObservable();
+    this.currentToken = this.currentTokenSubject.asObservable();
   }
 
-  public get currentUserValue(): any {
-    return this.currentUserSubject.value;
+  public get currentTokenValue(): any {
+    return this.currentTokenSubject.value;
   }
 
   login(username: string, password: string) {
     return this.http
       .post<any>(`${env.apiUrl}/auth/login`, { username, password })
       .pipe(
-        map((response) => {
-          if (response.status === false) {
-            return response;
+        map((res) => {
+          const { status, data } = res;
+          if (!status) {
+            return res;
           }
 
-          const user = response.data;
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          return user;
+          const userData = { ...data };
+          const token = userData.token.replace('Bearer ', '');
+          this.currentTokenSubject.next(token);
+          localStorage.setItem('token', token);
+          return userData;
         })
       );
   }
 
   logout() {
     this.revokeToken();
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    localStorage.removeItem('token')
+    this.currentTokenSubject.next(null);
     location.reload();
   }
 
   revokeToken() {
     return this.http.get<any>(`${env.apiUrl}/auth/logout`, {
-      headers: this.currentUserValue.token,
+      headers: this.headers,
     });
   }
 
   changePassword(password: string) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'x-session-key': this.currentUserValue.token,
-    });
-
     return this.http.put<any>(
       `${env.apiUrl}/auth/changePassword`,
       { password: password },
-      { headers: headers }
+      { headers: this.headers }
     );
   }
 
   resetPassword(userId: string) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'x-session-key': this.currentUserValue.token,
-    });
-
     return this.http.put<any>(
       `${env.apiUrl}/admin/user/${userId}/resetPassword`,
       {},
-      { headers }
+      { headers: this.headers }
     );
   }
 
@@ -89,10 +86,8 @@ export class AuthService {
     }
   }
 
-  getUserByToken() {
-    let token = this.currentUserValue.token;
-    token = token.replace('Bearer ', '');
-    const user = this.getDecodeAccessToken(token);
-    return user;
+  getUserInfo() {
+    const token = this.currentTokenValue;
+    return this.getDecodeAccessToken(token);
   }
 }

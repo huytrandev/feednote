@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { FlexModule } from '@angular/flex-layout';
 
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
@@ -17,6 +18,7 @@ import { getVietnamesePaginatorIntl } from '../core/helpers';
     MaterialModule,
     ScrollingModule,
     SharedModule,
+    FlexModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useValue: getVietnamesePaginatorIntl() },

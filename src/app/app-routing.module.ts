@@ -5,12 +5,12 @@ import { AuthGuard } from './core/guards';
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: 'dang-nhap',
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginModule),
   },
   {
-    path: 'not-found',
+    path: '404',
     loadChildren: () =>
       import('./not-found/not-found.module').then((m) => m.NotFoundModule),
   },
@@ -21,26 +21,26 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'admin',
+        redirectTo: 'qtv',
         pathMatch: 'full',
       },
       {
-        path: 'admin',
+        path: 'qtv',
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
       },
       {
-        path: 'profile',
+        path: 'trang-ca-nhan',
         loadChildren: () =>
           import('./profile/profile.module').then((m) => m.ProfileModule),
       },
       {
-        path: 'foods',
+        path: 'thuc-an',
         loadChildren: () =>
           import('./food/food.module').then((m) => m.FoodModule),
       },
       {
-        path: 'cow-breeds',
+        path: 'giong-bo',
         loadChildren: () =>
           import('./cow-breed/cow-breed.module').then((m) => m.CowBreedModule),
       },
@@ -48,7 +48,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'not-found',
+    redirectTo: '404',
     pathMatch: 'full',
   },
 ];

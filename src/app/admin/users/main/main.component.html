@@ -1,6 +1,6 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <div class="wrapper bg-white shadow rounded">
-  <div class="d-flex align-items-baseline justify-content-between">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
     <app-button
       [customClasses]="['app-button-green']"
       [buttonContent]="'Thêm mới'"
@@ -59,21 +59,21 @@
         <th mat-header-cell *matHeaderCellDef colspan="2"></th>
         <td mat-cell *matCellDef="let element">
           <app-button-icon
-            *ngIf="(element._id !== currentUser._id) && (element.role !== 'admin')"
+            *ngIf="element._id !== currentUser._id && element.role !== 'admin'"
             matTooltip="Thay đổi mật khẩu"
             (click)="$event.stopPropagation(); resetPassword(element)"
             [iconName]="'password'"
           ></app-button-icon>
 
           <app-button-icon
-            *ngIf="(element._id !== currentUser._id) && (element.role !== 'admin')"
+            *ngIf="element._id !== currentUser._id && element.role !== 'admin'"
             matTooltip="Cập nhật"
             (click)="$event.stopPropagation(); createUpdateUser(element)"
             [iconName]="'edit'"
           ></app-button-icon>
 
           <app-button-icon
-            *ngIf="(element._id !== currentUser._id) && (element.role !== 'admin')"
+            *ngIf="element._id !== currentUser._id && element.role !== 'admin'"
             matTooltip="Xoá"
             (click)="$event.stopPropagation(); delete(element)"
             [iconName]="'delete_outline'"
@@ -87,7 +87,7 @@
         mat-row
         *matRowDef="let element; columns: displayedColumns"
         [routerLink]="
-          element._id !== currentUser._id ? ['d', element._id] : ['/profile']
+          element._id !== currentUser._id ? [element._id] : ['/trang-ca-nhan']
         "
         style="cursor: pointer"
         class="app-element-row"

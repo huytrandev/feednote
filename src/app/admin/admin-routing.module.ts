@@ -6,11 +6,11 @@ import { StatisticComponent } from './statistic/statistic.component';
 
 const routes: Routes = [
   {
-    path: 'statistic',
+    path: 'thong-ke',
     component: StatisticComponent,
   },
   {
-    path: 'breeders',
+    path: 'ho-chan-nuoi',
     canActivate: [RoleGuard],
     data: {
       expectedRole: ['manager'],
@@ -19,7 +19,7 @@ const routes: Routes = [
       import('./breeders/breeders.module').then((m) => m.BreedersModule),
   },
   {
-    path: 'feeding-diary',
+    path: 'nhat-ky-cho-an',
     loadChildren: () =>
       import('./feeding-diary/feeding-diary.module').then(
         (m) => m.FeedingDiaryModule
@@ -27,11 +27,11 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'feeding-diary',
+    redirectTo: 'nhat-ky-cho-an',
     pathMatch: 'full',
   },
   {
-    path: 'users',
+    path: 'nguoi-dung',
     canActivate: [RoleGuard],
     data: {
       expectedRole: ['admin'],

@@ -1,6 +1,6 @@
 <app-page-loading *ngIf="loading"></app-page-loading>
 <app-progress-bar *ngIf="loading"></app-progress-bar>
-<app-back-button [routerLink]="['/cow-breeds']"></app-back-button>
+<app-back-button [routerLink]="['/giong-bo']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div
     div
@@ -69,7 +69,7 @@
           <app-button-icon
             [iconName]="'info'"
             matTooltip="Thông tin"
-            [routerLink]="['period', period._id]"
+            [routerLink]="['giai-doan', period._id]"
           ></app-button-icon>
         </div>
         <div class="period-list-item-content">

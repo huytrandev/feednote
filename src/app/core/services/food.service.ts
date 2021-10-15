@@ -9,9 +9,7 @@ import { AuthService } from '.';
   providedIn: 'root',
 })
 export class FoodService {
-  headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('x-session-key', this.authService.currentUserValue.token);
+  headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

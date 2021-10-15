@@ -38,7 +38,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private authService: AuthService
   ) {
-    this.currentUser = this.authService.getUserByToken();
+    this.currentUser = this.authService.getUserInfo();
   }
 
   ngOnInit(): void {

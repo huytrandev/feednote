@@ -8,11 +8,8 @@ import { environment as env } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class CowService {
-  private headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('x-session-key', this.authService.currentUserValue.token);
-
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  private headers = new HttpHeaders().set('Content-Type', 'application/json');
+  constructor(private http: HttpClient) {}
 
   getById(cowId: string) {
     return this.http.get<any>(`${env.apiUrl}/cow/${cowId}`, {
