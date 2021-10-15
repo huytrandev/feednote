@@ -48,7 +48,7 @@
           <app-button-icon
             matTooltip="Cập nhật"
             (click)="$event.stopPropagation()"
-            [iconName]="'drive_file_rename_outline'"
+            [iconName]="'edit'"
             (click)="createUpdateFood(element)"
           ></app-button-icon>
 
@@ -66,7 +66,7 @@
         mat-row
         *matRowDef="let element; columns: displayedColumns"
         class="app-element-row"
-        [routerLink]="['d', element._id]"
+        [routerLink]="[element._id]"
         style="cursor: pointer"
       ></tr>
       <!-- Row shown when there is no matching data. -->

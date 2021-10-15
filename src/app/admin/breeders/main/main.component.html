@@ -64,7 +64,7 @@
           <app-button-icon
             matTooltip="Cập nhật"
             (click)="$event.stopPropagation(); createUpdateBreeder(element)"
-            [iconName]="'drive_file_rename_outline'"
+            [iconName]="'edit'"
           ></app-button-icon>
 
           <app-button-icon
@@ -80,7 +80,7 @@
       <tr
         mat-row
         *matRowDef="let element; columns: displayedColumns"
-        [routerLink]="['d', element._id]"
+        [routerLink]="[element._id]"
         style="cursor: pointer;"
         class="app-element-row"
       ></tr>

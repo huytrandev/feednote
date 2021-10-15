@@ -26,7 +26,7 @@ export class MainComponent implements OnInit, OnDestroy {
   user!: User;
   userId!: string;
   areas: Area[] = [];
-  currentUser!: User;
+  currentUser!: any;
   submitted: boolean = false;
   showPassword: boolean = false;
 
@@ -38,7 +38,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private router: Router
   ) {
-    this.currentUser = this.authService.currentUserValue;
+    this.currentUser = this.authService.getUserInfo();
   }
 
   ngOnInit(): void {
@@ -135,7 +135,8 @@ export class MainComponent implements OnInit, OnDestroy {
           this.commonService.openAlert('Cập nhật thành công', 'success');
           this.submitted = false;
           setTimeout(() => {
-            this.commonService.reloadComponent();
+            // this.commonService.reloadComponent();
+            window.location.reload();
           }, 2000);
         } else {
           this.commonService.openAlert('Cập nhật không thành công', 'danger');
@@ -173,7 +174,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   transformDate(date: number) {
-    return moment(date).locale('vi').format('LL');
+    return moment(date).locale('vi').format('L');
   }
 
   transformRoleName(role: string) {

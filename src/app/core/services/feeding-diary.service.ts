@@ -9,9 +9,7 @@ import { AdvancedFilter } from '../models';
   providedIn: 'root',
 })
 export class FeedingDiaryService {
-  private headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('x-session-key', this.authService.currentUserValue.token);
+  private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private authService: AuthService, private http: HttpClient) {}
 

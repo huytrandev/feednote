@@ -53,7 +53,7 @@
           <app-button-icon
             matTooltip="Cập nhật"
             (click)="$event.stopPropagation(); createUpdateCowBreed(element._id)"
-            [iconName]="'drive_file_rename_outline'"
+            [iconName]="'edit'"
           ></app-button-icon>
 
           <app-button-icon
@@ -70,7 +70,7 @@
         mat-row
         *matRowDef="let element; columns: displayedColumns"
         class="app-element-row"
-        [routerLink]="['d', element._id]"
+        [routerLink]="[element._id]"
         style="cursor: pointer;"
       ></tr>
       <!-- Row shown when there is no matching data. -->

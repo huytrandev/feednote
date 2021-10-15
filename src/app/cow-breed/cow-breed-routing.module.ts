@@ -10,11 +10,11 @@ const routes: Routes = [
     component: MainComponent,
   },
   {
-    path: 'd/:id',
+    path: ':id',
     component: DetailComponent,
   },
   {
-    path: 'd/:idCowBreed/period/:id',
+    path: ':idCowBreed/giai-doan/:id',
     component: PeriodDetailComponent,
     pathMatch: 'full',
   }

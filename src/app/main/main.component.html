@@ -1,33 +1,5 @@
-<div class="app-container">
-  <mat-toolbar class="app-toolbar">
-    <button
-      style="margin-right: 6px"
-      mat-icon-button
-      (click)="isExpanded = !isExpanded"
-    >
-      <mat-icon>menu</mat-icon>
-    </button>
-    <h1 class="app-name" [routerLink]="['/']">FeedNote</h1>
-    <span class="app-spacer"></span>
-    <div class="avatar" [matMenuTriggerFor]="profilePanel" routerLinkActive="avatar-active">
-      <span class="user-name">{{ currentUser.name }}</span>
-      <img src="assets/images/avatar.png" alt="" />
-    </div>
-    <mat-menu #profilePanel="matMenu" xPosition="before">
-      <button mat-menu-item [routerLink]="['profile']">
-        <mat-icon class="material-icons-outlined app-icon"
-          >account_circle</mat-icon
-        >
-        <span>Trang cá nhân</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon class="material-icons-outlined app-icon">logout</mat-icon>
-        <span>Đăng xuất</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar>
-
+<app-loading *ngIf="loading"></app-loading>
+<div class="app-container" *ngIf="!loading">
   <mat-sidenav-container
     class="app-sidenav-container"
     [style.marginTop.px]="0"
@@ -36,6 +8,18 @@
     <mat-sidenav #snav mode="side" fixedTopGap="56" [opened]="true">
       <div class="my-side-nav">
         <mat-nav-list>
+          <div fxLayout="row" fxLayoutAlign="start center" class="app-brand">
+            <button
+              style="margin-right: 6px"
+              mat-icon-button
+              (click)="isExpanded = !isExpanded"
+            >
+              <mat-icon>{{ isExpanded ? "menu" : "menu_open" }}</mat-icon>
+            </button>
+            <h2 class="app-name" *ngIf="isExpanded" [routerLink]="['/']">
+              FeedNote
+            </h2>
+          </div>
           <mat-list-item
             mat-list-item
             [routerLink]="nav.path"
@@ -52,13 +36,14 @@
           </mat-list-item>
         </mat-nav-list>
 
-        <div class="my-side-nav-bottom" *ngIf="currentUser.role === 'admin'">
+        <div class="my-side-nav-bottom">
           <mat-nav-list>
-            <mat-list-item
+            <!-- <mat-list-item
               mat-list-item
-              [routerLink]="['admin', 'users']"
+              [routerLink]="['/admin', 'users']"
               routerLinkActive="active"
               style="word-wrap: break-word"
+              *ngIf="currentUser.role === 'admin'"
             >
               <img
                 src="assets/icons/settings.svg"
@@ -68,6 +53,35 @@
               <span *ngIf="isExpanded" style="margin-left: 15px"
                 >Người dùng</span
               >
+            </mat-list-item> -->
+            <mat-list-item
+              mat-list-item
+              [routerLink]="['/trang-ca-nhan']"
+              routerLinkActive="active"
+              style="word-wrap: break-word"
+            >
+              <img
+                src="assets/icons/account.svg"
+                alt=""
+                style="width: 1.25rem"
+              />
+              <span *ngIf="isExpanded" style="margin-left: 15px"
+                >Trang cá nhân</span
+              >
+            </mat-list-item>
+            <mat-list-item
+              mat-list-item
+              style="word-wrap: break-word"
+              (click)="logout()"
+            >
+              <img
+                src="assets/icons/logout.svg"
+                alt=""
+                style="width: 1.25rem"
+              />
+              <span *ngIf="isExpanded" style="margin-left: 15px"
+                >Đăng xuất</span
+              >
             </mat-list-item>
           </mat-nav-list>
         </div>
@@ -75,7 +89,6 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <!-- <app-scroll-to-top></app-scroll-to-top> -->
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

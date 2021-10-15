@@ -10,11 +10,9 @@ import { share } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class CowBreedService {
-  private headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('x-session-key', this.authService.currentUserValue.token);
+  private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   getStandardServingFile(cowBreedId: string) {
     const options = {

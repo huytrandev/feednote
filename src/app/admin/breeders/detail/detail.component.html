@@ -1,6 +1,6 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-page-loading *ngIf="loading"></app-page-loading>
-<app-back-button [routerLink]="['/admin/breeders']"></app-back-button>
+<app-back-button [routerLink]="['/qtv/ho-chan-nuoi']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy hộ dân</h2>
@@ -23,7 +23,7 @@
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
         <app-menu-item
-          [iconName]="'drive_file_rename_outline'"
+          [iconName]="'edit'"
           [menuItemContent]="'Cập nhật'"
           (click)="updateBreeder(breeder)"
         ></app-menu-item>

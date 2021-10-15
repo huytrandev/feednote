@@ -11,14 +11,9 @@ import { User } from '../models';
   providedIn: 'root',
 })
 export class UserService {
-  private headers: HttpHeaders;
+  private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'x-session-key': this.authService.currentUserValue.token,
-    });
-  }
+  constructor(private http: HttpClient) {}
 
   // User
   getAllUsers(filter?: FilterDto) {
@@ -83,11 +78,9 @@ export class UserService {
   }
 
   createBreeder(breeder: User) {
-    return this.http.post<any>(
-      `${env.apiUrl}/user`,
-      JSON.stringify(breeder),
-      { headers: this.headers }
-    );
+    return this.http.post<any>(`${env.apiUrl}/user`, JSON.stringify(breeder), {
+      headers: this.headers,
+    });
   }
 
   updateBreeder(breederId: string, breeder: User) {

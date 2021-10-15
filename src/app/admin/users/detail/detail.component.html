@@ -1,6 +1,6 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-page-loading *ngIf="loading"></app-page-loading>
-<app-back-button [routerLink]="['/admin/users']"></app-back-button>
+<app-back-button [routerLink]="['/qtv/nguoi-dung']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy người dùng</h2>
@@ -30,7 +30,7 @@
         ></app-menu-item>
         <mat-divider></mat-divider>
         <app-menu-item
-          [iconName]="'drive_file_rename_outline'"
+          [iconName]="'edit'"
           [menuItemContent]="'Cập nhật'"
           (click)="updateUser(user)"
         ></app-menu-item>

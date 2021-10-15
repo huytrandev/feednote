@@ -1,5 +1,5 @@
-import {  Component, OnInit } from '@angular/core';
-import { AuthService } from '../core/services';
+import { Component, OnInit } from '@angular/core';
+import { AuthService, UserService } from '../core/services';
 
 @Component({
   selector: 'app-main',
@@ -8,31 +8,31 @@ import { AuthService } from '../core/services';
 })
 export class MainComponent implements OnInit {
   loading: boolean;
-  currentUser: any = null;
   isExpanded: boolean = true;
+  currentUser!: any;
   managerNav = [
     {
-      path: 'admin/feeding-diary',
+      path: 'qtv/nhat-ky-cho-an',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: 'admin/breeders',
+      path: 'qtv/ho-chan-nuoi',
       title: 'Hộ chăn nuôi',
       icon: 'assets/icons/farmer.svg',
     },
     {
-      path: 'cow-breeds',
+      path: 'giong-bo',
       title: 'Giống bò',
       icon: 'assets/icons/cow.svg',
     },
     {
-      path: 'foods',
+      path: 'thuc-an',
       title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
     },
     {
-      path: 'admin/statistic',
+      path: 'qtv/thong-ke',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
@@ -40,32 +40,45 @@ export class MainComponent implements OnInit {
 
   adminNav = [
     {
-      path: 'admin/feeding-diary',
+      path: 'qtv/nhat-ky-cho-an',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: 'cow-breeds',
+      path: 'qtv/nguoi-dung',
+      title: 'Người dùng',
+      icon: 'assets/icons/settings.svg',
+    },
+    {
+      path: 'giong-bo',
       title: 'Giống bò',
       icon: 'assets/icons/cow.svg',
     },
     {
-      path: 'foods',
+      path: 'thuc-an',
       title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
     },
     {
-      path: 'admin/statistic',
+      path: 'qtv/thong-ke',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
   ];
-  currentYear = new Date().getFullYear();
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
   ) {
-    this.authService.currentUser.subscribe((user) => (this.currentUser = user));
+    this.loading = true;
+    this.userService.getPersonalInfo().subscribe((res) => {
+      const { data, status } = res;
+      if (status === false) {
+        return this.authService.logout();
+      }
+      this.currentUser = data;
+      this.loading = false;
+    });
   }
 
   ngOnInit(): void {}
