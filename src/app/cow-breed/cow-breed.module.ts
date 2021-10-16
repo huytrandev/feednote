@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterModule } from '@angular/router';
 
 import { CowBreedRoutingModule } from './cow-breed-routing.module';
 import { SharedModule } from '../shared';
@@ -24,6 +25,7 @@ import { PeriodDetailComponent } from './period-detail/period-detail.component';
   ],
   imports: [
     CommonModule,
+    RouterModule,
     CowBreedRoutingModule,
     FormsModule,
     ReactiveFormsModule,

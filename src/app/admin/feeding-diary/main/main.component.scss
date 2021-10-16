@@ -4,6 +4,18 @@ table {
   width: 100%;
 }
 
+.table-container {
+  max-height: 85vh;
+  overflow: auto;
+}
+
+@media screen and (max-height: 768px) {
+  .table-container {
+    max-height: 75vh;
+    overflow: auto;
+  }
+}
+
 .search-wrapper {
   margin-bottom: 30px;
   padding: 20px 15px;
@@ -79,8 +91,7 @@ tr.app-element-row:not(.app-expanded-row):hover {
   z-index: 10;
 }
 
-.mat-column-id,
-.mat-column-unit {
+.mat-column-id {
   width: 70px !important;
   word-wrap: break-word !important;
   white-space: unset !important;
@@ -95,11 +106,11 @@ tr.app-element-row:not(.app-expanded-row):hover {
   hyphens: auto;
 }
 
-.mat-column-actions {
-  width: 100px !important;
+.mat-column-createdAt {
+  width: 35% !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 100px !important;
+  flex: 0 0 35% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

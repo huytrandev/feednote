@@ -13,6 +13,17 @@
     ></app-button-icon>
   </div>
   <div mat-dialog-content class="dialog-content">
+    <div flexLayout="row" fxLayoutAlign="center" class="m-bottom-20">
+      <div fxFlex="30" class="font-weight-bold">Hộ nông dân</div>
+      <div fxFlex style="text-transform: capitalize;">{{ feedingDiary.breerName }}</div>
+    </div>
+    <div flexLayout="row" fxLayoutAlign="center" class="m-bottom-20">
+      <div fxFlex="30" class="font-weight-bold">Thời gian</div>
+      <div fxFlex>{{ transformDate(feedingDiary.createdAt) }}</div>
+    </div>
+    <div flexLayout="row" fxLayoutAlign="start center" class="m-bottom-15">
+      <div class="font-weight-bold">Danh sách thức ăn</div>
+    </div>
     <div flexLayout="row" fxLayoutAlign="center center">
       <table
         mat-table
@@ -57,10 +68,6 @@
           <td class="mat-cell" colspan="4">Chưa có dữ liệu</td>
         </tr>
       </table>
-    </div>
-
-    <div flexLayout="row" fxLayoutAlign="end center" class="m-top-25">
-      <p class="text-muted">{{ transformDate(feedingDiary.createdAt) }}</p>
     </div>
   </div>
 </div>

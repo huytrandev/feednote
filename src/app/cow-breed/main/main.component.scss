@@ -11,7 +11,7 @@ table {
 }
 
 .table-container {
-  max-height: 450px;
+  max-height: 85vh;
   overflow: auto;
 }
 
@@ -113,4 +113,11 @@ tr.app-element-row:not(.app-expanded-row):hover {
 
 tr.app-element-row:not(.app-expanded-row):active {
   background: #efefef;
+}
+
+@media screen and (max-height: 768px) {
+  .table-container {
+    max-height: 75vh;
+    overflow: auto;
+  }
 }

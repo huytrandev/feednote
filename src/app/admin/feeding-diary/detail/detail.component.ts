@@ -26,6 +26,6 @@ export class DetailComponent implements OnInit {
   }
 
   transformDate(date: number) {
-    return moment(date).locale('vi').format('L');
+    return moment(date).locale('vi').format('LT, LL');
   }
 }
