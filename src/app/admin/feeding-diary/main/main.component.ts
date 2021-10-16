@@ -33,7 +33,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataTableSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['id', 'idCow', 'createdAt'];
+  displayedColumns: string[] = ['id', 'breederName', 'createdAt'];
   loading: boolean = true;
   loadingFilter: boolean = true;
   isLoadMore: boolean = false;

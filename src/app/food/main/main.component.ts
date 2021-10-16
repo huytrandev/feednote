@@ -1,8 +1,10 @@
 import {
   AfterViewInit,
   Component,
+  HostListener,
   OnDestroy,
   OnInit,
+  Renderer2,
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,8 +44,9 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private foodService: FoodService,
     private commonService: CommonService,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+  ) {
+  }
 
   ngOnInit(): void {}
 
@@ -56,6 +59,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
+
 
   getFoods() {
     this.loading = true;

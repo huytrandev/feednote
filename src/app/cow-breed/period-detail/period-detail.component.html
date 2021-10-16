@@ -3,7 +3,6 @@
 <app-back-button [routerLink]="['/giong-bo', cowBreedId]"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div
-    div
     fxLayout="row"
     fxLayoutAlign="space-between center"
     class="app-title m-bottom-25"
@@ -29,7 +28,7 @@
       <div fxFlex="25">
         <span class="font-weight-bold">Tên giai đoạn</span>
       </div>
-      <div fxFlex>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start">
         <span>{{ period.name }}</span>
       </div>
     </div>

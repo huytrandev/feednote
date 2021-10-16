@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { catchError, map, takeUntil } from 'rxjs/operators';
 import { CommonService, CowBreedService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
 import { DialogCreateNutritionComponent } from '../dialog-create-nutrition/dialog-create-nutrition.component';
@@ -20,7 +20,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   periodId!: string;
   cowBreedId!: string;
   period!: any;
-  cowBreed$: Observable<any>;
+  cowBreed!: any;
   loading: boolean = true;
 
   constructor(
@@ -43,10 +43,6 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  onNavigate(event: any) {
-    console.log(event.target.value);
-  }
-
   getPeriod(): void {
     this.loading = true;
     this.cowBreedService
@@ -62,7 +58,6 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.cowBreed$ = this.cowBreedService.getById(this.cowBreedId);
         this.period = data;
         this.loading = false;
       });

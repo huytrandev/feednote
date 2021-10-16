@@ -1,18 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
 
 @import "./variable";
 @import "~@angular/material/theming";
 $custom-typography: mat-typography-config(
-  $font-family: "Be Vietnam Pro, Roboto, Oxygen, Ubuntu, sans-serif",
+  $font-family: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif",
+  $display-4: mat-typography-level(113px, 113px, 300, $letter-spacing: -0.05em),
+  $display-3: mat-typography-level(57px, 57px, 400, $letter-spacing: -0.02em),
+  $display-2: mat-typography-level(46px, 47px, 400, $letter-spacing: -0.005em),
+  $display-1: mat-typography-level(35px, 41px, 400),
+  $headline: mat-typography-level(25px, 33px, 400),
+  $title: mat-typography-level(21px, 33px, 500),
+  $subheading-2: mat-typography-level(17px, 29px, 400),
+  $subheading-1: mat-typography-level(16px, 25px, 400),
+  $body-2: mat-typography-level(15px, 25px, 500),
+  $body-1: mat-typography-level(15px, 21px, 400),
+  $caption: mat-typography-level(13px, 21px, 400),
+  $button: mat-typography-level(15px, 15px, 500),
+  $input: mat-typography-level(inherit, 1.125, 400),
 );
 @include mat-core($custom-typography);
 
 html,
 body {
   height: 100%;
-
 }
 body {
   margin: 0;
@@ -59,11 +71,11 @@ mat-form-field {
 ::-webkit-scrollbar {
   width: 7px;
 }
-::-webkit-scrollbar-track { 
+::-webkit-scrollbar-track {
   border-radius: $border-radius;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d1d1; 
+  background: #d1d1d1;
   border-radius: $border-radius;
 }
 
@@ -86,6 +98,9 @@ mat-form-field {
   margin-right: 10px !important;
 }
 .mat-dialog-container {
+  border-radius: $border-radius !important;
+}
+.mat-card {
   border-radius: $border-radius !important;
 }
 
@@ -115,6 +130,10 @@ mat-form-field {
 
   &-grey {
     background-color: $grey !important;
+
+    &-active {
+      background-color: #ddd !important;
+    }
   }
 
   &-blue {
@@ -185,7 +204,7 @@ mat-form-field {
     text-transform: capitalize;
   }
   &-muted {
-    color: #777;
+    color: #aaaaaa;
   }
 }
 
