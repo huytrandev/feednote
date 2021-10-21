@@ -5,7 +5,7 @@
 @import "./variable";
 @import "~@angular/material/theming";
 $custom-typography: mat-typography-config(
-  $font-family: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif",
+  $font-family: "Roboto,Oxygen,Helvetica,Arial,sans-serif",
   $display-4: mat-typography-level(113px, 113px, 300, $letter-spacing: -0.05em),
   $display-3: mat-typography-level(57px, 57px, 400, $letter-spacing: -0.02em),
   $display-2: mat-typography-level(46px, 47px, 400, $letter-spacing: -0.005em),
@@ -53,7 +53,7 @@ mat-progress-bar {
 }
 mat-form-field {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 ::selection {
   background: $brown-primary;
@@ -75,7 +75,7 @@ mat-form-field {
   border-radius: $border-radius;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d1d1;
+  background: #cccccc;
   border-radius: $border-radius;
 }
 
@@ -110,7 +110,7 @@ mat-form-field {
   text-transform: capitalize;
   height: fit-content;
   text-transform: none !important;
-  line-height: 2.5rem !important;
+  line-height: 2.7rem !important;
   padding: 0 20px !important;
 
   &-brown {
@@ -162,6 +162,18 @@ mat-form-field {
   &-white {
     color: #fff !important;
   }
+
+  &-blue {
+    color: $blue !important;
+  }
+
+  &-green {
+    color: $green !important;
+  }
+
+  &-brown {
+    color: $brown-primary !important;
+  }
 }
 
 .bg {
@@ -179,6 +191,14 @@ mat-form-field {
 
   &-white {
     background: #fff !important;
+  }
+
+  &-green {
+    background: $green !important;
+  }
+
+  &-blue {
+    background: $blue !important;
   }
 }
 
@@ -204,7 +224,7 @@ mat-form-field {
     text-transform: capitalize;
   }
   &-muted {
-    color: #aaaaaa;
+    color: grey;
   }
 }
 

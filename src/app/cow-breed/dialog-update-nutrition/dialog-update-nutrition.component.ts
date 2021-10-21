@@ -59,7 +59,7 @@ export class DialogUpdateNutritionComponent implements OnInit {
     if (!this.form.valid) return;
     this.submitted = true;
     this.cowBreedService
-      .updateNutrition(this.data.periodId, this.form.value)
+      .updateNutritionOfPeriod(this.data.periodId, this.form.value)
       .subscribe((res) => {
         if (!res.status) {
           this.commonService.openAlert(

@@ -1,3 +1,157 @@
-<div style="width:100%;">
-  <canvas id="myChart" style="background-color: #fff !important;" width="700" height="300" #mychart></canvas>
+<div class="wrapper">
+  <div
+    fxLayout="column"
+    fxLayoutAlign="space-between stretch"
+    fxLayoutGap="20px"
+    class="count-container bg-white rounded shadow m-bottom-20"
+  >
+    <div fxLayout="row" *ngIf="currentUser.role === 'manager'">
+      <div fxFlex="1/3" class="total-user">
+        <div class="total-user__header">
+          <span>Tổng số hộ chăn nuôi đang quản lý</span>
+        </div>
+        <div class="total-user__body m-top-20">
+          <span *ngIf="breeders; else elseSpan">{{ breeders.totalCount }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
+        </div>
+      </div>
+      <div fxFlex="1/3" class="total-cow-breed">
+        <div class="total-cow-breed__header">
+          <span>Tổng số giống bò</span>
+        </div>
+        <div class="total-cow-breed__body m-top-20">
+          <span *ngIf="cowBreeds; else elseSpan">{{
+            cowBreeds.totalCount
+          }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
+        </div>
+      </div>
+      <div fxFlex="1/3" class="total-cow-food">
+        <div class="total-food__header">
+          <span>Tổng số loại thức ăn</span>
+        </div>
+        <div class="total-food__body m-top-20">
+          <span *ngIf="foods; else elseSpan">{{ foods.totalCount }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin -->
+    <div fxLayout="row" *ngIf="currentUser.role === 'admin'">
+      <div fxFlex="1/4" class="total-user">
+        <div class="total-user__header">
+          <span>Tổng số người dùng</span>
+        </div>
+        <div class="total-user__body m-top-20">
+          <span>{{ userTypes.totalUser }}</span>
+        </div>
+      </div>
+      <div fxFlex="1/4" class="total-user">
+        <div class="total-user__header">
+          <span>Tổng số quản trị viên</span>
+        </div>
+        <div class="total-user__body m-top-20">
+          <span>{{ userTypes.totalAdmin }}</span>
+        </div>
+      </div>
+      <div fxFlex="1/4" class="total-user">
+        <div class="total-user__header">
+          <span>Tổng số cán bộ thú y</span>
+        </div>
+        <div class="total-user__body m-top-20">
+          <span>{{ userTypes.totalManager }}</span>
+        </div>
+      </div>
+      <div fxFlex="1/4" class="total-user">
+        <div class="total-user__header">
+          <span>Tổng số hộ chăn nuôi</span>
+        </div>
+        <div class="total-user__body m-top-20">
+          <span>{{ userTypes.totalBreeder }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-container bg-white rounded shadow m-bottom-20">
+    <div
+      class="chart-options"
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="30px"
+    >
+      <mat-form-field
+        appearance="outline"
+        style="width: 30%; display: inline-block"
+        floatLabel="always"
+        *ngIf="breeders"
+      >
+        <mat-label>Hộ chăn nuôi</mat-label>
+        <mat-select [(ngModel)]="selectedBreeder" name="breeder">
+          <mat-option>--</mat-option>
+          <mat-option
+            *ngFor="let breeder of breeders.items"
+            [value]="breeder._id"
+          >
+            {{ breeder.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        style="width: 30%; display: inline-block"
+        floatLabel="always"
+        *ngIf="cowBreeds"
+      >
+        <mat-label>Giống bò</mat-label>
+        <mat-select [(ngModel)]="selectedCowBreed" name="cowBreed">
+          <mat-option>--</mat-option>
+          <mat-option
+            *ngFor="let cowBreed of cowBreeds.items"
+            [value]="cowBreed._id"
+          >
+            {{ cowBreed.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+          appearance="outline"
+          style="width: 30%; display: inline-block"
+          floatLabel="always"
+        >
+          <mat-label>Chọn khoảng thời gian</mat-label>
+          <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
+            <input
+              matStartDate
+              formControlName="from"
+              placeholder="Ngày bắt đầu"
+            />
+            <input
+              matEndDate
+              formControlName="to"
+              placeholder="Ngày kết thúc"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker
+            #picker
+            [disabled]="false"
+          ></mat-date-range-picker>
+        </mat-form-field>
+    </div>
+    <div class="chart">
+      <canvas id="myChart" #mychart></canvas>
+    </div>
+  </div>
 </div>

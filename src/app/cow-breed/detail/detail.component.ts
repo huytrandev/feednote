@@ -24,7 +24,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   error: boolean = false;
   cowBreedIdParam!: string;
-  displayedColumns = ['id', 'name', 'amount', 'unit', 'actions'];
+  periodColumns = ['id', 'name', 'actions'];
 
   constructor(
     private route: ActivatedRoute,
@@ -48,7 +48,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   getCowBreed(): void {
     this.loading = true;
     this.cowBreedService
-      .getById(this.cowBreedIdParam)
+      .fetchCowBreed(this.cowBreedIdParam)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         map((res) => {
@@ -78,7 +78,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.loading = true;
-        this.cowBreedService.delete(this.cowBreed._id).subscribe((res) => {
+        this.cowBreedService.deleteCowBreed(this.cowBreed._id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
             this.commonService.openAlert('Xoá giống bò thành công', 'success');
@@ -104,7 +104,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       if (action === 'delete') {
         this.loading = true;
         this.cowBreedService
-          .deleteNutrition(periodId, nutritionId)
+          .deleteNutritionOfPeriod(periodId, nutritionId)
           .subscribe((res) => {
             const { status } = res;
             if (status === true) {
@@ -166,17 +166,16 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   getStandardServing() {
-    this.cowBreedService
-      .getStandardServingFile(this.cowBreedIdParam)
-      .subscribe((res) => {
-        console.log(res);
-        const blob = new Blob([res], { type: 'application/pdf' });
-        var downloadURL = window.URL.createObjectURL(res);
-        var link = document.createElement('a');
-        link.href = downloadURL;
-        link.download = 'khau-phan-an-chuan.pdf';
-        link.click();
-      });
+    // this.cowBreedService
+    //   .fetchStandardServingFile(this.cowBreedIdParam)
+    //   .subscribe((res) => {
+    //     const blob = new Blob([res], { type: 'application/pdf' });
+    //     var downloadURL = window.URL.createObjectURL(res);
+    //     var link = document.createElement('a');
+    //     link.href = downloadURL;
+    //     link.download = 'khau-phan-an-chuan.pdf';
+    //     link.click();
+    //   });
   }
 
   updateCowBreed(cowBreedId: string) {
@@ -201,6 +200,35 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.getCowBreed();
       } else if (type === 'update' && status === 'failure') {
         this.commonService.openAlert('Cập nhật giống bò thất bại', 'danger');
+      }
+    });
+  }
+
+  removePeriod(period: any) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '400px',
+      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false,
+    });
+
+    const { _id } = period;
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action } = result;
+      if (action === 'delete') {
+        this.cowBreedService.deletePeriod(_id).subscribe((res) => {
+          const { status } = res;
+          if (status === true) {
+            this.commonService.openAlert(
+              'Xoá giai đoạn sinh trưởng thành công',
+              'success'
+            );
+            this.getCowBreed();
+          } else {  
+            this.commonService.openAlert('Xoá giai đoạn sinh trưởng thất bại', 'danger');
+          }
+        });
       }
     });
   }

@@ -67,10 +67,10 @@ tr.app-element-row:not(.app-expanded-row):active {
 }
 
 .mat-column-areaName {
-  width: calc(100% - 40% - 150px - 70px) !important;
+  width: calc(100% - 55% - 150px - 70px) !important;
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 calc(100% - 40% - 150px - 70px) !important;
+  flex: 0 0 calc(100% - 55% - 150px - 70px) !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -81,7 +81,8 @@ tr.app-element-row:not(.app-expanded-row):active {
   hyphens: auto;
 }
 
-.mat-column-role {
+.mat-column-role,
+.mat-column-createdAt {
   width: 15% !important;
   word-wrap: break-word !important;
   white-space: unset !important;

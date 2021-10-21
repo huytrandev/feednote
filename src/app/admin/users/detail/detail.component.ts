@@ -47,7 +47,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   getUser() {
     this.loading = true;
     this.userService
-      .getUserById(this.userId)
+      .fetchUser(this.userId)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -61,8 +61,8 @@ export class DetailComponent implements OnInit, OnDestroy {
         }
 
         let data = { ...res.data };
-        this.area$ = this.areaService.getById(data.idArea);
-        this.manager$ = this.userService.getUserById(data.idManager);
+        this.area$ = this.areaService.fetchArea(data.idArea);
+        this.manager$ = this.userService.fetchUser(data.idManager);
         this.user = data;
         this.loading = false;
       });

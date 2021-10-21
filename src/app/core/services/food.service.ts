@@ -1,65 +1,44 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment as env } from 'src/environments/environment';
 import { FilterDto } from '../models';
-import { AuthService } from '.';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FoodService {
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
-
-  getAll(filter?: FilterDto) {
+  fetchFoods(filter?: FilterDto) {
     const params = new HttpParams()
-      .set('skip', filter?.skip?.toString() || '')
-      .set('limit', filter?.limit?.toString() || '')
-      .set('search', filter?.search?.toString() || '')
-      .set('sort', filter?.sort?.toString() || '');
+      .set('skip', filter?.skip ? String(filter?.skip) : '')
+      .set('limit', filter?.limit ? String(filter?.limit) : '')
+      .set('search', filter?.search ? String(filter?.search) : '')
+      .set('sort', filter?.sort ? String(filter?.sort) : '');
 
-    const options = {
-      headers: this.headers,
-      params,
-    };
-
-    return this.http.get<any>(`${env.apiUrl}/food`, options);
+    return this.http.get<any>(`${env.apiUrl}/food`, { params });
   }
 
-  getById(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/food/${id}`, {
-      headers: this.headers,
-    });
+  fetchFood(id: string) {
+    return this.http.get<any>(`${env.apiUrl}/food/${id}`);
   }
 
-  create(food: any) {
-    return this.http.post<any>(`${env.apiUrl}/food`, JSON.stringify(food), {
-      headers: this.headers,
-    });
+  createFood(food: any) {
+    return this.http.post<any>(`${env.apiUrl}/food`, JSON.stringify(food));
   }
 
-  update(id: string, food: any) {
-    return this.http.put<any>(
-      `${env.apiUrl}/food/${id}`,
-      JSON.stringify(food),
-      {
-        headers: this.headers,
-      }
-    );
+  updateFood(id: string, food: any) {
+    return this.http.put<any>(`${env.apiUrl}/food/${id}`, JSON.stringify(food));
   }
 
-  delete(id: string) {
-    return this.http.delete<any>(`${env.apiUrl}/food/${id}`, {
-      headers: this.headers,
-    });
+  deleteFood(id: string) {
+    return this.http.delete<any>(`${env.apiUrl}/food/${id}`);
   }
 
-  deleteIngredient(foodId: string, ingredientId: string) {
+  deleteIngredientOfFood(foodId: string, ingredientId: string) {
     return this.http.delete<any>(
-      `${env.apiUrl}/food/${foodId}/ingredient/${ingredientId}`,
-      { headers: this.headers }
+      `${env.apiUrl}/food/${foodId}/ingredient/${ingredientId}`
     );
   }
 }

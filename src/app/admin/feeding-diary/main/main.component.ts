@@ -79,7 +79,6 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   applyFilter() {
     const { from, to } = this.dateRange.value;
-    console.log(from, to);
     let formQuery = !!from ? moment(from).format('YYYY-MM-DD') : '';
     let toQuery = !!to ? moment(to).format('YYYY-MM-DD') : '';
     if (!this.selectedBreeder) {
@@ -125,7 +124,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   getFeedingDiaries() {
     this.loading = true;
     this.feedingDiaryService
-      .getAll(this.params)
+      .fetchFeedingDiaries(this.params)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -146,7 +145,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   getBreeders() {
     this.loadingFilter = true;
     this.userService
-      .getAllBreeders()
+      .fetchBreeders()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -200,7 +199,6 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onSort(event: any) {
     const { active, direction } = event;
-    console.log(this.sort);
 
     const limit = this.paginator.pageSize;
     const skip = limit * this.paginator.pageIndex;

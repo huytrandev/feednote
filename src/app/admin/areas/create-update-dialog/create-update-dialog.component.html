@@ -1,0 +1,45 @@
+<div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
+    <h2>{{ !area ? "Thêm mới" : "Cập nhật thông tin" }} khu vực</h2>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="dialog-content">
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%"
+        floatLabel="always"
+      >
+        <mat-label>Tên khu vực <span class="color-red">(*)</span></mat-label>
+        <input type="text" matInput maxlength="100" formControlName="name" />
+
+        <mat-error *ngIf="f.name.errors?.required"
+          >Tên khu vực không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.name.errors?.minlength"
+          >Tên khu vực phải có ít nhất 5 ký tự.</mat-error
+        >
+      </mat-form-field>
+    </div>
+    <div class="button-group" mat-dialog-actions>
+      <app-button
+        [buttonType]="'submit'"
+        [customClasses]="['app-button-brown']"
+        [disabledCondition]="!(form.valid && form.dirty) || isSubmitting"
+        [showSpinner]="isSubmitting"
+        [buttonContent]="!area ? 'Tạo mới' : 'Cập nhật'"
+      ></app-button>
+
+      <app-button
+        [buttonType]="'button'"
+        [customClasses]="['app-button-grey']"
+        [buttonContent]="'Huỷ bỏ'"
+      ></app-button>
+    </div>
+  </form>
+</div>

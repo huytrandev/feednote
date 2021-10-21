@@ -1,9 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { catchError, map, takeUntil } from 'rxjs/operators';
-import { CommonService, CowBreedService } from 'src/app/core/services';
+import { Subject } from 'rxjs';
+import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
+import {
+  CommonService,
+  CowBreedService,
+  MealService,
+} from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
 import { DialogCreateNutritionComponent } from '../dialog-create-nutrition/dialog-create-nutrition.component';
 import { DialogUpdateNutritionComponent } from '../dialog-update-nutrition/dialog-update-nutrition.component';
@@ -15,18 +19,20 @@ import { DialogUpdateNutritionComponent } from '../dialog-update-nutrition/dialo
 })
 export class PeriodDetailComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
-  nutritionColumns = ['id', 'name', 'amount', 'unit', 'actions'];
-  foodColumns = ['id', 'name', 'amount', 'unit'];
+  nutritionColumns = ['id', 'name', 'amount', 'actions'];
+  mealColumns = ['id', 'name', 'amount'];
   periodId!: string;
   cowBreedId!: string;
   period!: any;
   cowBreed!: any;
+  meals!: any;
   loading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private cowBreedService: CowBreedService,
+    private mealService: MealService,
     private commonService: CommonService,
     public dialog: MatDialog
   ) {
@@ -36,6 +42,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getPeriod();
+    this.getMeals();
   }
 
   ngOnDestroy(): void {
@@ -46,12 +53,9 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   getPeriod(): void {
     this.loading = true;
     this.cowBreedService
-      .getPeriod(this.periodId)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
-      )
-      .subscribe((res) => {
+      .fetchPeriod(this.periodId)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res: any) => {
         const { status, data } = res;
         if (!status) {
           this.router.navigate(['/not-found']);
@@ -63,11 +67,37 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  getMeals() {
+    this.loading = true;
+    const query = {
+      filter: {
+        idPeriod: this.periodId,
+      },
+      skip: 0,
+      limit: 1,
+    };
+
+    this.mealService
+      .fetchMeals(query)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        const { status, data } = res;
+        if (!status) {
+          this.router.navigate(['/not-found']);
+          return;
+        }
+
+        this.meals = data.items;
+        this.loading = false;
+      });
+  }
+
   onDeletePeriod() {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '400px',
       disableClose: true,
       autoFocus: false,
+      restoreFocus: false,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -100,7 +130,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
       if (action === 'delete') {
         this.loading = true;
         this.cowBreedService
-          .deleteNutrition(periodId, nutritionId)
+          .deleteNutritionOfPeriod(periodId, nutritionId)
           .subscribe((res) => {
             const { status } = res;
             if (status === true) {
@@ -138,7 +168,10 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
       if (type === 'create' && status === 'fail') {
         this.commonService.openAlert('Thêm chất dinh dưỡng thất bại', 'danger');
       } else if (type === 'create' && status === 'success') {
-        this.commonService.openAlert('Thêm chất dinh dưỡng thành công', 'success');
+        this.commonService.openAlert(
+          'Thêm chất dinh dưỡng thành công',
+          'success'
+        );
         this.getPeriod();
       } else {
         return;

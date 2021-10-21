@@ -6,3 +6,5 @@ export * from './user.service';
 export * from './common.service';
 export * from './feeding-diary.service';
 export * from './cow.service';
+export * from './statistic.service';
+export * from './meal.service';

@@ -61,7 +61,7 @@ export class MainComponent implements OnInit, OnDestroy {
   getCowBreeds(): void {
     this.loading = true;
     this.cowBreedService
-      .getAll(this.paramsGetCowBreeds)
+      .fetchCowBreeds(this.paramsGetCowBreeds)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const { data } = res;
@@ -125,7 +125,7 @@ export class MainComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.loading = true;
-        this.cowBreedService.delete(_id).subscribe((res) => {
+        this.cowBreedService.deleteCowBreed(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
             this.commonService.openAlert('Xoá giống bò thành công', 'success');
