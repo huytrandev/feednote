@@ -63,7 +63,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   getUser(): void {
     this.userService
-      .getPersonalInfo()
+      .fetchPersonalInfo()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -81,7 +81,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   getArea() {
     this.areaService
-      .getAll()
+      .fetchAreas()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))

@@ -69,7 +69,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   getAreas() {
     this.loading = true;
     this.areaService
-      .getAll()
+      .fetchAreas()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -171,7 +171,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.foodService
-          .deleteIngredient(this.food._id, idIngredient)
+          .deleteIngredientOfFood(this.food._id, idIngredient)
           .subscribe((res) => {
             const { status } = res;
             if (!!status) {
@@ -205,7 +205,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
     if (!this.food) {
       this.submitted = true;
-      this.foodService.create(this.form.value).subscribe(
+      this.foodService.createFood(this.form.value).subscribe(
         (res: any) => {
           const { status } = res;
           if (!status) {
@@ -237,7 +237,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       );
     } else {
       this.submitted = true;
-      this.foodService.update(this.food._id, this.form.value).subscribe(
+      this.foodService.updateFood(this.food._id, this.form.value).subscribe(
         (res) => {
           const { status } = res;
           if (!status) {

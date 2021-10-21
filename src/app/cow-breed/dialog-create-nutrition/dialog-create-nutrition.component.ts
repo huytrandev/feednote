@@ -73,7 +73,7 @@ export class DialogCreateNutritionComponent implements OnInit {
     const nutrition = [...this.form.value.nutrition];
     this.submitted = true;
     this.cowBreedService
-      .createNutritionByPeriod(this.periodId, nutrition)
+      .createNutritionOfPeriod(this.periodId, nutrition)
       .subscribe((res) => {
         if (!res.status) {
           this.submitted = false;

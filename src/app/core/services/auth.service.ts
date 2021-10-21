@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
@@ -11,10 +11,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  protected headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-  private currentUserSubject: BehaviorSubject<any>;
-  public currentUser: Observable<any>;
+  // private currentUserSubject: BehaviorSubject<any>;
+  // public currentUser: Observable<any>;
 
   private currentTokenSubject: BehaviorSubject<any>;
   public currentToken: Observable<any>;
@@ -51,30 +49,25 @@ export class AuthService {
 
   logout() {
     this.revokeToken();
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
     this.currentTokenSubject.next(null);
     location.reload();
   }
 
   revokeToken() {
-    return this.http.get<any>(`${env.apiUrl}/auth/logout`, {
-      headers: this.headers,
-    });
+    return this.http.get<any>(`${env.apiUrl}/auth/logout`);
   }
 
   changePassword(password: string) {
-    return this.http.put<any>(
-      `${env.apiUrl}/auth/changePassword`,
-      { password: password },
-      { headers: this.headers }
-    );
+    return this.http.put<any>(`${env.apiUrl}/auth/changePassword`, {
+      password,
+    });
   }
 
   resetPassword(userId: string) {
     return this.http.put<any>(
       `${env.apiUrl}/admin/user/${userId}/resetPassword`,
-      {},
-      { headers: this.headers }
+      null
     );
   }
 

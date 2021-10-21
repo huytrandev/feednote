@@ -1,5 +1,61 @@
 @import "../../../variable";
 
+table {
+  width: 95%;
+}
+
+tr.app-element-row:not(.app-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.app-element-row:not(.app-expanded-row):active {
+  background: #efefef;
+}
+.mat-column-id {
+  width: 80px !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 80px !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-name {
+  width: calc(100% - 30% - 80px) !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 calc(100% - 30% - 80px) !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-amount {
+  width: 30% !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 30% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
 .wrapper {
   padding: 30px;
   margin: 0 auto;
@@ -47,7 +103,6 @@
       border-top-left-radius: $border-radius;
       border-top-right-radius: $border-radius;
       background-color: #f5f5f5;
-      margin-bottom: 20px;
       padding: 0 15px;
     }
   }

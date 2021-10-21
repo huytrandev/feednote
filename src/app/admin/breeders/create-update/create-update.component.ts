@@ -71,7 +71,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   getAreas() {
     this.loading = true;
     this.areaService
-      .getAll()
+      .fetchAreas()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         map((res) => {
@@ -93,7 +93,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   getBreeders() {
     this.loading = true;
     this.userService
-      .getAllBreeders()
+      .fetchBreeders()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         map((res) => {
@@ -113,7 +113,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   validateUsernameExist(control: AbstractControl) {
-    return this.userService.getAllBreeders().pipe(
+    return this.userService.fetchManagers().pipe(
       map((res) => {
         const breeders = res.data.items;
         if (breeders.some((b: any) => b.username === control.value)) {

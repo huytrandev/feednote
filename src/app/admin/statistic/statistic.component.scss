@@ -1,0 +1,44 @@
+@import "../../../variable";
+
+.wrapper {
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.count-container {
+  padding: 15px 30px;
+  & > div > div {
+    padding: 0px 15px;
+    &:not(:first-child) {
+      // border-left: 1px solid #d9d9d9;
+    }
+    & .total-user__header span,
+    .total-cow-breed__header span,
+    .total-food__header span {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #adadad;
+    }
+    & .total-user__body span,
+    .total-cow-breed__body span,
+    .total-food__body span {
+      font-size: 2.5rem;
+      font-weight: 400;
+    }
+  }
+
+  & img {
+    width: 30px;
+    margin-right: 20px;
+  }
+}
+
+.chart-container {
+  padding: 15px 30px;
+
+  & .chart {
+    position: relative;
+    // height: 40vh;
+    width: 100%;
+  }
+}

@@ -64,7 +64,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   getFoods() {
     this.loading = true;
     this.foodService
-      .getAll(this.paramsGetFoods)
+      .fetchFoods(this.paramsGetFoods)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -111,7 +111,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     if (direction === '') {
       this.setParams(skip, limit, '', this.defaultSort);
     } else {
-      const sortQuery = `${active} ${direction}`;
+      let sortQuery = `${active} ${direction}`;
+      if (active === 'areaName') {
+        sortQuery = `idArea ${direction}`;
+      }
       this.setParams(skip, limit, '', sortQuery);
     }
 
@@ -140,7 +143,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.loading = true;
-        this.foodService.delete(_id).subscribe((res) => {
+        this.foodService.deleteFood(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
             this.commonService.openAlert('Xoá thức ăn thành công', 'success');

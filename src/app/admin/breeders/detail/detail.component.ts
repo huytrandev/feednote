@@ -55,11 +55,11 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getBreeder() {
     this.loading = true;
     this.userService
-      .getBreederById(this.breederId)
+      .fetchBreeder(this.breederId)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         switchMap((user) => {
-          return this.areaService.getById(user.data.idArea).pipe(
+          return this.areaService.fetchArea(user.data.idArea).pipe(
             map((area) => {
               return { ...user.data, areaName: area.data.name };
             })

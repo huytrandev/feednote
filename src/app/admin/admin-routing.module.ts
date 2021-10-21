@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RoleGuard } from '../core/guards';
 
-import { StatisticComponent } from './statistic/statistic.component';
-
 const routes: Routes = [
   {
-    path: 'thong-ke',
-    component: StatisticComponent,
+    path: '',
+    loadChildren: () =>
+      import('./statistic/statistic.module').then((m) => m.StatisticModule),
+    pathMatch: 'prefix'
   },
   {
     path: 'ho-chan-nuoi',
@@ -26,11 +26,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: '',
-    redirectTo: 'nhat-ky-cho-an',
-    pathMatch: 'full',
-  },
-  {
     path: 'nguoi-dung',
     canActivate: [RoleGuard],
     data: {
@@ -38,6 +33,15 @@ const routes: Routes = [
     },
     loadChildren: () =>
       import('./users/users.module').then((m) => m.UsersModule),
+  },
+  {
+    path: 'khu-vuc',
+    canActivate: [RoleGuard],
+    data: {
+      expectedRole: ['admin'],
+    },
+    loadChildren: () =>
+      import('./areas/areas.module').then((m) => m.AreasModule),
   },
 ];
 

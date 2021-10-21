@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { CommonService, UserService } from 'src/app/core/services';
 import { FilterDto, User } from 'src/app/core/models';
@@ -32,9 +33,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   displayedColumns: string[] = [
     'id',
     'name',
-    'email',
-    'phone',
     'areaName',
+    'createdAt',
     'actions',
   ];
   paramGetBreeders!: FilterDto;
@@ -76,7 +76,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   getBreeders(): void {
     this.loading = true;
     this.userService
-      .getAllBreeders(this.paramGetBreeders)
+      .fetchBreeders(this.paramGetBreeders)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -192,5 +192,9 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
         this.commonService.openAlert('Cập nhật hộ chăn nuôi thất bại', 'danger');
       }
     });
+  }
+
+  transformDate(date: number) {
+    return moment(new Date(date)).locale('vi').format('L');
   }
 }

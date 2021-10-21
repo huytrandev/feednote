@@ -9,82 +9,65 @@
   >
     <h2>Thông tin giai đoạn</h2>
     <app-button
-      [matMenuTriggerFor]="optionsPanel"
-      [iconName]="'more_horiz'"
+      [iconName]="'delete'"
+      matTooltip="Xoá"
       [customClasses]="['app-button-option']"
+      (click)="onDeletePeriod()"
     >
     </app-button>
-
-    <mat-menu #optionsPanel="matMenu" xPosition="before">
-      <app-menu-item
-        [iconName]="'delete_outline'"
-        [menuItemContent]="'Xoá'"
-        (click)="onDeletePeriod()"
-      ></app-menu-item>
-    </mat-menu>
   </div>
   <div class="content">
-    <div fxLayout="row" fxLayoutAlign="center" class="m-bottom-20">
+    <div fxLayout="row" fxLayoutAlign="center" class="m-bottom-15">
       <div fxFlex="25">
         <span class="font-weight-bold">Tên giai đoạn</span>
       </div>
       <div fxFlex fxLayout="row" fxLayoutAlign="start">
-        <span>{{ period.name }}</span>
+        <span>{{ period ? period.name : "" }}</span>
       </div>
     </div>
-    <div fxLayout="row" class="m-bottom-20">
+    <div fxLayout="row" class="m-bottom-15">
       <div fxFlex="25">
         <span class="font-weight-bold">Ngày bắt đầu</span>
       </div>
       <div fxFlex>
-        <span>{{ period.startDay }}</span>
+        <span>{{ period ? period.startDay : "" }}</span>
       </div>
     </div>
 
-    <div fxLayout="row" class="m-bottom-20">
+    <div fxLayout="row" class="m-bottom-15">
       <div fxFlex="25">
         <span class="font-weight-bold">Ngày kết thúc</span>
       </div>
       <div fxFlex>
-        <span>{{ period.endDay }}</span>
+        <span>{{ period ? period.endDay : "" }}</span>
       </div>
     </div>
 
-    <div fxLayout="row" class="m-bottom-20">
+    <div fxLayout="row" class="m-bottom-15">
       <div fxFlex="25">
         <span class="font-weight-bold">Cân nặng</span>
       </div>
       <div fxFlex>
-        <span>{{ period.weight }} kg</span>
+        <span>{{ period ? period.weight : "" }} kg</span>
       </div>
     </div>
 
-    <div class="nutrition m-bottom-20">
+    <div class="nutrition m-bottom-15">
       <div
         fxLayout="row"
         fxLayoutAlign="space-between center"
         class="nutrition-header"
       >
         <span class="font-weight-bold">Bảng nhu cầu dinh dưỡng</span>
-        <app-button-icon
-          [iconName]="'settings'"
-          [matMenuTriggerFor]="nutritionOptionPanel"
-        >
-        </app-button-icon>
-        <mat-menu #nutritionOptionPanel="matMenu" xPosition="before">
-          <app-menu-item
-            [iconName]="'add'"
-            [menuItemContent]="'Thêm mới'"
-            (click)="createNutrition(period._id)"
-          ></app-menu-item>
-        </mat-menu>
       </div>
 
       <div class="nutrition-content">
-        <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-20">
+        <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-15">
           <table
             mat-table
-            [dataSource]="period.nutrition ? period.nutrition : []"
+            [dataSource]="
+              !period ? [] : period.nutrition ? period.nutrition : []
+            "
           >
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef>STT</th>
@@ -103,19 +86,12 @@
             <ng-container matColumnDef="amount">
               <th mat-header-cell *matHeaderCellDef>Hàm lượng</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.amount }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="unit">
-              <th mat-header-cell *matHeaderCellDef>Đơn vị đo</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.unit }}
+                {{ element.amount + " " + element.unit }}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef colspan="2"></th>
+              <th mat-header-cell *matHeaderCellDef colspan="3"></th>
               <td mat-cell *matCellDef="let element">
                 <app-button-icon
                   matTooltip="Chỉnh sửa"
@@ -145,6 +121,16 @@
             </tr>
           </table>
         </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-20">
+          <div style="width: 95%">
+            <app-button
+              [buttonContent]="'Thêm mới'"
+              [customClasses]="['app-button-green']"
+              (click)="createNutrition(period._id)"
+            >
+            </app-button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -154,8 +140,11 @@
       </div>
 
       <div class="food-content">
-        <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-20">
-          <table mat-table [dataSource]="period.foods ? period.foods : []">
+        <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-15">
+          <table
+            mat-table
+            [dataSource]="meals ? (meals.length > 0 ? meals[0].foods : []) : []"
+          >
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef>STT</th>
               <td mat-cell *matCellDef="let element; let i = index">
@@ -164,37 +153,42 @@
             </ng-container>
 
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Tên</th>
+              <th mat-header-cell *matHeaderCellDef>Tên thức ăn</th>
               <td mat-cell *matCellDef="let element">
                 {{ element.name }}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="amount">
-              <th mat-header-cell *matHeaderCellDef>Hàm lượng</th>
+              <th mat-header-cell *matHeaderCellDef>Số lượng</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.amount }}
+                {{ element.amount + " " + element.unit }}
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="unit">
-              <th mat-header-cell *matHeaderCellDef>Đơn vị đo</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.unit }}
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="foodColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="mealColumns"></tr>
             <tr
               mat-row
-              *matRowDef="let element; columns: foodColumns"
+              *matRowDef="let element; columns: mealColumns"
               style="cursor: pointer"
               class="app-element-row"
             ></tr>
             <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell" colspan="4">Chưa có dữ liệu</td>
+              <td class="mat-cell" colspan="3">Chưa có dữ liệu</td>
             </tr>
           </table>
+        </div>
+
+        <div
+          *ngIf="!!meals"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          class="m-bottom-15"
+        >
+          <div fxFlexOffset="5">
+            <span class="font-weight-bold">Khu vực: </span>
+            <span>{{ meals.length > 0 ? meals[0].areaName : "" }}</span>
+          </div>
         </div>
       </div>
     </div>

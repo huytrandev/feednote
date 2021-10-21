@@ -15,7 +15,7 @@
             <div class="update-user__form">
               <form [formGroup]="updateInfoForm" (ngSubmit)="onUpdateUserInfo()">
                 <!-- Name -->
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" floatLabel="always">
                   <mat-label>Họ tên <span class="color-red">(*)</span></mat-label>
                   <input type="text" matInput formControlName="name" />
                   <mat-error *ngIf="f1.name.errors?.required">Họ tên không được trống.</mat-error>
@@ -24,7 +24,7 @@
                 </mat-form-field>
 
                 <!-- Phone -->
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" floatLabel="always">
                   <mat-label>Số điện thoại</mat-label>
                   <input type="text" matInput formControlName="phone" />
                   <mat-error *ngIf="f1.phone.errors?.required">Số điện thoại không được trống.</mat-error>
@@ -32,7 +32,7 @@
                 </mat-form-field>
 
                 <!-- Phone -->
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" floatLabel="always">
                   <mat-label>Email</mat-label>
                   <input type="email" matInput formControlName="email" />
                   <mat-error *ngIf="f1.email.errors?.required">Email không được trống.</mat-error>
@@ -40,7 +40,7 @@
                 </mat-form-field>
 
                 <!-- Address -->
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" floatLabel="always">
                   <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
                   <mat-select [(value)]="user.idArea" formControlName="idArea">
                     <mat-option *ngFor="let area of areas" [value]="area._id">

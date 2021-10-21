@@ -12,6 +12,11 @@ export class MainComponent implements OnInit {
   currentUser!: any;
   managerNav = [
     {
+      path: 'qtv',
+      title: 'Quản lý chung',
+      icon: 'assets/icons/statistics.svg',
+    },
+    {
       path: 'qtv/nhat-ky-cho-an',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
@@ -30,15 +35,15 @@ export class MainComponent implements OnInit {
       path: 'thuc-an',
       title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
-    },
-    {
-      path: 'qtv/thong-ke',
-      title: 'Thống kê',
-      icon: 'assets/icons/statistics.svg',
-    },
+    }
   ];
 
   adminNav = [
+    {
+      path: 'qtv',
+      title: 'Quản lý chung',
+      icon: 'assets/icons/statistics.svg',
+    },
     {
       path: 'qtv/nhat-ky-cho-an',
       title: 'Nhật ký cho ăn',
@@ -47,7 +52,12 @@ export class MainComponent implements OnInit {
     {
       path: 'qtv/nguoi-dung',
       title: 'Người dùng',
-      icon: 'assets/icons/settings.svg',
+      icon: 'assets/icons/user-management.svg',
+    },
+    {
+      path: '/qtv/khu-vuc',
+      title: 'Khu vực',
+      icon: 'assets/icons/map.svg',
     },
     {
       path: 'giong-bo',
@@ -59,11 +69,6 @@ export class MainComponent implements OnInit {
       title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
     },
-    {
-      path: 'qtv/thong-ke',
-      title: 'Thống kê',
-      icon: 'assets/icons/statistics.svg',
-    },
   ];
 
   constructor(
@@ -71,7 +76,7 @@ export class MainComponent implements OnInit {
     private userService: UserService,
   ) {
     this.loading = true;
-    this.userService.getPersonalInfo().subscribe((res) => {
+    this.userService.fetchPersonalInfo().subscribe((res) => {
       const { data, status } = res;
       if (status === false) {
         return this.authService.logout();

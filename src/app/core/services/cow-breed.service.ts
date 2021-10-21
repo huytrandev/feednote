@@ -1,133 +1,86 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment as env } from 'src/environments/environment';
 import { FilterDto } from '../models';
-
-import { AuthService } from '.';
-import { share } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CowBreedService {
-  private headers = new HttpHeaders().set('Content-Type', 'application/json');
-
   constructor(private http: HttpClient) {}
 
-  getStandardServingFile(cowBreedId: string) {
-    const options = {
-      headers: this.headers,
-      responseType: 'blob' as 'json',
-    };
-
-    return this.http.get<any>(
-      `${env.apiUrl}/cowBreed/${cowBreedId}/food`,
-      options
-    );
-  }
-
-  getAll(filter?: FilterDto) {
+  fetchCowBreeds(filter?: FilterDto) {
     const params = new HttpParams()
-      .set('skip', filter?.skip?.toString() || '')
-      .set('limit', filter?.limit?.toString() || '')
-      .set('search', filter?.search?.toString() || '')
-      .set('sort', filter?.sort?.toString() || '');
+      .set('skip', filter?.skip ? String(filter?.skip) : '')
+      .set('limit', filter?.limit ? String(filter?.limit) : '')
+      .set('search', filter?.search ? String(filter?.search) : '')
+      .set('sort', filter?.sort ? String(filter?.sort) : '');
 
-    const options = {
-      headers: this.headers,
-      params,
-    };
-
-    return this.http.get<any>(`${env.apiUrl}/cowBreed`, options);
+    return this.http.get<any>(`${env.apiUrl}/cowBreed`, { params });
   }
 
-  getById(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/cowBreed/${id}`, {
-      headers: this.headers,
-    });
+  fetchCowBreed(id: string) {
+    return this.http.get<any>(`${env.apiUrl}/cowBreed/${id}`);
   }
 
-  getNutritionByCowBreed(cowBreedId: string) {
-    return this.http.get<any>(
-      `${env.apiUrl}/cowBreed/${cowBreedId}/nutrition`,
-      {
-        headers: this.headers,
-      }
-    );
+  fetchNutritionOfCowBreed(cowBreedId: string) {
+    return this.http.get<any>(`${env.apiUrl}/cowBreed/${cowBreedId}/nutrition`);
   }
 
-  getPeriod(periodId: string) {
-    return this.http.get<any>(`${env.apiUrl}/period/${periodId}`, {
-      headers: this.headers,
-    });
+  fetchFoodsOfCowBreed(cowBreedId: string) {
+    return this.http.get<any>(`${env.apiUrl}/cowBreed/${cowBreedId}/foods`);
   }
 
-  getFoodByCowBreed(cowBreedId: string) {
-    return this.http.get<any>(`${env.apiUrl}/cowBreed/${cowBreedId}/foods`, {
-      headers: this.headers,
-    });
+  fetchPeriod(periodId: string) {
+    return this.http.get<any>(`${env.apiUrl}/period/${periodId}`);
   }
 
-  create(cowBreed: any) {
+  createCowBreed(cowBreed: any) {
     return this.http.post<any>(
       `${env.apiUrl}/cowBreed`,
-      JSON.stringify(cowBreed),
-      {
-        headers: this.headers,
-      }
+      JSON.stringify(cowBreed)
     );
   }
 
-  createNutritionByPeriod(periodId: string, nutrition: any) {
+  createNutritionOfPeriod(periodId: string, nutrition: any) {
     return this.http.post<any>(
       `${env.apiUrl}/period/${periodId}/nutrition`,
-      JSON.stringify(nutrition),
-      { headers: this.headers }
+      JSON.stringify(nutrition)
     );
   }
 
-  update(id: string, cowBreed: any) {
+  updateCowBreed(id: string, cowBreed: any) {
     return this.http.put<any>(
       `${env.apiUrl}/cowBreed/${id}`,
-      JSON.stringify(cowBreed),
-      { headers: this.headers }
+      JSON.stringify(cowBreed)
     );
   }
 
   updatePeriod(periodId: string, period: any) {
     return this.http.put<any>(
       `${env.apiUrl}/period/${periodId}`,
-      JSON.stringify(period),
-      { headers: this.headers }
+      JSON.stringify(period)
     );
   }
 
-  updateNutrition(periodId: string, nutrition: any) {
+  updateNutritionOfPeriod(periodId: string, nutrition: any) {
     return this.http.put<any>(
       `${env.apiUrl}/period/${periodId}/nutrition/${nutrition.idNutrition}`,
-      JSON.stringify(nutrition),
-      {
-        headers: this.headers,
-      }
+      JSON.stringify(nutrition)
     );
   }
 
-  delete(id: string) {
-    return this.http.delete<any>(`${env.apiUrl}/cowBreed/${id}`, {
-      headers: this.headers,
-    });
+  deleteCowBreed(id: string) {
+    return this.http.delete<any>(`${env.apiUrl}/cowBreed/${id}`);
   }
 
   deletePeriod(periodId: string) {
-    return this.http.delete<any>(`${env.apiUrl}/period/${periodId}`, {
-      headers: this.headers,
-    });
+    return this.http.delete<any>(`${env.apiUrl}/period/${periodId}`);
   }
 
-  deleteNutrition(periodId: string, nutritionId: string) {
+  deleteNutritionOfPeriod(periodId: string, nutritionId: string) {
     return this.http.delete<any>(
-      `${env.apiUrl}/period/${periodId}/nutrition/${nutritionId}`,
-      { headers: this.headers }
+      `${env.apiUrl}/period/${periodId}/nutrition/${nutritionId}`
     );
   }
 }

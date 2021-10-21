@@ -67,7 +67,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
   getCowBreed(): void {
     this.loading = true;
-    this.cowBreedService.getById(this.cowBreedId).subscribe((res) => {
+    this.cowBreedService.fetchCowBreed(this.cowBreedId).subscribe((res) => {
       const { data, status } = res;
       if (!status) {
         this.loading = false;
@@ -177,7 +177,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
             );
             this.periods.removeAt(index);
           } else {
-            this.commonService.openAlert('Xoá giai đoạn sinh trưởng', 'danger');
+            this.commonService.openAlert('Xoá giai đoạn sinh trưởng thất bại', 'danger');
           }
         });
       }
@@ -197,7 +197,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
     if (!!this.isCreate) {
       this.submitted = true;
-      this.cowBreedService.create(this.form.value).subscribe(
+      this.cowBreedService.createCowBreed(this.form.value).subscribe(
         (res) => {
           const { status } = res;
           if (!status) {
@@ -229,7 +229,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       );
     } else {
       this.submitted = true;
-      this.cowBreedService.update(this.cowBreedId, this.form.value).subscribe(
+      this.cowBreedService.updateCowBreed(this.cowBreedId, this.form.value).subscribe(
         (res) => {
           const { status } = res;
           if (!status) {

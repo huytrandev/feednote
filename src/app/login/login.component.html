@@ -1,27 +1,11 @@
-<div
-  class="login-wrapper"
-  fxLayout="row wrap"
-  fxLayout.lt-md="column"
-  fxLayoutAlign="center center"
-  fxLayoutGap="10"
->
-  <app-progress-bar *ngIf="loading"></app-progress-bar>
-  <div
-    fxFlex="50%"
-    fxLayout="column"
-    fxLayoutAlign="center center"
-    class="left"
-  >
-    <div class="logo-brand">
-      <span>FeedNote</span>
-    </div>
-    <div class="describe">
-      FeedNote - Quản lý nguồn thức ăn và lên danh sách dinh dưỡng cho đàn gia
-      súc.
-    </div>
-  </div>
-  <div fxFlex="50%" class="right" fxLayoutAlign="center center">
+<app-progress-bar *ngIf="loading"></app-progress-bar>
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex="50" class="right" fxLayoutAlign="center center">
     <mat-card class="box">
+      <div fxLayout="column" fxLayoutGap="10px" class="header m-bottom-20">
+        <span class="title">FeedN<span class="color-brown">o</span>te</span>
+        <span class="caption">Ứng dụng theo dõi, tính toán khẩu phần ăn cho đàn gia súc</span>
+      </div>
       <form class="login-form" [formGroup]="loginForm" (ngSubmit)="submit()">
         <div
           *ngIf="loginError && !f.username.dirty && !f.password.dirty"

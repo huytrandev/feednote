@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -23,7 +24,7 @@ export class MainComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   loading: boolean = true;
   dataTableSource: MatTableDataSource<User>;
-  displayedColumns: string[] = ['id', 'name', 'areaName', 'role', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'areaName', 'role', 'createdAt', 'actions'];
   paramGetUsers!: FilterDto;
   defaultSort: string = 'createdAt desc';
   defaultPageSize: number = 10;
@@ -63,7 +64,7 @@ export class MainComponent implements OnInit, OnDestroy {
   getUsers(): void {
     this.loading = true;
     this.userService
-      .getAllUsers(this.paramGetUsers)
+      .fetchUsers(this.paramGetUsers)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -208,5 +209,9 @@ export class MainComponent implements OnInit, OnDestroy {
         user
       },
     });
+  }
+
+  transformDate(date: number) {
+    return moment(new Date(date)).locale('vi').format('L');
   }
 }

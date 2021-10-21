@@ -18,6 +18,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   error: boolean = false;
   foodIdParam!: string;
+  ingredientColumns = ['id', 'name', 'amount'];
 
   constructor(
     private route: ActivatedRoute,
@@ -41,7 +42,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   getFood(): void {
     this.loading = true;
     this.foodService
-      .getById(this.foodIdParam)
+      .fetchFood(this.foodIdParam)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))

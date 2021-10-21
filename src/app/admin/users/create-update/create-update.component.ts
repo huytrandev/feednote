@@ -90,7 +90,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   getAreas() {
     this.loading = true;
     this.areaService
-      .getAll()
+      .fetchAreas()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -109,7 +109,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   getUsers() {
     this.loading = true;
     this.userService
-      .getAllUsers()
+      .fetchUsers()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -128,7 +128,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   getManagers() {
     this.loading = true;
     this.userService
-      .getAllManager()
+      .fetchManagers()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
@@ -146,7 +146,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
   validateUsernameExist(control: AbstractControl) {
     return this.userService
-      .getAllUsers()
+      .fetchUsers()
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((_) => this.router.navigate(['not-found']))
