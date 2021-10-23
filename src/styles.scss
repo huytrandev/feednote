@@ -69,13 +69,13 @@ mat-form-field {
 }
 
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   border-radius: $border-radius;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cccccc;
+  background: #bbbbbb;
   border-radius: $border-radius;
 }
 
@@ -102,6 +102,9 @@ mat-form-field {
 }
 .mat-card {
   border-radius: $border-radius !important;
+}
+.mat-list-base {
+  padding: 0px !important;
 }
 
 // Customize class
@@ -226,6 +229,9 @@ mat-form-field {
   &-muted {
     color: grey;
   }
+  &-yellow {
+    color: $text-yellow !important;
+  }
 }
 
 .rounded {
@@ -241,14 +247,24 @@ mat-form-field {
 }
 
 .alert {
-  font-weight: 500 !important;
   &-success {
-    background: $light-green;
+    background: #fff;
+    border-radius: $border-radius;
+    display: flex !important;
+    align-items: center;
+    height: 52px !important;
+    background: #fafafa !important;
+    border-left: 6px solid $green;
     color: $text-green;
   }
-
   &-failure {
-    background: $light-red;
+    background: #fff;
+    border-radius: $border-radius;
+    display: flex !important;
+    align-items: center;
+    height: 52px !important;
+    background: #fafafa !important;
+    border-left: 6px solid $red;
     color: $text-red;
   }
 }

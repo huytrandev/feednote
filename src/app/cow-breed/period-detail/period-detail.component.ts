@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 import {
   CommonService,
   CowBreedService,
@@ -93,12 +95,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   }
 
   onDeletePeriod() {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     dialogRef.afterClosed().subscribe((result) => {
       const { action } = result;
@@ -118,12 +115,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   }
 
   onDeleteNutrition(periodId: string, nutritionId: string) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     dialogRef.afterClosed().subscribe((result) => {
       const { action } = result;
@@ -152,12 +144,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
 
   createNutrition(periodId: string) {
     const dialogRef = this.dialog.open(DialogCreateNutritionComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '550px',
-      minHeight: '200px',
-      maxHeight: '100vh',
-      disableClose: true,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         periodId,
       },
@@ -181,11 +168,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
 
   updateNutrition(periodId: string, nutrition: any) {
     const dialogRef = this.dialog.open(DialogUpdateNutritionComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '500px',
-      minHeight: '200px',
-      disableClose: true,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         periodId,
         nutrition,

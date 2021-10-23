@@ -18,9 +18,10 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
+import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
 import { AreaService, CommonService, FoodService } from 'src/app/core/services';
 import { Vietnamese } from 'src/app/core/validations';
 import { DialogComponent } from 'src/app/shared';
@@ -161,11 +162,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
     const { idIngredient } = ingredient;
 
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      disableClose: true,
-      autoFocus: false,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     dialogRef.afterClosed().subscribe((result) => {
       const { action } = result;
@@ -193,7 +190,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    if (!!this.food) {
+    if (!this.food) {
       this.buildForm();
     } else {
       this.setValueForForm(this.food);

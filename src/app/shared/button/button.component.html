@@ -5,8 +5,9 @@
   [type]="buttonType"
   [disabled]="disabledCondition"
   [autofocus]="false"
+  [style]="!!buttonContent ? 'min-width: 90px' : ''"
 >
-  <mat-icon *ngIf="!!iconName" class="material-icons-outlined app-icon">{{
+  <mat-icon *ngIf="!!iconName" class="material-icons-outlined app-icon" style="margin-right: 5px;">{{
     iconName
   }}</mat-icon>
   <mat-spinner

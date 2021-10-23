@@ -1,36 +1,58 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
-<div>
-  <div class="search-wrapper bg-white shadow rounded">
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <app-button
-        [buttonContent]="'Bộ lọc'"
-        [iconName]="'tune'"
-        [customClasses]="
-          isShowAdvancedFilter
-            ? ['app-button-grey-active']
-            : ['app-button-grey']
-        "
-        [buttonType]="'button'"
-        (click)="showAdvancedFilter()"
-      ></app-button>
+<div class="wrapper bg-white shadow rounded">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <app-button
+      [buttonContent]="'Bộ lọc'"
+      [iconName]="'filter_alt'"
+      [customClasses]="['app-button-brown']"
+      (click)="showFilter()"
+    ></app-button>
+
+    <div fxFlex="40">
       <mat-form-field
         appearance="outline"
-        style="width: 40%"
-        floatLabel="always"
+        style="width: 100%"
+        floatLabel="never"
         class="m-bottom-0"
       >
         <mat-label>Tìm kiếm</mat-label>
-        <input type="search" matInput #input (input)="onSearch($event)" />
+        <input
+          type="search"
+          matInput
+          #input
+          [(ngModel)]="search"
+          (input)="onSearch($event)"
+        />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
-    <div *ngIf="isShowAdvancedFilter && !loadingFilter">
-      <mat-divider style="margin-bottom: 20px"></mat-divider>
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px">
+  </div>
+
+  <div *ngIf="isShowAdvancedFilter" fxLayout="column" fxLayoutAlign="center">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
         <mat-form-field
           appearance="outline"
-          style="width: 50%; display: inline-block"
-          floatLabel="always"
+          style="width: 100%"
+          floatLabel="never"
+          class="m-bottom-0"
+        >
+          <mat-label>Hộ chăn nuôi</mat-label>
+          <mat-select [(ngModel)]="selectedBreeder" name="breeder">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let breeder of breeders" [value]="breeder._id">
+              {{ breeder.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="30">
+        <mat-form-field
+          appearance="outline"
+          style="width: 100%"
+          floatLabel="never"
+          class="m-bottom-0"
         >
           <mat-label>Chọn khoảng thời gian</mat-label>
           <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
@@ -54,104 +76,105 @@
             [disabled]="false"
           ></mat-date-range-picker>
         </mat-form-field>
+      </div>
 
-        <mat-form-field
-          appearance="outline"
-          style="width: 50%; display: inline-block"
-          floatLabel="always"
+      <div fxFlex="30">
+        <mat-checkbox color="primary" [(ngModel)]="isInCorrect"
+          >Không đúng quy định</mat-checkbox
         >
-          <mat-label>Hộ chăn nuôi</mat-label>
-          <mat-select [(ngModel)]="selectedBreeder" name="breeder">
-            <mat-option>--</mat-option>
-            <mat-option *ngFor="let breeder of breeders" [value]="breeder._id">
-              {{ breeder.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
       </div>
-
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-        <app-button
-          [buttonContent]="'Khôi phục'"
-          [buttonType]="'button'"
-          [customClasses]="['app-button-grey']"
-          (click)="resetFilter()"
-        ></app-button>
-
-        <app-button
-          [buttonContent]="'Áp dụng'"
-          [buttonType]="'button'"
-          [customClasses]="['app-button-brown']"
-          (click)="applyFilter()"
-        ></app-button>
-      </div>
-
-      <mat-divider style="margin-top: 20px"></mat-divider>
     </div>
 
-    <div class="table-container">
-      <table
-        mat-table
-        matSort
-        [dataSource]="dataTableSource"
-        (matSortChange)="onSort($event)"
-      >
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>STT</th>
-          <td mat-cell *matCellDef="let element; let i = index">
-            {{
-              paginator.pageIndex == 0
-                ? i + 1
-                : 1 + i + paginator.pageIndex * paginator.pageSize
-            }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="breederName">
-          <th mat-header-cell *matHeaderCellDef>Hộ chăn nuôi</th>
-          <td
-            mat-cell
-            *matCellDef="let element"
-            style="text-transform: capitalize"
-          >
-            {{ element.breederName }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="createdAt">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Thời gian</th>
-          <td mat-cell *matCellDef="let element">
-            {{ transformDate(element.createdAt) }}
-          </td>
-        </ng-container>
-
-        <tr
-          mat-header-row
-          *matHeaderRowDef="displayedColumns; sticky: true"
-        ></tr>
-        <tr
-          mat-row
-          *matRowDef="let element; columns: displayedColumns"
-          (click)="showDetail(element)"
-          style="cursor: pointer"
-          class="app-element-row"
-        ></tr>
-
-        <!-- Row shown when there is no matching data. -->
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="6">
-            Chưa có dữ liệu <strong>{{ input.value }}</strong>
-          </td>
-        </tr>
-      </table>
-
-      <mat-paginator
-        [length]="totalCount"
-        [pageSizeOptions]="[10, 20, 50]"
-        [pageSize]="defaultPageSize"
-        (page)="onPagination($event)"
-        class="mat-paginator-sticky"
-      ></mat-paginator>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="15px"
+      class="m-top-10 m-bottom-10"
+    >
+      <app-button
+        [buttonContent]="'Áp dụng'"
+        [customClasses]="['app-button-green']"
+        [disabledCondition]="!dateRange.valid"
+        (click)="onFilter()"
+      ></app-button>
+      <app-button
+        [buttonContent]="'Xoá bộ lọc'"
+        [customClasses]="['app-button-grey']"
+        (click)="onResetFilter()"
+      ></app-button>
     </div>
+  </div>
+
+  <div class="table-container">
+    <table
+      mat-table
+      matSort
+      [dataSource]="dataTableSource"
+      (matSortChange)="onSort($event)"
+    >
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>STT</th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          {{
+            paginator.pageIndex == 0
+              ? i + 1
+              : 1 + i + paginator.pageIndex * paginator.pageSize
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="breederName">
+        <th mat-header-cell *matHeaderCellDef>Hộ chăn nuôi</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          style="text-transform: capitalize"
+        >
+          {{ element.breederName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Thời gian</th>
+        <td mat-cell *matCellDef="let element">
+          {{ transformDate(element.createdAt) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="incorrect">
+        <th mat-header-cell *matHeaderCellDef>Không đúng quy định</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            color="primary"
+            [checked]="element.isCorrect === false"
+            [disableRipple]="true"
+            (click)="$event.preventDefault(); $event.stopPropagation()"
+          ></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        *matRowDef="let element; columns: displayedColumns"
+        (click)="showDetail(element)"
+        class="app-element-row"
+      ></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="6">
+          Chưa có dữ liệu <strong>{{ input.value }}</strong>
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      [length]="totalCount"
+      [pageSizeOptions]="[10, 20, 50]"
+      [pageSize]="defaultPageSize"
+      (page)="onPagination($event)"
+      class="mat-paginator-sticky"
+    ></mat-paginator>
   </div>
 </div>

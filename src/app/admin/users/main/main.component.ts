@@ -12,6 +12,8 @@ import { User, FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
 import { ResetPasswordDialogComponent } from '../reset-password-dialog/reset-password-dialog.component';
+import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 
 @Component({
   selector: 'app-main',
@@ -129,12 +131,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   delete(element: any) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     const { _id } = element;
 
@@ -170,13 +167,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   createUpdateUser(user?: any) {
     const dialogRef = this.dialog.open(CreateUpdateComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '50%',
-      minWidth: '550px',
-      maxWidth: '700px',
-      minHeight: '250px',
-      maxHeight: '100vh',
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       disableClose: true,
       data: {
         user
@@ -201,10 +192,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   resetPassword(user: any) {
     this.dialog.open(ResetPasswordDialogComponent, {
-      width: '500px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         user
       },

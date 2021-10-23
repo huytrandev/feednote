@@ -10,6 +10,8 @@ import { CommonService, CowBreedService } from 'src/app/core/services';
 import { FilterDto } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
+import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
+import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
 
 @Component({
   selector: 'app-main',
@@ -113,12 +115,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   onDelete(element: any): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     const { _id } = element;
     dialogRef.afterClosed().subscribe((result) => {
@@ -140,14 +137,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   createUpdateCowBreed(cowBreedId?: string) {
     const dialogRef = this.dialog.open(CreateUpdateComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '50%',
-      minWidth: '550px',
-      maxWidth: '700px',
-      minHeight: '250px',
-      maxHeight: '100vh',
-      disableClose: true,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         cowBreedId
       }

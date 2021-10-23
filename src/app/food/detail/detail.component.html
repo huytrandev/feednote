@@ -14,12 +14,12 @@
       <div class="app-title">
         <h2>Chi tiết</h2>
       </div>
-      <app-button
+      <app-button-icon
         [matMenuTriggerFor]="optionsPanel"
         [iconName]="'more_horiz'"
-        [customClasses]="['app-button-option']"
+        matTooltip="Tuỳ chọn"
       >
-      </app-button>
+      </app-button-icon>
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
         <app-menu-item
@@ -79,7 +79,7 @@
       <div class="ingredient-list-item">
         <div
           fxLayout="row"
-          fxLayoutAlign="space-between center"
+          fxLayoutAlign="center center"
           class="ingredient-list-item-header"
         >
           <span class="font-weight-bold">Bảng thành phần dinh dưỡng</span>
@@ -128,39 +128,6 @@
         </div>
       </div>
 
-      <!-- <div class="ingredient-list">
-        <div
-          class="ingredient-list-item"
-          *ngFor="let _ingredient of food.ingredient; index as i"
-        >
-          <div fxLayout="row" fxLayoutAlign="space-between center" class="ingredient-list-item-header">
-            <span class="font-weight-bold">Thành phần thứ {{ i + 1 }}</span>
-          </div>
-          <div class="period-list-item-content">
-            <div style="width: 85%; margin: 0 auto">
-              <div fxLayout="row" class="m-bottom-15">
-                <div fxFlex="25">
-                  <span class="font-weight-bold">Tên thành phần</span>
-                </div>
-                <div fxFlex>
-                  <span>{{ _ingredient.name }}</span>
-                </div>
-              </div>
-            </div>
-
-            <div style="width: 85%; margin: 0 auto">
-              <div fxLayout="row" class="m-bottom-15">
-                <div fxFlex="25">
-                  <span class="font-weight-bold">Hàm lượng</span>
-                </div>
-                <div fxFlex>
-                  <span>{{ _ingredient.amount }}%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </div>

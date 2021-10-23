@@ -8,3 +8,4 @@ export * from './button-icon/button-icon.component';
 export * from './button/button.component';
 export * from './menu-item/menu-item.component';
 export * from './back-button/back-button.component';
+export * from './icon/icon.component';

@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AdvancedFilter, CowBreed, Food, User } from 'src/app/core/models';
+import * as moment from 'moment';
+import { AdvancedFilter } from 'src/app/core/models';
 import {
   AuthService,
   CowBreedService,
@@ -28,6 +29,21 @@ export interface UserTypes {
   totalBreeder: number;
 }
 
+const colorScheme = [
+  '#C68B59',
+  '#9E7777',
+  '#BD4B4B',
+  '#FDE49C',
+  '#DAD5AB',
+  '#5C527F',
+  '#F6A9A9',
+  '#368B85',
+  '#6B7AA1',
+  '#93B5C6',
+  '#D5EEBB',
+  '#DF711B',
+];
+
 @Component({
   selector: 'app-statistic',
   templateUrl: './statistic.component.html',
@@ -36,12 +52,13 @@ export interface UserTypes {
 export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @ViewChild('mychart') myChart: any;
+  chart!: any;
   canvas: any;
   ctx: any;
   loading: boolean = true;
   dateRange = new FormGroup({
-    from: new FormControl({ value: '', disabled: true }, Validators.required),
-    to: new FormControl({ value: '', disabled: true }, Validators.required),
+    from: new FormControl({ value: '', disabled: false }),
+    to: new FormControl({ value: '', disabled: false }),
   });
 
   selectedBreeder: string = '';
@@ -49,12 +66,14 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   percentageOfBreederCompletedFeedingDiary: number = 85;
 
   queryForCowIndicatorsStatistic: AdvancedFilter;
-  cowIndicatorsStatistic: any;
+  cowIndicatorsStatistic = {
+    totalCow: 0,
+  };
 
-  users: any;
-  breeders: any;
-  cowBreeds: any;
-  foods: any;
+  users!: any;
+  breeders!: any;
+  cowBreeds!: any;
+  foods!: any;
   currentUser: any;
 
   userTypes: UserTypes = {
@@ -75,6 +94,10 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentUser = this.authService.getUserInfo();
   }
 
+  get canViewChart() {
+    return !!this.selectedBreeder && !!this.selectedCowBreed && this.dateRange.valid;
+  }
+
   ngOnInit(): void {
     if (this.currentUser.role === 'admin') {
       this.fetchUsers();
@@ -86,17 +109,27 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.buildQueryForCowIndicatorsStatistic(
-      '61224990e669faeab9e2fe26',
-      '611fdf8f4d26dbd6b610406b',
-      '2021-08-19'
-    );
-    this.fetchCowIndicatorsStatistic();
+    this.generateCowBreedChart();
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  applyFilter() {
+    const { from, to } = this.dateRange.value;
+    let fromQuery = !!from ? moment(from).format('YYYY-MM-DD') : '';
+    let toQuery = !!to ? moment(to).format('YYYY-MM-DD') : '';
+    let idUserQuery = !this.selectedBreeder ? '' : this.selectedBreeder;
+    let idCowBreedQuery = !this.selectedCowBreed ? '' : this.selectedCowBreed;
+    this.buildQueryForCowIndicatorsStatistic(
+      idUserQuery,
+      idCowBreedQuery,
+      fromQuery,
+      toQuery
+    );
+    this.fetchCowIndicatorsStatistic();
   }
 
   buildQueryForCowIndicatorsStatistic(
@@ -118,7 +151,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   fetchUsers() {
     this.loading = true;
     this.userService
-      .fetchUsers({limit: 100})
+      .fetchUsers({ limit: 100 })
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const { data, status } = res;
@@ -131,7 +164,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         this.users = data;
         this.userTypes.totalUser = data.totalCount;
         [...data.items].forEach((user) => {
-          switch(user.role) {
+          switch (user.role) {
             case 'admin':
               this.userTypes.totalAdmin += 1;
               break;
@@ -211,10 +244,10 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
           return;
         }
 
-        this.cowIndicatorsStatistic = data;
         let labels: any[] = [];
         let dataChart: any[] = [];
-        [...this.cowIndicatorsStatistic].forEach((item) => {
+        [...data].forEach((item) => {
+          this.cowIndicatorsStatistic.totalCow += item.cows.length;
           labels.push(item.name);
           dataChart.push(item.cows.length);
         });
@@ -223,39 +256,52 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  generateCowBreedChart(labels: Array<any>, dataChart: Array<any>) {
+  generateCowBreedChart(labels?: Array<any>, dataChart?: Array<any>) {
+    if (!!this.chart) {
+      this.chart.destroy();
+    }
+
     this.canvas = this.myChart.nativeElement;
     this.ctx = this.canvas.getContext('2d');
 
     const data = {
-      labels,
+      labels: labels ? labels : [],
       datasets: [
         {
-          label: 'Tổng số bò',
-          data: dataChart,
-          backgroundColor: [
-            '#C68B59',
-            '#9E7777',
-            '#BD4B4B',
-            '#FDE49C',
-            '#DAD5AB',
-            '#5C527F',
-            '#F6A9A9',
-            '#368B85',
-            '#6B7AA1',
-            '#93B5C6',
-            '#D5EEBB',
-            '#DF711B',
-          ],
+          label: 'Số con bò',
+          data: dataChart ? dataChart : [],
+          backgroundColor: colorScheme,
         },
       ],
     };
 
-    new Chart(this.ctx, {
+    this.chart = new Chart(this.ctx, {
       type: 'bar',
       data,
       options: {
         responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: 'Biểu đồ thông tin về đàn bò của hộ chăn nuôi',
+          },
+        },
+        scales: {
+          yAxes: {
+            ticks: {
+              callback: function (value) {
+                if (Number.isInteger(value)) {
+                  return value;
+                }
+                return;
+              },
+              stepSize: 1,
+            },
+          },
+        },
       },
     });
   }
