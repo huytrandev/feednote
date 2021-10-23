@@ -42,7 +42,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private cowBreedService: CowBreedService,
     private commonService: CommonService,
     public dialog: MatDialog,
@@ -157,7 +156,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     }
 
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
+      width: '460px',
       disableClose: true,
       autoFocus: false,
       restoreFocus: false,
@@ -185,7 +184,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    if (!!this.isCreate) {
+    if (!this.cowBreed) {
       this.buildForm();
     } else {
       this.setValueForForm(this.cowBreed);

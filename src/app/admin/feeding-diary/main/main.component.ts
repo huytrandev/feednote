@@ -8,13 +8,9 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { catchError, delay, takeUntil } from 'rxjs/operators';
 import { AdvancedFilter, User } from 'src/app/core/models';
-import {
-  CommonService,
-  FeedingDiaryService,
-  UserService,
-} from 'src/app/core/services';
+import { FeedingDiaryService, UserService } from 'src/app/core/services';
 
 import * as moment from 'moment';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -22,6 +18,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DetailComponent } from '../detail/detail.component';
+import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 
 @Component({
   selector: 'app-main',
@@ -33,7 +30,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataTableSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['id', 'breederName', 'createdAt'];
+  displayedColumns: string[] = ['id', 'breederName', 'createdAt', 'incorrect'];
   loading: boolean = true;
   loadingFilter: boolean = true;
   isLoadMore: boolean = false;
@@ -44,20 +41,21 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   diaries: any;
   isShowAdvancedFilter: boolean = false;
   dateRange = new FormGroup({
-    from: new FormControl({ value: '', disabled: true }, Validators.required),
-    to: new FormControl({ value: '', disabled: true }, Validators.required),
+    from: new FormControl({ value: '', disabled: false }),
+    to: new FormControl({ value: '', disabled: false }),
   });
   breeders: User[] = [];
   advancedFilerQuery: string = '';
   selectedBreeder: string = '';
   timeOutInput!: any;
+  search: string = '';
+  isInCorrect: boolean = false;
 
   constructor(
     private router: Router,
     private feedingDiaryService: FeedingDiaryService,
     private userService: UserService,
-    public dialog: MatDialog,
-    private commonService: CommonService
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {}
@@ -71,19 +69,34 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setParams(0, this.defaultPageSize, '', this.defaultSort, '', '');
     this.getBreeders();
     this.getFeedingDiaries();
-  }
 
-  showAdvancedFilter() {
-    this.isShowAdvancedFilter = !this.isShowAdvancedFilter;
+    this.dateRange.valueChanges.subscribe((value) => {
+      this.applyFilter();
+    });
   }
 
   applyFilter() {
     const { from, to } = this.dateRange.value;
+    let filterQuery: { [k: string]: any } = {};
     let formQuery = !!from ? moment(from).format('YYYY-MM-DD') : '';
     let toQuery = !!to ? moment(to).format('YYYY-MM-DD') : '';
-    if (!this.selectedBreeder) {
-      this.selectedBreeder = '';
+    if (this.selectedBreeder) {
+      filterQuery['idUser'] = this.selectedBreeder;
     }
+
+    if (this.isInCorrect) {
+      if ('idUser' in filterQuery) {
+        delete filterQuery.idUser;
+      }
+
+      this.selectedBreeder = '';
+      filterQuery['isCorrect'] = !this.isInCorrect;
+    } else {
+      if ('isCorrect' in filterQuery) {
+        delete filterQuery.isCorrect;
+      };
+    }
+
     this.setParams(
       undefined,
       undefined,
@@ -91,14 +104,28 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       this.defaultSort,
       formQuery,
       toQuery,
-      { idUser: this.selectedBreeder }
+      filterQuery
     );
+  }
+
+  showFilter() {
+    this.isShowAdvancedFilter = !this.isShowAdvancedFilter;
+  }
+
+  onResetFilter() {
+    this.search = '';
+    this.selectedBreeder = '';
+    this.dateRange.reset();
+    this.isInCorrect = false;
+
+    this.applyFilter();
     this.getFeedingDiaries();
   }
 
-  resetFilter() {
-    this.dateRange.reset();
-    this.selectedBreeder = '';
+  onFilter() {
+    if (!this.dateRange.valid) return;
+    this.applyFilter();
+    this.getFeedingDiaries();
   }
 
   setParams(
@@ -127,6 +154,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       .fetchFeedingDiaries(this.params)
       .pipe(
         takeUntil(this.ngUnsubscribe),
+        delay(500),
         catchError((_) => this.router.navigate(['not-found']))
       )
       .subscribe((res) => {
@@ -164,12 +192,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showDetail(feedingDiary: any) {
     const dialogRef = this.dialog.open(DetailComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '550px',
-      minHeight: '200px',
-      maxHeight: '100vh',
-      disableClose: true,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         feedingDiary,
       },
@@ -204,7 +227,12 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     const skip = limit * this.paginator.pageIndex;
 
     if (direction === '') {
-      this.setParams(undefined, this.defaultPageSize, undefined, this.defaultSort);
+      this.setParams(
+        undefined,
+        this.defaultPageSize,
+        undefined,
+        this.defaultSort
+      );
     } else {
       const sortQuery = `${active} ${direction}`;
       this.setParams(skip, limit, undefined, sortQuery);

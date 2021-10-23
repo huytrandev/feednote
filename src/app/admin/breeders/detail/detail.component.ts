@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   Component,
   OnDestroy,
@@ -7,7 +6,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -15,6 +14,8 @@ import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
+import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 
 @Component({
   selector: 'app-detail',
@@ -78,10 +79,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onDelete() {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
-      disableClose: true,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     dialogRef.afterClosed().subscribe((result) => {
       const { action } = result;
@@ -102,14 +100,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateBreeder(breeder: any) {
     const dialogRef = this.dialog.open(CreateUpdateComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '50%',
-      minWidth: '550px',
-      maxWidth: '700px',
-      minHeight: '250px',
-      maxHeight: '100vh',
-      disableClose: true,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         breeder
       }

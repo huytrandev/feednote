@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 import { Area, FilterDto } from 'src/app/core/models';
 import { AreaService, CommonService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
@@ -31,7 +33,6 @@ export class MainComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private router: Router,
     private areaService: AreaService,
     private commonService: CommonService
   ) {}
@@ -82,12 +83,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   onDelete(element: any) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     const { _id } = element;
 
@@ -110,14 +106,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   createUpdateArea(area?: any) {
     const dialogRef = this.dialog.open(CreateUpdateDialogComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '50%',
-      minWidth: '550px',
-      maxWidth: '700px',
-      minHeight: '250px',
-      maxHeight: '100vh',
-      disableClose: true,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         area,
       },

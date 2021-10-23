@@ -14,12 +14,12 @@
       <div class="app-title">
         <h2>Chi tiết</h2>
       </div>
-      <app-button
+      <app-button-icon
         [matMenuTriggerFor]="optionsPanel"
         [iconName]="'more_horiz'"
-        [customClasses]="['app-button-option']"
+        matTooltip="Tuỳ chọn"
       >
-      </app-button>
+      </app-button-icon>
 
       <mat-menu #optionsPanel="matMenu" xPosition="before">
         <app-menu-item

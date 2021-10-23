@@ -3,6 +3,7 @@
 .login-wrapper {
   min-height: 100vh;
   background: url('/assets/images/background.jpg') no-repeat center center fixed;
+  // background: #f0f2f5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -21,6 +22,7 @@
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   z-index: 5;
+  width: 100%;
   max-width: 350px;
 
   & .header {

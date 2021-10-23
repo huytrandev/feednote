@@ -28,7 +28,7 @@ import { DetailComponent } from './detail/detail.component';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },

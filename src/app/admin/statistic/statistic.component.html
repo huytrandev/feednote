@@ -80,49 +80,50 @@
     </div>
   </div>
   <div class="chart-container bg-white rounded shadow m-bottom-20">
-    <div
-      class="chart-options"
-      fxLayout="row"
-      fxLayoutAlign="start center"
-      fxLayoutGap="30px"
-    >
-      <mat-form-field
-        appearance="outline"
-        style="width: 30%; display: inline-block"
-        floatLabel="always"
-        *ngIf="breeders"
+    <div fxLayout="column" class="m-bottom-25">
+      <div
+        class="chart-options"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="30px"
       >
-        <mat-label>Hộ chăn nuôi</mat-label>
-        <mat-select [(ngModel)]="selectedBreeder" name="breeder">
-          <mat-option>--</mat-option>
-          <mat-option
-            *ngFor="let breeder of breeders.items"
-            [value]="breeder._id"
-          >
-            {{ breeder.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          style="width: 30%; display: inline-block"
+          floatLabel="always"
+          *ngIf="breeders"
+        >
+          <mat-label>Hộ chăn nuôi</mat-label>
+          <mat-select [(ngModel)]="selectedBreeder" name="breeder">
+            <mat-option>--</mat-option>
+            <mat-option
+              *ngFor="let breeder of breeders.items"
+              [value]="breeder._id"
+            >
+              {{ breeder.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 30%; display: inline-block"
-        floatLabel="always"
-        *ngIf="cowBreeds"
-      >
-        <mat-label>Giống bò</mat-label>
-        <mat-select [(ngModel)]="selectedCowBreed" name="cowBreed">
-          <mat-option>--</mat-option>
-          <mat-option
-            *ngFor="let cowBreed of cowBreeds.items"
-            [value]="cowBreed._id"
-          >
-            {{ cowBreed.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          style="width: 30%; display: inline-block"
+          floatLabel="always"
+          *ngIf="cowBreeds"
+        >
+          <mat-label>Giống bò</mat-label>
+          <mat-select [(ngModel)]="selectedCowBreed" name="cowBreed">
+            <mat-option>--</mat-option>
+            <mat-option
+              *ngFor="let cowBreed of cowBreeds.items"
+              [value]="cowBreed._id"
+            >
+              {{ cowBreed.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field
+        <mat-form-field
           appearance="outline"
           style="width: 30%; display: inline-block"
           floatLabel="always"
@@ -149,9 +150,37 @@
             [disabled]="false"
           ></mat-date-range-picker>
         </mat-form-field>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+        <app-button
+          [buttonContent]="'Xem thông tin'"
+          [customClasses]="['app-button-brown']"
+          (click)="applyFilter()"
+          [disabledCondition]="!canViewChart"
+        ></app-button>
+        <small class="text-muted"
+          >Chọn đầy đủ "Hộ chăn nuôi" và "Giống bò" để xem thông tin</small
+        >
+      </div>
     </div>
-    <div class="chart">
-      <canvas id="myChart" #mychart></canvas>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" fxLayoutAlign="start center" class="m-top-20">
+      <div fxFlex="15">
+        <span class="font-weight-bold">Tổng số con bò</span>
+      </div>
+      <div fxFlex>
+        <span>{{ cowIndicatorsStatistic.totalCow }}</span>
+      </div>
+    </div>
+
+    <div
+      class="chart m-top-20"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxLayoutGap="15px"
+    >
+      <canvas id="myChart" #mychart height="100px"></canvas>
     </div>
   </div>
 </div>

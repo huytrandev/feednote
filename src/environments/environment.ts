@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://cow-management-service.herokuapp.com/api',
-  apiUrl: 'http://localhost:3000/api'
+  apiUrl: 'https://cow-management-service.herokuapp.com/api',
+  // apiUrl: 'http://localhost:3000/api'
 };
 
 /*

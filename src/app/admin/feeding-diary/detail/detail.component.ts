@@ -10,7 +10,7 @@ import * as moment from 'moment';
 export class DetailComponent implements OnInit {
   loading: boolean = false;
   feedingDiary!: any;
-  displayedColumns = ['id', 'name', 'amount', 'unit'];
+  displayedColumns = ['id', 'name', 'amount'];
 
   constructor(
     public dialogRef: MatDialogRef<DetailComponent>,

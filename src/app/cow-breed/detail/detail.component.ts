@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
+import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 
 import { CommonService, CowBreedService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
@@ -147,11 +149,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   updateNutrition(periodId: string, nutrition: any) {
     const dialogRef = this.dialog.open(DialogUpdateNutritionComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '500px',
-      minHeight: '200px',
-      disableClose: true,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         periodId,
         nutrition,
@@ -180,14 +178,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   updateCowBreed(cowBreedId: string) {
     const dialogRef = this.dialog.open(CreateUpdateComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '50%',
-      minWidth: '550px',
-      maxWidth: '700px',
-      minHeight: '250px',
-      maxHeight: '100vh',
-      disableClose: true,
+      ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         cowBreedId,
       },
@@ -205,12 +196,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   removePeriod(period: any) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     const { _id } = period;
 

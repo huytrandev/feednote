@@ -8,13 +8,13 @@
     class="app-title m-bottom-25"
   >
     <h2>Thông tin giai đoạn</h2>
-    <app-button
+    <app-button-icon
       [iconName]="'delete'"
-      matTooltip="Xoá"
-      [customClasses]="['app-button-option']"
+      matTooltip="Xoá giai đoạn"
+      [customClasses]="['color-red']"
       (click)="onDeletePeriod()"
     >
-    </app-button>
+    </app-button-icon>
   </div>
   <div class="content">
     <div fxLayout="row" fxLayoutAlign="center" class="m-bottom-15">
@@ -55,7 +55,7 @@
     <div class="nutrition m-bottom-15">
       <div
         fxLayout="row"
-        fxLayoutAlign="space-between center"
+        fxLayoutAlign="center center"
         class="nutrition-header"
       >
         <span class="font-weight-bold">Bảng nhu cầu dinh dưỡng</span>
@@ -135,7 +135,7 @@
     </div>
 
     <div class="food">
-      <div fxLayout="row" fxLayoutAlign="start center" class="food-header">
+      <div fxLayout="row" fxLayoutAlign="center center" class="food-header">
         <span class="font-weight-bold">Khẩu phần ăn tiêu chuẩn</span>
       </div>
 

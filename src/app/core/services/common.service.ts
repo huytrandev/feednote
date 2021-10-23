@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
 })
 export class CommonService {
   snackBarConfiguration = {
-    duration: 2500,
-    horizontalPosition: 'right',
+    duration: 2700,
+    horizontalPosition: 'center',
     verticalPosition: 'top',
   };
 
