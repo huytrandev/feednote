@@ -150,10 +150,10 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userService.deleteBreeder(_id).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.commonService.openAlert('Xoá thức ăn thành công', 'success');
+            this.commonService.openAlert('Xoá hộ chăn nuôi thành công', 'success');
             this.getBreeders();
           } else {
-            this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
+            this.commonService.openAlert('Xoá hộ chăn nuôi thất bại', 'danger');
           }
         });
       }

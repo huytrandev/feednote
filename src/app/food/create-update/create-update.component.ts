@@ -21,10 +21,10 @@ import {
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
-import { AreaService, CommonService, FoodService } from 'src/app/core/services';
+import { INITIAL_FOOD_INGREDIENT } from 'src/app/core/constant';
+import { IS_DECIMAL } from 'src/app/core/helpers';
+import { AreaService, AuthService, FoodService } from 'src/app/core/services';
 import { Vietnamese } from 'src/app/core/validations';
-import { DialogComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-create-update',
@@ -40,18 +40,21 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   ingredientToRemove: any = [];
   areas: any = [];
+  isModified: boolean = false;
+  currentUser!: any;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private foodService: FoodService,
     private areaService: AreaService,
-    private commonService: CommonService,
+    private authService: AuthService,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CreateUpdateComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.food = data.food;
+    this.currentUser = this.authService.getUserInfo();
   }
 
   ngOnInit(): void {
@@ -59,6 +62,12 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     this.buildForm();
     if (!!this.food) {
       this.setValueForForm(this.food);
+    } else {
+      this.setPeriodsForm(INITIAL_FOOD_INGREDIENT);
+    }
+
+    if (this.currentUser.role !== 'admin') {
+      this.form.removeControl('idArea');
     }
   }
 
@@ -100,6 +109,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         name: ['', [Validators.required]],
         unit: ['', [Validators.required]],
         idArea: ['', [Validators.required]],
+        type: ['0', [Validators.required]],
         ingredient: this.fb.array([]),
       },
       {
@@ -111,6 +121,11 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   setValueForForm(food: any) {
     for (let propertyName in this.form.controls) {
       this.form.controls[propertyName].patchValue(food[propertyName]);
+      if (propertyName === 'type') {
+        const type = String(food[propertyName]);
+        this.form.controls[propertyName].patchValue(type);
+      }
+      
       if (propertyName === 'ingredient') {
         if (!!food[propertyName]) {
           this.setPeriodsForm(food[propertyName]);
@@ -132,77 +147,38 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   createIngredient() {
-    return this.fb.group(
-      {
-        idIngredient: [''],
-        name: ['', [Validators.required]],
-        amount: ['', [Validators.required]],
-      },
-      {
-        validator: Vietnamese('name'),
-      }
-    );
-  }
-
-  addIngredient(e: any) {
-    e.preventDefault();
-    this.ingredient.push(this.createIngredient());
-  }
-
-  removeIngredient(index: number, ingredient: any, e: any) {
-    e.preventDefault();
-    if (
-      !this.food ||
-      !this.food['ingredient'] ||
-      index > this.food['ingredient'].length - 1
-    ) {
-      this.ingredient.removeAt(index);
-      return;
-    }
-
-    const { idIngredient } = ingredient;
-
-    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      const { action } = result;
-      if (action === 'delete') {
-        this.foodService
-          .deleteIngredientOfFood(this.food._id, idIngredient)
-          .subscribe((res) => {
-            const { status } = res;
-            if (!!status) {
-              this.commonService.openAlert(
-                'Xoá thành phần dinh dưỡng thành công',
-                'success'
-              );
-              this.ingredient.removeAt(index);
-            } else {
-              this.commonService.openAlert(
-                'Xoá thành phần dinh dưỡng thất bại',
-                'danger'
-              );
-            }
-            this.commonService.reloadComponent();
-          });
-      }
+    return this.fb.group({
+      idIngredient: [''],
+      name: ['', [Validators.required]],
+      amount: ['', [Validators.required, Validators.pattern(IS_DECIMAL)]],
     });
   }
 
   onReset() {
     if (!this.food) {
       this.buildForm();
+      this.setPeriodsForm(INITIAL_FOOD_INGREDIENT);
     } else {
       this.setValueForForm(this.food);
     }
   }
 
+  capitalizeFirstLetter(text: string) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
   onSubmit() {
     if (!this.form.valid) return;
 
+    this.submitted = true;
+    const food = {
+      ...this.form.value,
+      name: this.capitalizeFirstLetter(this.form.value.name.trim()),
+      type: Number(this.form.value.type),
+    };
+
     if (!this.food) {
-      this.submitted = true;
-      this.foodService.createFood(this.form.value).subscribe(
+      this.foodService.createFood(food).subscribe(
         (res: any) => {
           const { status } = res;
           if (!status) {
@@ -233,8 +209,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         }
       );
     } else {
-      this.submitted = true;
-      this.foodService.updateFood(this.food._id, this.form.value).subscribe(
+      this.foodService.updateFood(this.food._id, food).subscribe(
         (res) => {
           const { status } = res;
           if (!status) {
@@ -276,8 +251,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   onClose() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-    this.dialogRef.close({ type: 'close', status: null });
+    this.dialogRef.close({ type: 'close', isModified: this.isModified });
   }
 }

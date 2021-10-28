@@ -11,11 +11,7 @@
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div mat-dialog-content class="dialog-content">
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Tên thức ăn <span class="color-red">(*)</span></mat-label>
         <input type="text" matInput maxlength="100" formControlName="name" />
 
@@ -30,11 +26,7 @@
         >
       </mat-form-field>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Đơn vị đo <span class="color-red">(*)</span></mat-label>
         <input type="text" matInput maxlength="100" formControlName="unit" />
 
@@ -43,10 +35,21 @@
         >
       </mat-form-field>
 
+      <mat-radio-group
+        color="primary"
+        formControlName="type"
+        fxLayout="row"
+        fxLayoutGap="20px"
+        class="m-bottom-20"
+      >
+        <mat-radio-button value="0">Thức ăn thô</mat-radio-button>
+        <mat-radio-button value="1">Thức ăn tinh</mat-radio-button>
+      </mat-radio-group>
+
       <mat-form-field
+        *ngIf="currentUser.role === 'admin'"
         appearance="outline"
         style="width: 100%"
-        floatLabel="always"
       >
         <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
         <mat-select formControlName="idArea">
@@ -70,84 +73,45 @@
             <input type="hidden" formControlName="idIngredient" />
             <div
               fxLayout="row"
-              fxLayoutAlign="space-between center"
+              fxLayoutAlign="center center"
               class="ingredient-list-item-header"
             >
-              <h4>Thành phần thứ {{ i + 1 }}</h4>
-              <app-button-icon
-                [customClasses]="['color-red']"
-                matTooltip="Xoá"
-                (click)="removeIngredient(i, _ingredient.value, $event)"
-                [iconName]="'close'"
-              ></app-button-icon>
+              <span class="font-weight-bold">Thành phần thứ {{ i + 1 }}</span>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="center" class="m-bottom-20">
+              <div fxLayout="row" fxLayoutAlign="center" fxFlex="90">
+                <span fxFlex="30" class="font-weight-bold"
+                  >Tên thành phần:</span
+                >
+                <span fxFlex>{{ _ingredient.get("name")?.value }}</span>
+              </div>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
-                <mat-label
-                  >Tên thành phần <span class="color-red">(*)</span></mat-label
-                >
-                <input
-                  type="text"
-                  matInput
-                  formControlName="name"
-                  maxlength="100"
-                />
-
-                <mat-error
-                  *ngIf="
-                    ingredient.controls[i].get('name')?.hasError('required')
-                  "
-                  >Tên thành phần không được trống.</mat-error
-                >
-                <mat-error
-                  *ngIf="
-                    ingredient.controls[i].get('name')?.hasError('inValid')
-                  "
-                  >Tên thành phần không hợp lệ.</mat-error
-                >
-                <mat-error
-                  *ngIf="
-                    ingredient.controls[i].get('name')?.hasError('minlength')
-                  "
-                  >Tên giai đoạn ít nhất 5 ký tự.</mat-error
-                >
-              </mat-form-field>
-            </div>
-
-            <div fxLayout="row" fxLayoutAlign="center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
+              <mat-form-field appearance="outline" style="width: 90%">
                 <mat-label
                   >Hàm lượng <span class="color-red">(*)</span></mat-label
                 >
                 <input type="text" matInput formControlName="amount" />
 
-                <mat-hint>Đơn vị: (%)</mat-hint>
+                <mat-hint>Đơn vị (%)</mat-hint>
                 <mat-error
                   *ngIf="
                     ingredient.controls[i].get('amount')?.hasError('required')
                   "
                   >Hàm lượng không được trống.</mat-error
                 >
+                <mat-error
+                  *ngIf="
+                    ingredient.controls[i].get('amount')?.hasError('pattern')
+                  "
+                  >Hàm lượng không hợp lệ.</mat-error
+                >
               </mat-form-field>
             </div>
           </ng-container>
         </div>
-
-        <app-button
-          [customClasses]="['app-button-green']"
-          [buttonType]="'button'"
-          [buttonContent]="'Thêm thành phần'"
-          (click)="addIngredient($event)"
-        ></app-button>
       </div>
     </div>
     <div class="button-group" mat-dialog-actions>

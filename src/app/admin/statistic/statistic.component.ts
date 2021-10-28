@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { Subject } from 'rxjs';
@@ -15,6 +15,7 @@ import { AdvancedFilter } from 'src/app/core/models';
 import {
   AuthService,
   CowBreedService,
+  FeedingDiaryService,
   FoodService,
   StatisticService,
   UserService,
@@ -74,7 +75,9 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   breeders!: any;
   cowBreeds!: any;
   foods!: any;
+  diaries!: any;
   currentUser: any;
+  todayDiaries: number = 0;
 
   userTypes: UserTypes = {
     totalUser: 0,
@@ -89,13 +92,16 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
     private statisticService: StatisticService,
     private userService: UserService,
     private cowBreedService: CowBreedService,
+    private feedingDiaryService: FeedingDiaryService,
     private foodService: FoodService
   ) {
     this.currentUser = this.authService.getUserInfo();
   }
 
   get canViewChart() {
-    return !!this.selectedBreeder && !!this.selectedCowBreed && this.dateRange.valid;
+    return (
+      !!this.selectedBreeder && !!this.selectedCowBreed && this.dateRange.valid
+    );
   }
 
   ngOnInit(): void {
@@ -106,6 +112,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.fetchCowBreeds();
     this.fetchFoods();
+    // this.fetchFeedingDiaries();
   }
 
   ngAfterViewInit() {
@@ -115,6 +122,30 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  countTodayDiaries(diaries: Array<any>) {
+    let count = 0;
+    let breederCompletedDiary: any[] = [];
+    diaries.forEach((d) => {
+      let createdAtDate = moment(d.createdAt);
+      let isSameDay = createdAtDate.isSame(moment(1634665228659), 'day');
+      if (isSameDay) {
+        count += 1;
+        let isAlreadyInArray = breederCompletedDiary.find(
+          (item) => item === d.idBreeder
+        );
+        if (!isAlreadyInArray) {
+          breederCompletedDiary.push(d.idBreeder);
+        }
+      }
+    });
+
+    console.log(Math.round(breederCompletedDiary.length / 7 * 100));
+    return {
+      numOfDiariesToday: count,
+      numOfBreederCompletedDiaries: breederCompletedDiary.length,
+    };
   }
 
   applyFilter() {
@@ -146,6 +177,27 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
       from,
       to,
     };
+  }
+
+  fetchFeedingDiaries() {
+    this.loading = true;
+    this.feedingDiaryService
+      .fetchFeedingDiaries()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        const { status, data } = res;
+        if (!status) {
+          this.loading = false;
+          return;
+        }
+
+        this.diaries = data;
+
+        this.todayDiaries = this.countTodayDiaries(
+          data.items
+        ).numOfDiariesToday;
+        this.loading = false;
+      });
   }
 
   fetchUsers() {

@@ -10,11 +10,7 @@
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div mat-dialog-content class="dialog-content">
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Tên khu vực <span class="color-red">(*)</span></mat-label>
         <input type="text" matInput maxlength="100" formControlName="name" />
 

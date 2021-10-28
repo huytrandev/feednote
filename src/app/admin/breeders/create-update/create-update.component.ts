@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { catchError, map, takeUntil } from 'rxjs/operators';
+import { catchError, delay, map, takeUntil } from 'rxjs/operators';
 
 import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
@@ -113,7 +113,8 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   validateUsernameExist(control: AbstractControl) {
-    return this.userService.fetchManagers().pipe(
+    return this.userService.fetchBreeders().pipe(
+      delay(500),
       map((res) => {
         const breeders = res.data.items;
         if (breeders.some((b: any) => b.username === control.value)) {
@@ -216,8 +217,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   onClose() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
     this.dialogRef.close({ type: 'close', status: null });
   }
 }

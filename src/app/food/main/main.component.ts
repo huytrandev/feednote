@@ -163,17 +163,21 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     
     dialogRef.afterClosed().subscribe((res) => {
-      const { type, status } = res;
+      const { type, status, isModified } = res;
       if (type === 'create' && status === 'success') {
         this.commonService.openAlert('Tạo thức ăn thành công', 'success');
         this.getFoods();
-      } else if (type === 'create' && status === 'failure') {
+      } else if (type === 'create' && status === 'fail') {
         this.commonService.openAlert('Tạo thức ăn thất bại', 'danger');
       } else if (type === 'update' && status === 'success') {
         this.commonService.openAlert('Cập nhật thức ăn thành công', 'success');
         this.getFoods();
-      } else if (type === 'update' && status === 'failure') {
+      } else if (type === 'update' && status === 'fail') {
         this.commonService.openAlert('Cập nhật thức ăn thất bại', 'danger');
+      } else if (type === 'close' && isModified) {
+        this.getFoods();
+      } else if (type === 'close' && !isModified) {
+        return;
       }
     });
   }

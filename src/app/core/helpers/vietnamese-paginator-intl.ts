@@ -19,8 +19,8 @@ const vietnameseRangeLabel = (page: number, pageSize: number, length: number) =>
 export function getVietnamesePaginatorIntl() {
   const paginatorIntl = new MatPaginatorIntl();
   
-  paginatorIntl.itemsPerPageLabel = 'Số bản ghi trên trang:';
-  paginatorIntl.nextPageLabel = 'Trang kế tiếp';
+  paginatorIntl.itemsPerPageLabel = 'Số bản ghi:';
+  paginatorIntl.nextPageLabel = 'Trang kế';
   paginatorIntl.previousPageLabel = 'Trang trước';
   paginatorIntl.getRangeLabel = vietnameseRangeLabel;
   

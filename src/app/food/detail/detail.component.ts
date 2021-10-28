@@ -62,6 +62,18 @@ export class DetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  getTypeName(type: any): string {
+    const localType = Number(type);
+    switch (localType) {
+      case 0:
+        return 'Thức ăn thô';
+      case 1:
+        return 'Thức ăn tinh';
+      default:
+        return 'Không xác định';
+    }
+  }
+
   onDelete() {
     const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
@@ -69,11 +81,11 @@ export class DetailComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.loading = true;
-        this.food.delete(this.foodIdParam).subscribe((res: any) => {
+        this.foodService.deleteFood(this.foodIdParam).subscribe((res: any) => {
           const { status } = res;
           if (status === true) {
             this.commonService.openAlert('Xoá thức ăn thành công', 'success');
-            this.router.navigate(['/foods']);
+            this.router.navigate(['/thuc-an']);
           } else {
             this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }
@@ -86,10 +98,10 @@ export class DetailComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(CreateUpdateComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
-        food
-      }
+        food,
+      },
     });
-    
+
     dialogRef.afterClosed().subscribe((res) => {
       const { type, status } = res;
       if (type === 'update' && status === 'success') {

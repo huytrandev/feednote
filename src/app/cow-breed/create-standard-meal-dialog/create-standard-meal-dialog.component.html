@@ -1,0 +1,68 @@
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <header fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
+    <h2>Thêm mới khẩu phần thức ăn chuẩn</h2>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <main mat-dialog-content>
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
+        <mat-select
+          formControlName="idArea"
+          (selectionChange)="onAreaChange($event)"
+        >
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let area of areas" [value]="area._id">
+            {{ area.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('idArea')?.errors?.required"
+          >Vui lòng chọn khu vực.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Thức ăn <span class="color-red">(*)</span></mat-label>
+        <mat-select multiple formControlName="idsFood">
+          <ng-container *ngIf="foods.length === 0">
+            <mat-option disabled>Khu vực chưa có thức ăn</mat-option>
+          </ng-container>
+          <ng-container *ngIf="foods.length > 0">
+            <mat-option *ngFor="let food of foods" [value]="food._id">
+              {{ getTypeName(food.type) + ' - ' + food.name }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+        <mat-error *ngIf="form.get('foodField')?.errors?.required"
+          >Vui lòng chọn thức ăn.</mat-error
+        >
+      </mat-form-field>
+    </main>
+
+    <footer
+      mat-dialog-actions
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxLayoutGap="20px"
+    >
+      <app-button
+        [buttonContent]="'Thêm mới'"
+        [customClasses]="['app-button-brown']"
+        [showSpinner]="submitted"
+        [disabledCondition]="!form.valid || submitted"
+        [buttonType]="'submit'"
+      ></app-button>
+
+      <app-button
+        [buttonContent]="'Huỷ bỏ'"
+        [customClasses]="['app-button-grey']"
+      ></app-button>
+    </footer>
+  </form>
+</div>

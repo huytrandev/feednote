@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main/main.component';
-import { AuthGuard } from './core/guards';
+import { AuthGuard, RoleGuard } from './core/guards';
 
 const routes: Routes = [
   {
@@ -16,9 +16,21 @@ const routes: Routes = [
       import('./not-found/not-found.module').then((m) => m.NotFoundModule),
   },
   {
+    path: 'ho-chan-nuoi',
+    canActivate: [AuthGuard, RoleGuard],
+    data: {
+      expectedRole: ['breeder'],
+    },
+    loadChildren: () =>
+      import('./breeder/breeder.module').then((m) => m.BreederModule),
+  },
+  {
     path: '',
     component: MainComponent,
     canActivate: [AuthGuard],
+    // data: {
+    //   expectedRole: ['admin', 'manager'],
+    // },
     children: [
       {
         path: '',

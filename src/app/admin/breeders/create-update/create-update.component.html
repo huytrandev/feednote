@@ -10,11 +10,7 @@
   </div>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div mat-dialog-content class="dialog-content">
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Tên hộ dân <span class="color-red">(*)</span></mat-label>
         <input
           type="text"
@@ -39,7 +35,6 @@
         *ngIf="form.get('username')"
         appearance="outline"
         style="width: 100%"
-        floatLabel="always"
       >
         <mat-label>Tên tài khoản <span class="color-red">(*)</span></mat-label>
         <input
@@ -68,7 +63,6 @@
         *ngIf="form.get('password')"
         appearance="outline"
         style="width: 100%"
-        floatLabel="always"
       >
         <mat-label>Mật khẩu <span class="color-red">(*)</span></mat-label>
         <input
@@ -94,11 +88,7 @@
         >
       </mat-form-field>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Số điện thoại</mat-label>
         <input
           type="text"
@@ -113,11 +103,7 @@
         >
       </mat-form-field>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Email</mat-label>
         <input
           type="email"
@@ -132,11 +118,7 @@
         >
       </mat-form-field>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
         <mat-select formControlName="idArea">
           <mat-option>--</mat-option>

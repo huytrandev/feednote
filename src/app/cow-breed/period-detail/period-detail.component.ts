@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 import {
@@ -11,8 +11,9 @@ import {
   MealService,
 } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
-import { DialogCreateNutritionComponent } from '../dialog-create-nutrition/dialog-create-nutrition.component';
-import { DialogUpdateNutritionComponent } from '../dialog-update-nutrition/dialog-update-nutrition.component';
+import { CreateStandardMealDialogComponent } from '../create-standard-meal-dialog/create-standard-meal-dialog.component';
+import { CreateUpdatePeriodDialogComponent } from '../create-update-period-dialog/create-update-period-dialog.component';
+import { UpdateNutritionDialogComponent } from '../update-nutrition-dialog/update-nutrition-dialog.component';
 
 @Component({
   selector: 'app-period-detail',
@@ -21,14 +22,18 @@ import { DialogUpdateNutritionComponent } from '../dialog-update-nutrition/dialo
 })
 export class PeriodDetailComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
-  nutritionColumns = ['id', 'name', 'amount', 'actions'];
-  mealColumns = ['id', 'name', 'amount'];
+  nutritionColumns = ['id', 'name', 'amountNutrition'];
+  mealColumns = ['id', 'name', 'amount', 'actions'];
   periodId!: string;
   cowBreedId!: string;
   period!: any;
   cowBreed!: any;
   meals!: any;
   loading: boolean = true;
+  isModified: boolean = false;
+
+  isEditing: boolean = false;
+  mealEachArea: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -56,7 +61,9 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.cowBreedService
       .fetchPeriod(this.periodId)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((res: any) => {
         const { status, data } = res;
         if (!status) {
@@ -75,8 +82,6 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
       filter: {
         idPeriod: this.periodId,
       },
-      skip: 0,
-      limit: 1,
     };
 
     this.mealService
@@ -88,8 +93,14 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
           this.router.navigate(['/not-found']);
           return;
         }
-
+        const areas: any[] = [];
         this.meals = data.items;
+        [...data.items].forEach((m) => {
+          if (!areas.find((a) => a === m.idArea)) {
+            areas.push(m.idArea);
+            this.mealEachArea.push(m);
+          }
+        });
         this.loading = false;
       });
   }
@@ -142,43 +153,96 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  createNutrition(periodId: string) {
-    const dialogRef = this.dialog.open(DialogCreateNutritionComponent, {
+  onDeleteFoodOfMeal(mealId: string, foodId: string) {
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
+    console.log(mealId, foodId);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { action } = result;
+      if (action === 'delete') {
+        this.loading = true;
+        this.mealService.deleteFood(mealId, foodId).subscribe((res) => {
+          const { status } = res;
+          if (status === true) {
+            this.commonService.openAlert('Xoá thức ăn thành công', 'success');
+            this.getMeals();
+          } else {
+            this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
+          }
+        });
+      }
+    });
+  }
+
+  updateNutrition(period: any) {
+    const dialogRef = this.dialog.open(UpdateNutritionDialogComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
-        periodId,
+        period,
       },
     });
 
     dialogRef.afterClosed().subscribe((res) => {
       const { type, status } = res;
-      if (type === 'create' && status === 'fail') {
-        this.commonService.openAlert('Thêm chất dinh dưỡng thất bại', 'danger');
-      } else if (type === 'create' && status === 'success') {
+      if (type === 'update' && status === 'fail') {
         this.commonService.openAlert(
-          'Thêm chất dinh dưỡng thành công',
+          'Cập nhật chất dinh dưỡng thất bại',
+          'danger'
+        );
+      } else if (type === 'update' && status === 'success') {
+        this.commonService.openAlert(
+          'Cập nhật chất dinh dưỡng thành công',
           'success'
         );
         this.getPeriod();
-      } else {
+      }
+    });
+  }
+
+  updatePeriod(periodId: string) {
+    const dialogRef = this.dialog.open(CreateUpdatePeriodDialogComponent, {
+      ...CREATE_UPDATE_DIALOG_CONFIG,
+      data: {
+        periodId,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const { type, status, isModified } = result;
+      if (type === 'update' && status === 'success') {
+        this.commonService.openAlert(
+          'Cập nhật giai đoạn sinh trưởng thành công',
+          'success'
+        );
+        this.getPeriod();
+      } else if (type === 'update' && status === 'failure') {
+        this.commonService.openAlert(
+          'Cập nhật giai đoạn sinh trưởng thất bại',
+          'danger'
+        );
+      } else if (type === 'close' && isModified) {
+        this.getPeriod();
+      } else if (type === 'close' && !isModified) {
         return;
       }
     });
   }
 
-  updateNutrition(periodId: string, nutrition: any) {
-    const dialogRef = this.dialog.open(DialogUpdateNutritionComponent, {
+  onCreateMeal(period: any) {
+    const dialogRef = this.dialog.open(CreateStandardMealDialogComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
-        periodId,
-        nutrition,
+        period,
       },
     });
 
-    dialogRef.afterClosed().subscribe((data) => {
-      if (data.success) {
-        this.getPeriod();
+    dialogRef.afterClosed().subscribe(data => {
+      if (data.status === 'fail') {
+        this.commonService.openAlert('Thêm mới khẩu ăn chuẩn phần thất bại', 'danger');
+      } else if (data.status === 'success') {
+        this.commonService.openAlert('Thêm mới khẩu ăn chuẩn phần thành công', 'success');
+        this.getMeals();
       }
-    });
+    })
   }
 }

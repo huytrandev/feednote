@@ -144,17 +144,21 @@ export class MainComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      const { type, status } = res;
+      const { type, status, isModified } = res;
       if (type === 'create' && status === 'success') {
         this.commonService.openAlert('Tạo giống bò thành công', 'success');
         this.getCowBreeds();
-      } else if (type === 'create' && status === 'failure') {
+      } else if (type === 'create' && status === 'fail') {
         this.commonService.openAlert('Tạo giống bò thất bại', 'danger');
       } else if (type === 'update' && status === 'success') {
         this.commonService.openAlert('Cập nhật giống bò thành công', 'success');
         this.getCowBreeds();
-      } else if (type === 'update' && status === 'failure') {
+      } else if (type === 'update' && status === 'fail') {
         this.commonService.openAlert('Cập nhật giống bò thất bại', 'danger');
+      } else if (type === 'close' && isModified) {
+        this.getCowBreeds();
+      } else if (type === 'close' && !isModified) {
+        return;
       }
     });
   }

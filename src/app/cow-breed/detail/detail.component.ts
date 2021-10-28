@@ -8,9 +8,9 @@ import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update
 
 import { CommonService, CowBreedService } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
+import { CreateUpdatePeriodDialogComponent } from '../create-update-period-dialog/create-update-period-dialog.component';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
-import { DialogCreateNutritionComponent } from '../dialog-create-nutrition/dialog-create-nutrition.component';
-import { DialogUpdateNutritionComponent } from '../dialog-update-nutrition/dialog-update-nutrition.component';
+import { DownloadStandardServingDialogComponent } from '../download-standard-serving-dialog/download-standard-serving-dialog.component';
 
 @Component({
   selector: 'app-detail',
@@ -80,15 +80,20 @@ export class DetailComponent implements OnInit, OnDestroy {
       const { action } = result;
       if (action === 'delete') {
         this.loading = true;
-        this.cowBreedService.deleteCowBreed(this.cowBreed._id).subscribe((res) => {
-          const { status } = res;
-          if (status === true) {
-            this.commonService.openAlert('Xoá giống bò thành công', 'success');
-            this.router.navigate(['/cow-breeds']);
-          } else {
-            this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
-          }
-        });
+        this.cowBreedService
+          .deleteCowBreed(this.cowBreed._id)
+          .subscribe((res) => {
+            const { status } = res;
+            if (status === true) {
+              this.commonService.openAlert(
+                'Xoá giống bò thành công',
+                'success'
+              );
+              this.router.navigate(['/cow-breeds']);
+            } else {
+              this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
+            }
+          });
       }
     });
   }
@@ -126,54 +131,46 @@ export class DetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  createNutrition(periodId: string) {
-    const dialogRef = this.dialog.open(DialogCreateNutritionComponent, {
-      autoFocus: false,
-      restoreFocus: false,
-      width: '550px',
-      minHeight: '200px',
-      maxHeight: '100vh',
-      disableClose: true,
-      data: {
-        periodId,
-      },
-    });
 
-    dialogRef.afterClosed().subscribe((data) => {
-      if (data.success) {
-        this.commonService.reloadComponent();
-      }
-    });
-  }
-
-
-  updateNutrition(periodId: string, nutrition: any) {
-    const dialogRef = this.dialog.open(DialogUpdateNutritionComponent, {
+  updatePeriod(periodId: string) {
+    const dialogRef = this.dialog.open(CreateUpdatePeriodDialogComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
         periodId,
-        nutrition,
       },
     });
 
-    dialogRef.afterClosed().subscribe((data) => {
-      if (data.success) {
+    dialogRef.afterClosed().subscribe((result) => {
+      const { type, status, isModified } = result;
+      if (type === 'update' && status === 'success') {
+        this.commonService.openAlert(
+          'Cập nhật giai đoạn sinh trưởng thành công',
+          'success'
+        );
         this.getCowBreed();
+      } else if (type === 'update' && status === 'failure') {
+        this.commonService.openAlert(
+          'Cập nhật giai đoạn sinh trưởng thất bại',
+          'dnager'
+        );
+      } else if (type === 'close' && isModified) {
+        this.getCowBreed();
+      } else if (type === 'close' && !isModified) {
+        return;
       }
     });
   }
 
-  getStandardServing() {
-    // this.cowBreedService
-    //   .fetchStandardServingFile(this.cowBreedIdParam)
-    //   .subscribe((res) => {
-    //     const blob = new Blob([res], { type: 'application/pdf' });
-    //     var downloadURL = window.URL.createObjectURL(res);
-    //     var link = document.createElement('a');
-    //     link.href = downloadURL;
-    //     link.download = 'khau-phan-an-chuan.pdf';
-    //     link.click();
-    //   });
+  getStandardServing(cowBreed: any) {
+    const dialogRef = this.dialog.open(
+      DownloadStandardServingDialogComponent,
+      {
+        ...CREATE_UPDATE_DIALOG_CONFIG,
+        data: {
+          cowBreed
+        }
+      }
+    );
   }
 
   updateCowBreed(cowBreedId: string) {
@@ -185,12 +182,16 @@ export class DetailComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      const { type, status } = res;
+      const { type, status, isModified } = res;
       if (type === 'update' && status === 'success') {
         this.commonService.openAlert('Cập nhật giống bò thành công', 'success');
         this.getCowBreed();
       } else if (type === 'update' && status === 'failure') {
         this.commonService.openAlert('Cập nhật giống bò thất bại', 'danger');
+      } else if (type === 'close' && isModified) {
+        this.getCowBreed();
+      } else if (type === 'close' && !isModified) {
+        return;
       }
     });
   }
@@ -211,8 +212,11 @@ export class DetailComponent implements OnInit, OnDestroy {
               'success'
             );
             this.getCowBreed();
-          } else {  
-            this.commonService.openAlert('Xoá giai đoạn sinh trưởng thất bại', 'danger');
+          } else {
+            this.commonService.openAlert(
+              'Xoá giai đoạn sinh trưởng thất bại',
+              'danger'
+            );
           }
         });
       }

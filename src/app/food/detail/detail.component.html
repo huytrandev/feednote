@@ -2,9 +2,6 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-back-button [routerLink]="['/thuc-an']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
-  <div *ngIf="error">
-    <h2>Không thể tìm thấy thức ăn</h2>
-  </div>
   <div *ngIf="!error">
     <div
       fxLayout="row"
@@ -12,7 +9,7 @@
       class="m-bottom-25"
     >
       <div class="app-title">
-        <h2>Chi tiết</h2>
+        <h2>Chi tiết thức ăn</h2>
       </div>
       <app-button-icon
         [matMenuTriggerFor]="optionsPanel"
@@ -51,6 +48,15 @@
         </div>
         <div fxFlex>
           <span>{{ food.unit }}</span>
+        </div>
+      </div>
+
+      <div fxLayout="row" class="m-bottom-15">
+        <div fxFlex="25">
+          <span class="font-weight-bold">Loại thức ăn</span>
+        </div>
+        <div fxFlex>
+          <span>{{ getTypeName(food.type) }}</span>
         </div>
       </div>
 

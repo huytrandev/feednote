@@ -1,7 +1,11 @@
+@import '../../../_variable';
+
 .back-button {
   background: #fff;
   position: fixed;
-  box-shadow: 2px 2px 15px rgb(0 0 0 / 15%);
+  top: 20px;
+  left: 230px;
+  box-shadow: $box-shadow;
   display: flex;
   justify-content: center;
   align-items: center;

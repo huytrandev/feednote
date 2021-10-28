@@ -18,7 +18,6 @@ import { Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 import {
   AreaService,
-  AuthService,
   UserService,
   CommonService,
 } from 'src/app/core/services';
@@ -29,7 +28,6 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ResetPasswordDialogComponent } from '../reset-password-dialog/reset-password-dialog.component';
 
 @Component({
   selector: 'app-create',
@@ -51,8 +49,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
-    private commonService: CommonService,
     private userService: UserService,
     private areaService: AreaService,
     public dialog: MatDialog,
