@@ -27,6 +27,21 @@ tr.app-element-row:not(.app-expanded-row):active {
   hyphens: auto;
 }
 
+.mat-column-amountNutrition {
+  width: 30% !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 30% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
 .mat-column-actions {
   width: 80px !important;
   word-wrap: break-word !important;

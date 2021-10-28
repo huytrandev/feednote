@@ -2,38 +2,31 @@
 <div *ngIf="!loading">
   <div fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
     <h2>{{ isCreate ? "Thêm mới" : "Cập nhật thông tin" }} giống bò</h2>
-    <app-button-icon [iconName]="'close'" matTooltip="Đóng" (click)="onClose()"></app-button-icon>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div mat-dialog-content class="dialog-content">
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Tên giống bò <span class="color-red">(*)</span></mat-label>
         <input type="text" matInput maxlength="100" formControlName="name" />
 
         <mat-error *ngIf="f.name.errors?.required"
           >Tên giống bò không được trống.</mat-error
         >
-        <mat-error *ngIf="f.name.errors?.minlength"
-          >Tên giống bò phải có ít nhất 5 ký tự.</mat-error
-        >
         <mat-error *ngIf="f.name.errors?.inValid"
           >Tên giống bò không hợp lệ.</mat-error
         >
       </mat-form-field>
 
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%"
-        floatLabel="always"
-      >
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Thời gian nuôi <span class="color-red">(*)</span></mat-label>
         <input
-          type="number"
+          type="text"
           matInput
           id="farmingTime"
           formControlName="farmingTime"
@@ -45,6 +38,9 @@
         >
         <mat-error *ngIf="f.farmingTime.errors?.min"
           >Thời gian nuôi phải lớn hơn 10.</mat-error
+        >
+        <mat-error *ngIf="f.farmingTime.errors?.pattern"
+          >Thời gian nuôi không hợp lệ.</mat-error
         >
       </mat-form-field>
 
@@ -59,22 +55,19 @@
               fxLayoutAlign="space-between center"
               class="period-list-item-header"
             >
-              <h4>Giai đoạn thứ {{ i + 1 }}</h4>
+              <div></div>
+              <span class="font-weight-bold">Thông tin giai đoạn</span>
               <app-button-icon
                 [customClasses]="['color-red']"
                 matTooltip="Xoá"
                 (click)="removePeriod(i, period.value, $event)"
-                [iconName]="'close'"
+                [iconName]="'delete'"
               ></app-button-icon>
             </div>
             <input type="hidden" formControlName="_id" />
 
             <div fxLayout="row" fxLayoutAlign="center center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
+              <mat-form-field appearance="outline" style="width: 90%">
                 <mat-label
                   >Tên giai đoạn <span class="color-red">(*)</span></mat-label
                 >
@@ -101,15 +94,11 @@
             </div>
 
             <div fxLayout="row" fxLayoutAlign="center center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
+              <mat-form-field appearance="outline" style="width: 90%">
                 <mat-label
                   >Ngày bắt đầu <span class="color-red">(*)</span></mat-label
                 >
-                <input type="number" matInput formControlName="startDay" />
+                <input type="text" matInput formControlName="startDay" />
 
                 <mat-error
                   *ngIf="
@@ -121,19 +110,19 @@
                   *ngIf="periods.controls[i].get('startDay')?.hasError('min')"
                   >Ngày bắt đầu trong ít nhất 1.</mat-error
                 >
+                <mat-error
+                  *ngIf="periods.controls[i].get('startDay')?.hasError('pattern')"
+                  >Ngày bắt đầu không hợp lệ.</mat-error
+                >
               </mat-form-field>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="center center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
+              <mat-form-field appearance="outline" style="width: 90%">
                 <mat-label
                   >Ngày kết thúc <span class="color-red">(*)</span></mat-label
                 >
-                <input type="number" matInput formControlName="endDay" />
+                <input type="text" matInput formControlName="endDay" />
                 <mat-error
                   *ngIf="
                     periods.controls[i].get('endDay')?.hasError('required')
@@ -146,19 +135,21 @@
                   "
                   >Ngày kết thúc phải lớn hơn ngày bắt đầu.</mat-error
                 >
+                <mat-error
+                  *ngIf="
+                    periods.controls[i].get('endDay')?.hasError('pattern')
+                  "
+                  >Ngày kết thúc không hợp lệ.</mat-error
+                >
               </mat-form-field>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="center center">
-              <mat-form-field
-                appearance="outline"
-                style="width: 90%"
-                floatLabel="always"
-              >
+              <mat-form-field appearance="outline" style="width: 90%">
                 <mat-label
                   >Cân nặng <span class="color-red">(*)</span></mat-label
                 >
-                <input type="number" matInput formControlName="weight" />
+                <input type="text" matInput formControlName="weight" />
                 <mat-hint>Đơn vị: kg</mat-hint>
                 <mat-error
                   *ngIf="
@@ -169,6 +160,10 @@
                 <mat-error
                   *ngIf="periods.controls[i].get('weight')?.hasError('min')"
                   >Cân nặng phải trên 10kg.</mat-error
+                >
+                <mat-error
+                  *ngIf="periods.controls[i].get('weight')?.hasError('pattern')"
+                  >Cân nặng không hợp lệ.</mat-error
                 >
               </mat-form-field>
             </div>

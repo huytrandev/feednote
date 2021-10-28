@@ -69,13 +69,13 @@ mat-form-field {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   border-radius: $border-radius;
 }
 ::-webkit-scrollbar-thumb {
-  background: #bbbbbb;
+  background: #aaaaaa;
   border-radius: $border-radius;
 }
 
@@ -110,7 +110,6 @@ mat-form-field {
 // Customize class
 .app-button {
   border-radius: $border-radius !important;
-  text-transform: capitalize;
   height: fit-content;
   text-transform: none !important;
   line-height: 2.7rem !important;
@@ -229,9 +228,6 @@ mat-form-field {
   &-muted {
     color: grey;
   }
-  &-yellow {
-    color: $text-yellow !important;
-  }
 }
 
 .rounded {
@@ -248,24 +244,20 @@ mat-form-field {
 
 .alert {
   &-success {
-    background: #fff;
+    background: $green;
     border-radius: $border-radius;
     display: flex !important;
     align-items: center;
     height: 52px !important;
-    background: #fafafa !important;
-    border-left: 6px solid $green;
-    color: $text-green;
+    color: #fff;
   }
   &-failure {
-    background: #fff;
     border-radius: $border-radius;
     display: flex !important;
     align-items: center;
     height: 52px !important;
-    background: #fafafa !important;
-    border-left: 6px solid $red;
-    color: $text-red;
+    background: $red !important;
+    color: #fff;
   }
 }
 

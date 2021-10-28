@@ -1,31 +1,32 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CommonService, CowBreedService } from 'src/app/core/services';
+import { IS_DECIMAL } from 'src/app/core/helpers';
+import { CowBreedService } from 'src/app/core/services';
 
 @Component({
-  selector: 'app-dialog-create-nutrition',
-  templateUrl: './dialog-create-nutrition.component.html',
-  styleUrls: ['./dialog-create-nutrition.component.scss'],
+  selector: 'app-update-nutrition-dialog',
+  templateUrl: './update-nutrition-dialog.component.html',
+  styleUrls: ['./update-nutrition-dialog.component.scss'],
 })
-export class DialogCreateNutritionComponent implements OnInit {
+export class UpdateNutritionDialogComponent implements OnInit {
   form!: FormGroup;
   loading: boolean = false;
   submitted: boolean = false;
-  periodId!: string;
+  period!: any;
 
   constructor(
     private fb: FormBuilder,
     private cowBreedService: CowBreedService,
-    private commonService: CommonService,
-    public dialogRef: MatDialogRef<DialogCreateNutritionComponent>,
+    public dialogRef: MatDialogRef<UpdateNutritionDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.periodId = this.data.periodId;
+    this.period = this.data.period;
   }
 
   ngOnInit(): void {
     this.buildFormArray();
+    this.setNutritionValue(this.period.nutrition);
   }
 
   get f() {
@@ -38,15 +39,32 @@ export class DialogCreateNutritionComponent implements OnInit {
 
   buildFormArray() {
     this.form = this.fb.group({
-      nutrition: this.fb.array([this.createNutrition()]),
+      nutrition: this.fb.array([]),
+    });
+  }
+
+  setNutritionValue(nutrition: any) {
+    this.nutritionForm.clear();
+    const _nutrition = [...nutrition];
+    _nutrition.forEach((i) => {
+      let nu: FormGroup = this.createNutrition();
+      nu.patchValue(i);
+      this.nutritionForm.push(nu);
     });
   }
 
   createNutrition() {
     return this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
-      amount: ['', [Validators.required, Validators.min(1)]],
-      unit: ['', [Validators.required]],
+      name: [''],
+      amount: [
+        '',
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.pattern(IS_DECIMAL),
+        ],
+      ],
+      unit: [''],
     });
   }
 
@@ -70,44 +88,37 @@ export class DialogCreateNutritionComponent implements OnInit {
   onSubmit() {
     if (!this.form.valid) return;
 
-    const nutrition = [...this.form.value.nutrition];
     this.submitted = true;
     this.cowBreedService
-      .createNutritionOfPeriod(this.periodId, nutrition)
+      .updatePeriod(this.period._id, this.form.value)
       .subscribe((res) => {
-        if (!res.status) {
+        const { status } = res;
+        if (!status) {
           this.submitted = false;
-          this.commonService.openAlert(
-            'Thêm nhu cầu dinh dưỡng thất bại',
-            'danger'
-          );
           this.dialogRef.close({
-            type: 'create',
-            status: 'fail'
+            type: 'update',
+            status: 'fail',
           });
           return;
         }
 
-        this.submitted = false;
-        this.commonService.openAlert(
-          'Thêm nhu cầu dinh dưỡng thành công',
-          'success'
-        );
         this.dialogRef.close({
-          type: 'create',
-          status: 'success'
+          type: 'update',
+          status: 'success',
         });
+        this.submitted = false;
       });
   }
 
   onReset() {
     this.buildFormArray();
+    this.setNutritionValue(this.period.nutrition);
   }
 
   onClose() {
     this.dialogRef.close({
       type: 'close',
-      status: null
+      status: null,
     });
   }
 }

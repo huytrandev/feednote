@@ -13,7 +13,6 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import {
   MatDialog,
   MatDialogRef,
@@ -24,6 +23,8 @@ import { CowBreedService, CommonService } from 'src/app/core/services';
 import { LessThan, Vietnamese } from 'src/app/core/validations';
 import { DialogComponent } from 'src/app/shared';
 import { Subject } from 'rxjs';
+import { DELETE_DIALOG_CONFIG, INITIAL_PERIOD_NUTRITION } from 'src/app/core/constant';
+import { IS_DECIMAL, IS_NUMBER } from 'src/app/core/helpers';
 
 @Component({
   selector: 'app-create-update',
@@ -39,6 +40,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   isCreate: boolean = true;
   cowBreedId!: string;
+  isModified: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -87,11 +89,13 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     return this.form.get('periods') as FormArray;
   }
 
+
+
   buildForm(): void {
     this.form = this.fb.group(
       {
-        name: ['', [Validators.required, Validators.minLength(5)]],
-        farmingTime: ['', [Validators.required, Validators.min(10)]],
+        name: ['', [Validators.required]],
+        farmingTime: ['', [Validators.required, Validators.min(10), Validators.pattern(IS_NUMBER)]],
         periods: this.fb.array([]),
       },
       {
@@ -129,9 +133,10 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         _id: [''],
         serial: [serial + 1],
         name: ['', [Validators.required, Validators.minLength(5)]],
-        startDay: ['', [Validators.required, Validators.min(1)]],
-        endDay: ['', [Validators.required, Validators.min(1)]],
-        weight: ['', [Validators.required, Validators.min(10)]],
+        startDay: ['', [Validators.required, Validators.min(1), Validators.pattern(IS_NUMBER)]],
+        endDay: ['', [Validators.required, Validators.min(1), Validators.pattern(IS_NUMBER)]],
+        weight: ['', [Validators.required, Validators.min(10), Validators.pattern(IS_DECIMAL)]],
+        nutrition: this.fb.array(INITIAL_PERIOD_NUTRITION),
       },
       {
         validator: [LessThan('startDay', 'endDay'), Vietnamese('name')],
@@ -155,12 +160,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '460px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     const { _id } = period;
 
@@ -174,9 +174,13 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
               'Xoá giai đoạn sinh trưởng thành công',
               'success'
             );
+            this.isModified = true;
             this.periods.removeAt(index);
           } else {
-            this.commonService.openAlert('Xoá giai đoạn sinh trưởng thất bại', 'danger');
+            this.commonService.openAlert(
+              'Xoá giai đoạn sinh trưởng thất bại',
+              'danger'
+            );
           }
         });
       }
@@ -196,47 +200,37 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
 
     if (!!this.isCreate) {
       this.submitted = true;
-      this.cowBreedService.createCowBreed(this.form.value).subscribe(
-        (res) => {
-          const { status } = res;
-          if (!status) {
-            this.submitted = false;
-            this.form.reset();
-            this.formGroupDirective.resetForm();
-            this.dialogRef.close({
-              type: 'create',
-              status: 'failure',
-            });
-            return;
-          }
+      this.cowBreedService.createCowBreed(this.form.value).subscribe((res) => {
+        const { status } = res;
+        if (!status) {
           this.submitted = false;
+          this.form.reset();
           this.formGroupDirective.resetForm();
           this.dialogRef.close({
             type: 'create',
-            status: 'success',
+            status: 'fail',
           });
-        },
-        (error) => {
-          this.submitted = false;
-          this.submitted = false;
-          this.formGroupDirective.resetForm();
-          this.dialogRef.close({
-            type: 'create',
-            status: 'failure',
-          });
+          return;
         }
-      );
+        this.submitted = false;
+        this.formGroupDirective.resetForm();
+        this.dialogRef.close({
+          type: 'create',
+          status: 'success',
+        });
+      });
     } else {
       this.submitted = true;
-      this.cowBreedService.updateCowBreed(this.cowBreedId, this.form.value).subscribe(
-        (res) => {
+      this.cowBreedService
+        .updateCowBreed(this.cowBreedId, this.form.value)
+        .subscribe((res) => {
           const { status } = res;
           if (!status) {
             this.submitted = false;
             this.setValueForForm(this.cowBreed);
             this.dialogRef.close({
               type: 'update',
-              status: 'failure',
+              status: 'fail',
             });
             return;
           }
@@ -246,16 +240,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
             type: 'update',
             status: 'success',
           });
-        },
-        (error) => {
-          this.submitted = false;
-          this.setValueForForm(this.cowBreed);
-          this.dialogRef.close({
-            type: 'update',
-            status: 'failure',
-          });
-        }
-      );
+        });
     }
   }
 
@@ -270,6 +255,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   }
 
   onClose() {
-    this.dialogRef.close({ type: 'close', status: null });
+    this.dialogRef.close({ type: 'close', isModified: this.isModified });
   }
 }

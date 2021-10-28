@@ -17,10 +17,9 @@ import {
 } from '@angular/material/core';
 import 'moment/locale/vi';
 import { SharedModule } from 'src/app/shared';
-import { DetailComponent } from './detail/detail.component';
 
 @NgModule({
-  declarations: [MainComponent, DetailComponent],
+  declarations: [MainComponent],
   imports: [
     CommonModule,
     FeedingDiaryRoutingModule,

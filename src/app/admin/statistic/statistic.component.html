@@ -8,7 +8,7 @@
     <div fxLayout="row" *ngIf="currentUser.role === 'manager'">
       <div fxFlex="1/3" class="total-user">
         <div class="total-user__header">
-          <span>Tổng số hộ chăn nuôi đang quản lý</span>
+          <span>Tổng số hộ chăn nuôi đang phụ trách</span>
         </div>
         <div class="total-user__body m-top-20">
           <span *ngIf="breeders; else elseSpan">{{ breeders.totalCount }}</span>
@@ -84,13 +84,11 @@
       <div
         class="chart-options"
         fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="30px"
+        fxLayoutAlign="space-between center"
       >
         <mat-form-field
           appearance="outline"
-          style="width: 30%; display: inline-block"
-          floatLabel="always"
+          fxFlex="30"
           *ngIf="breeders"
         >
           <mat-label>Hộ chăn nuôi</mat-label>
@@ -107,8 +105,7 @@
 
         <mat-form-field
           appearance="outline"
-          style="width: 30%; display: inline-block"
-          floatLabel="always"
+          fxFlex="30"
           *ngIf="cowBreeds"
         >
           <mat-label>Giống bò</mat-label>
@@ -125,8 +122,7 @@
 
         <mat-form-field
           appearance="outline"
-          style="width: 30%; display: inline-block"
-          floatLabel="always"
+          fxFlex="30"
         >
           <mat-label>Chọn khoảng thời gian</mat-label>
           <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
@@ -166,11 +162,11 @@
     </div>
     <mat-divider></mat-divider>
     <div fxLayout="row" fxLayoutAlign="start center" class="m-top-20">
-      <div fxFlex="15">
-        <span class="font-weight-bold">Tổng số con bò</span>
+      <div fxFlex="20">
+        <span class="font-weight-bold">Tổng số con bò đang nuôi</span>
       </div>
       <div fxFlex>
-        <span>{{ cowIndicatorsStatistic.totalCow }}</span>
+        <span>{{ cowIndicatorsStatistic.totalCow }} con</span>
       </div>
     </div>
 

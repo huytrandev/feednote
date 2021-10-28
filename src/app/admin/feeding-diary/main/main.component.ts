@@ -13,12 +13,10 @@ import { AdvancedFilter, User } from 'src/app/core/models';
 import { FeedingDiaryService, UserService } from 'src/app/core/services';
 
 import * as moment from 'moment';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DetailComponent } from '../detail/detail.component';
-import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 
 @Component({
   selector: 'app-main',
@@ -31,6 +29,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   dataTableSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['id', 'breederName', 'createdAt', 'incorrect'];
+  detailFoodDiaryColumns: string[] = ['id', 'foodName', 'foodAmount'];
   loading: boolean = true;
   loadingFilter: boolean = true;
   isLoadMore: boolean = false;
@@ -50,6 +49,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   timeOutInput!: any;
   search: string = '';
   isInCorrect: boolean = false;
+
+  selectedDiary!: any;
 
   constructor(
     private router: Router,
@@ -108,7 +109,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  showFilter() {
+  showFilter(event: any) {
+    event.stopPropagation();
     this.isShowAdvancedFilter = !this.isShowAdvancedFilter;
   }
 
@@ -154,8 +156,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       .fetchFeedingDiaries(this.params)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        delay(500),
-        catchError((_) => this.router.navigate(['not-found']))
+        delay(500)
       )
       .subscribe((res) => {
         const { status, data } = res;
@@ -191,12 +192,15 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showDetail(feedingDiary: any) {
-    const dialogRef = this.dialog.open(DetailComponent, {
-      ...CREATE_UPDATE_DIALOG_CONFIG,
-      data: {
-        feedingDiary,
-      },
-    });
+    this.selectedDiary = feedingDiary;
+  }
+
+  onClearDiary() {
+    this.selectedDiary = null;
+  }
+
+  transformDateForDetail(date: number) {
+    return moment(date).locale('vi').format('LT, LL');
   }
 
   onSearch(e: any) {

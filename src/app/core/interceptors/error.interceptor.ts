@@ -20,25 +20,11 @@ export class ErrorInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
-      retryWhen(error => 
-        error.pipe(
-          concatMap((err, count) => {
-            if (count < 3 && err.status === 401) {
-              return of(err);
-            }
-
-            this.authService.logout();
-            return throwError(error);
-          }),
-          delay(1000)
-      )),
       catchError((err) => {
-        switch (err.status) {
-          case 403:
-            this.authService.logout();
-            break;
-          default:
-            this.router.navigate(['/404']);
+        if (err.status === 404) {
+          this.router.navigate(['/404']);
+        } else if (err.status === 401) {
+          this.authService.logout();
         }
 
         const error = err.error.message || err.statusText;

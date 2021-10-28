@@ -6,7 +6,7 @@
       [buttonContent]="'Thêm mới'"
       (click)="createUpdateFood()"
     ></app-button>
-    <mat-form-field fxFlex="40" appearance="outline" floatLabel="always" class="m-bottom-0">
+    <mat-form-field fxFlex="40" appearance="outline" class="m-bottom-0">
       <mat-label>Tìm kiếm</mat-label>
       <input type="search" matInput #input (input)="onSearch($event)" />
       <mat-icon matSuffix>search</mat-icon>

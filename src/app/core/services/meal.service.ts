@@ -5,7 +5,6 @@ import { AdvancedFilter, Food } from '../models';
 
 export interface ParamsForMealFile {
   idCowBreed: string;
-  idPeriod: string;
   idArea: string;
 }
 
@@ -32,12 +31,16 @@ export class MealService {
 
   fetchMealDataFile(filter: ParamsForMealFile) {
     const params = new HttpParams().set('filter', JSON.stringify(filter));
-
-    return this.http.get<any>(`${env.apiUrl}/meal/file`, { params });
+    const options = {
+      responseType: 'blob' as 'json',
+      params,
+    };
+    
+    return this.http.get<any>(`${env.apiUrl}/meal/file`, options);
   }
 
   createMeal(meal: any) {
-    return this.http.post<any>(`${env.apiUrl}/meal`, JSON.stringify(meal));
+    return this.http.post<any>(`${env.apiUrl}/meal/create`, JSON.stringify(meal));
   }
 
   createFoodOfMeal(mealId: string, foods: Food) {
@@ -45,6 +48,10 @@ export class MealService {
       `${env.apiUrl}/meal/${mealId}/food`,
       JSON.stringify(foods)
     );
+  }
+
+  saveMeal(meal: any) {
+    return this.http.post<any>(`${env.apiUrl}/meal`, JSON.stringify(meal));
   }
 
   updateFoodOfMeal(mealId: string, foodId: string, foods: Food) {

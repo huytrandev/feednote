@@ -1,0 +1,85 @@
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <div fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
+    <h2>
+      {{ !period ? "Thêm mới" : "Cập nhật thông tin" }} giai đoạn sinh trưởng
+    </h2>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="dialog-content">
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Tên giai đoạn <span class="color-red">(*)</span></mat-label>
+        <input type="text" matInput maxlength="100" formControlName="name" />
+
+        <mat-error *ngIf="f.name.errors?.required"
+          >Tên giai đoạn không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.name.errors?.minlength"
+          >Tên giai đoạn phải có ít nhất 5 ký tự.</mat-error
+        >
+        <mat-error *ngIf="f.name.errors?.inValid"
+          >Tên giai đoạn không hợp lệ.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Ngày bắt đầu <span class="color-red">(*)</span></mat-label>
+        <input type="text" matInput id="startDay" formControlName="startDay" />
+
+        <mat-error *ngIf="f.startDay.errors?.required"
+          >Ngày bắt đầu không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.startDay.errors?.min"
+          >Ngày bắt đầu phải lớn hơn 1.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Ngày kết thúc <span class="color-red">(*)</span></mat-label>
+        <input type="text" matInput id="endDay" formControlName="endDay" />
+
+        <mat-error *ngIf="f.endDay.errors?.required"
+          >Ngày kết thúc không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.endDay.errors?.min"
+          >Ngày kết thúc phải lớn hơn 1.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Cân nặng <span class="color-red">(*)</span></mat-label>
+        <input type="text" matInput id="weight" formControlName="weight" />
+
+        <mat-error *ngIf="f.weight.errors?.required"
+          >Cân nặng không được trống.</mat-error
+        >
+        <mat-error *ngIf="f.weight.errors?.min"
+          >Cân nặng phải lớn hơn 1.</mat-error
+        >
+      </mat-form-field>
+
+    </div>
+    <div class="button-group" mat-dialog-actions>
+      <app-button
+        [buttonType]="'submit'"
+        [customClasses]="['app-button-brown']"
+        [disabledCondition]="!canSubmitForm"
+        [showSpinner]="submitted"
+        [buttonContent]="!period ? 'Tạo mới' : 'Cập nhật'"
+      ></app-button>
+
+      <app-button
+        [buttonType]="'button'"
+        [customClasses]="['app-button-grey']"
+        [buttonContent]="'Huỷ bỏ'"
+        (click)="onReset()"
+      ></app-button>
+    </div>
+  </form>
+</div>
