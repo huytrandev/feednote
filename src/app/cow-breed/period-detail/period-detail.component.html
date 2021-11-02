@@ -14,13 +14,6 @@
       matTooltip="Tuỳ chọn"
     >
     </app-button-icon>
-    <!-- <app-button-icon
-      [iconName]="'delete'"
-      matTooltip="Xoá giai đoạn"
-      [customClasses]="['color-red']"
-      (click)="onDeletePeriod()"
-    >
-    </app-button-icon> -->
     <mat-menu #optionsPanel="matMenu" xPosition="before">
       <app-menu-item
         [iconName]="'edit'"
@@ -36,16 +29,24 @@
     </mat-menu>
   </div>
   <div class="content">
+    <div fxLayout="row" class="m-bottom-15">
+      <div fxFlex="20">
+        <span class="font-weight-bold">Giống bò</span>
+      </div>
+      <div fxFlex>
+        <span>{{ period ? period.cowBreedName : "" }}</span>
+      </div>
+    </div>
     <div fxLayout="row" fxLayoutAlign="center" class="m-bottom-15">
-      <div fxFlex="25">
-        <span class="font-weight-bold">Tên giai đoạn</span>
+      <div fxFlex="20">
+        <span class="font-weight-bold">Giai đoạn</span>
       </div>
       <div fxFlex fxLayout="row" fxLayoutAlign="start">
         <span>{{ period ? period.name : "" }}</span>
       </div>
     </div>
     <div fxLayout="row" class="m-bottom-15">
-      <div fxFlex="25">
+      <div fxFlex="20">
         <span class="font-weight-bold">Ngày bắt đầu</span>
       </div>
       <div fxFlex>
@@ -54,7 +55,7 @@
     </div>
 
     <div fxLayout="row" class="m-bottom-15">
-      <div fxFlex="25">
+      <div fxFlex="20">
         <span class="font-weight-bold">Ngày kết thúc</span>
       </div>
       <div fxFlex>
@@ -63,7 +64,7 @@
     </div>
 
     <div fxLayout="row" class="m-bottom-15">
-      <div fxFlex="25">
+      <div fxFlex="20">
         <span class="font-weight-bold">Cân nặng</span>
       </div>
       <div fxFlex>
@@ -81,7 +82,7 @@
         <span class="font-weight-bold">Bảng nhu cầu dinh dưỡng</span>
         <app-button-icon
           [iconName]="'edit'"
-          matTooltip="'Cập nhật'"
+          matTooltip="Cập nhật"
           (click)="updateNutrition(period)"
         ></app-button-icon>
       </div>
@@ -141,9 +142,16 @@
           fxLayoutAlign="center center"
           class="m-bottom-10 m-top-15"
         >
-          <div fxFlex="95">
-            <span class="font-weight-bold">Khu vực: </span>
-            <span>{{ meal.areaName }}</span>
+          <div fxFlex="95" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+              <span class="font-weight-bold">Khu vực: </span>
+              <span>{{ meal.areaName }}</span>
+            </div>
+            <!-- <app-button-icon
+              [iconName]="'edit'"
+              matTooltip="Cập nhật"
+              (click)="updateStandardMeal(meal)"
+            ></app-button-icon> -->
           </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-15">
@@ -155,37 +163,31 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="name">
+            <ng-container matColumnDef="foodName">
               <th mat-header-cell *matHeaderCellDef>Tên thức ăn</th>
               <td mat-cell *matCellDef="let element">
                 {{ element.name }}
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="amount">
-              <th mat-header-cell *matHeaderCellDef>Số lượng</th>
+            <ng-container matColumnDef="foodType">
+              <th mat-header-cell *matHeaderCellDef>Loại thức ăn</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.amount + " " + element.unit }}
+                {{ getTypeName(element.type) }}
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef colspan="3"></th>
+            <ng-container matColumnDef="foodRatio">
+              <th mat-header-cell *matHeaderCellDef>Tỉ lệ</th>
               <td mat-cell *matCellDef="let element">
-                <app-button-icon
-                  matTooltip="Chỉnh sửa"
-                  (click)="$event.stopPropagation()"
-                  [iconName]="'edit'"
-                ></app-button-icon>
-                <app-button-icon
-                  matTooltip="Xoá"
-                  (click)="
-                    $event.stopPropagation();
-                    onDeleteFoodOfMeal(meals[0]._id, element.idFood)
-                  "
-                  [iconName]="'delete'"
-                  [customClasses]="['color-red']"
-                ></app-button-icon>
+                {{ element.ratio + "%" }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="foodAmount">
+              <th mat-header-cell *matHeaderCellDef>Số lượng</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.amount + " " + element.unit }}
               </td>
             </ng-container>
 
@@ -201,15 +203,6 @@
             </tr>
           </table>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-20">
-          <div fxFlex="95">
-            <app-button
-              [buttonContent]="'Thêm mới'"
-              [customClasses]="['app-button-green']"
-            >
-            </app-button>
-          </div>
-        </div>
       </div>
 
       <div *ngIf="mealEachArea.length === 0" class="food-content m-bottom-20">
@@ -223,16 +216,16 @@
         <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-15">
           <mat-divider fxFlex="95"></mat-divider>
         </div>
+      </div>
 
-        <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-20">
-          <div fxFlex="95">
-            <app-button
-              [buttonContent]="'Thêm mới'"
-              [customClasses]="['app-button-green']"
-              (click)="onCreateMeal(period)"
-            >
-            </app-button>
-          </div>
+      <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-20">
+        <div fxFlex="95">
+          <app-button
+            [buttonContent]="'Thêm mới'"
+            [customClasses]="['app-button-green']"
+            (click)="onCreateMeal(period)"
+          >
+          </app-button>
         </div>
       </div>
     </div>

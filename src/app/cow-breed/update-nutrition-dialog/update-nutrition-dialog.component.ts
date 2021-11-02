@@ -89,8 +89,14 @@ export class UpdateNutritionDialogComponent implements OnInit {
     if (!this.form.valid) return;
 
     this.submitted = true;
+    const nutrition = [...this.form.value.nutrition].map((item) => {
+      return {
+        ...item,
+        amount: Number(item.amount),
+      };
+    });
     this.cowBreedService
-      .updatePeriod(this.period._id, this.form.value)
+      .updatePeriod(this.period._id, { nutrition })
       .subscribe((res) => {
         const { status } = res;
         if (!status) {

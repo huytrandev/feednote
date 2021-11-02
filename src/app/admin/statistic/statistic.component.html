@@ -50,7 +50,10 @@
           <span>Tổng số người dùng</span>
         </div>
         <div class="total-user__body m-top-20">
-          <span>{{ userTypes.totalUser }}</span>
+          <span *ngIf="users; else elseSpan">{{ userTypes.totalUser }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
         </div>
       </div>
       <div fxFlex="1/4" class="total-user">
@@ -58,7 +61,10 @@
           <span>Tổng số quản trị viên</span>
         </div>
         <div class="total-user__body m-top-20">
-          <span>{{ userTypes.totalAdmin }}</span>
+          <span *ngIf="users; else elseSpan">{{ userTypes.totalAdmin }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
         </div>
       </div>
       <div fxFlex="1/4" class="total-user">
@@ -66,7 +72,10 @@
           <span>Tổng số cán bộ thú y</span>
         </div>
         <div class="total-user__body m-top-20">
-          <span>{{ userTypes.totalManager }}</span>
+          <span *ngIf="users; else elseSpan">{{ userTypes.totalManager }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
         </div>
       </div>
       <div fxFlex="1/4" class="total-user">
@@ -74,7 +83,41 @@
           <span>Tổng số hộ chăn nuôi</span>
         </div>
         <div class="total-user__body m-top-20">
-          <span>{{ userTypes.totalBreeder }}</span>
+          <span *ngIf="users; else elseSpan">{{ userTypes.totalBreeder }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      *ngIf="currentUser.role === 'admin'"
+    >
+      <div fxFlex="25" class="total-cow-breed">
+        <div class="total-cow-breed__header">
+          <span>Tổng số giống bò</span>
+        </div>
+        <div class="total-cow-breed__body m-top-20">
+          <span *ngIf="cowBreeds; else elseSpan">{{
+            cowBreeds.totalCount
+          }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
+        </div>
+      </div>
+      <div fxFlex="25" class="total-cow-food">
+        <div class="total-food__header">
+          <span>Tổng số loại thức ăn</span>
+        </div>
+        <div class="total-food__body m-top-20">
+          <span *ngIf="foods; else elseSpan">{{ foods.totalCount }}</span>
+          <ng-template #elseSpan>
+            <span style="font-size: 0.85rem">Đang tải...</span>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -85,12 +128,9 @@
         class="chart-options"
         fxLayout="row"
         fxLayoutAlign="space-between center"
+        fxLayoutGap="15px"
       >
-        <mat-form-field
-          appearance="outline"
-          fxFlex="30"
-          *ngIf="breeders"
-        >
+        <mat-form-field appearance="outline" fxFlex="1/3" *ngIf="breeders">
           <mat-label>Hộ chăn nuôi</mat-label>
           <mat-select [(ngModel)]="selectedBreeder" name="breeder">
             <mat-option>--</mat-option>
@@ -103,11 +143,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field
-          appearance="outline"
-          fxFlex="30"
-          *ngIf="cowBreeds"
-        >
+        <mat-form-field appearance="outline" fxFlex="1/3" *ngIf="cowBreeds">
           <mat-label>Giống bò</mat-label>
           <mat-select [(ngModel)]="selectedCowBreed" name="cowBreed">
             <mat-option>--</mat-option>
@@ -120,10 +156,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field
-          appearance="outline"
-          fxFlex="30"
-        >
+        <mat-form-field appearance="outline" fxFlex="1/3">
           <mat-label>Chọn khoảng thời gian</mat-label>
           <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
             <input
@@ -147,7 +180,21 @@
           ></mat-date-range-picker>
         </mat-form-field>
       </div>
-
+      <div fxLayout="column" fxLayoutAlign="center start" class="m-bottom-20">
+        <mat-radio-group
+          color="primary"
+          [(ngModel)]="groupBy"
+          fxLayout="row"
+          fxLayoutGap="20px"
+        >
+          <mat-radio-button value="food"
+            >Nhóm thông tin theo lượng thức ăn</mat-radio-button
+          >
+          <mat-radio-button value="period"
+            >Nhóm thông tin theo cân nặng</mat-radio-button
+          >
+        </mat-radio-group>
+      </div>
       <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
         <app-button
           [buttonContent]="'Xem thông tin'"
@@ -160,17 +207,67 @@
         >
       </div>
     </div>
-    <mat-divider></mat-divider>
-    <div fxLayout="row" fxLayoutAlign="start center" class="m-top-20">
-      <div fxFlex="20">
-        <span class="font-weight-bold">Tổng số con bò đang nuôi</span>
+    <mat-divider
+      *ngIf="statisticDataByFood || statisticDataByPeriod"
+    ></mat-divider>
+    <div
+      *ngIf="statisticDataByFood || statisticDataByPeriod"
+      class="rounded border statistic-info m-top-20 m-bottom-20"
+    >
+      <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        class="header rounded-top-left rounded-top-right border-bottom"
+        style="background: whitesmoke; height: 50px"
+      >
+        <span class="font-weight-bold"
+          >Thống kê bò theo
+          {{ statisticDataByFood ? "lượng thức ăn" : "cân nặng" }}</span
+        >
       </div>
-      <div fxFlex>
-        <span>{{ cowIndicatorsStatistic.totalCow }} con</span>
+      <div class="body p-bottom-20">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <ul fxFlex="90" *ngIf="statisticDataByFood" class="tree">
+            <li *ngFor="let element of statisticDataByFood">
+              <span class="font-weight-bold">{{ element.name }}</span>
+              <ul>
+                <li *ngFor="let cow of element.cows">
+                  <span>{{ "Bò số " + cow.serial }}</span>
+                  <ul>
+                    <li *ngFor="let food of cow.foods">
+                      <span>{{ food._id + ": " + food.total + " kg" }}</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul fxFlex="90" *ngIf="statisticDataByPeriod" class="tree">
+            <li *ngFor="let element of statisticDataByPeriod">
+              <span class="font-weight-bold">{{ element.name }}</span>
+              <ul>
+                <li *ngFor="let cow of element.cows">
+                  <span>{{ "Bò số " + cow.serial }}</span>
+                  <ul>
+                    <li *ngFor="let _weight of cow.weight">
+                      <span>{{
+                        "Tuần " + _weight.week + ": " + _weight.weight + " kg"
+                      }}</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <div
+      [ngStyle]="{
+        display: statisticDataByPeriod || statisticDataByFood ? '' : 'none'
+      }"
       class="chart m-top-20"
       fxLayout="column"
       fxLayoutAlign="center center"

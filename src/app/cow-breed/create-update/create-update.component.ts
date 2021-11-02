@@ -89,8 +89,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     return this.form.get('periods') as FormArray;
   }
 
-
-
   buildForm(): void {
     this.form = this.fb.group(
       {

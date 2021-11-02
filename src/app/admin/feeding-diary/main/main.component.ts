@@ -10,7 +10,11 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, delay, takeUntil } from 'rxjs/operators';
 import { AdvancedFilter, User } from 'src/app/core/models';
-import { FeedingDiaryService, UserService } from 'src/app/core/services';
+import {
+  AuthService,
+  FeedingDiaryService,
+  UserService,
+} from 'src/app/core/services';
 
 import * as moment from 'moment';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -51,13 +55,17 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   isInCorrect: boolean = false;
 
   selectedDiary!: any;
+  currentUser!: any;
 
   constructor(
     private router: Router,
     private feedingDiaryService: FeedingDiaryService,
     private userService: UserService,
+    private authService: AuthService,
     public dialog: MatDialog
-  ) {}
+  ) {
+    this.currentUser = this.authService.getUserInfo();
+  }
 
   ngOnInit(): void {}
 
@@ -67,7 +75,14 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.setParams(0, this.defaultPageSize, '', this.defaultSort, '', '');
+    if (this.currentUser.role === 'manager') {
+      this.setParams(0, this.defaultPageSize, '', this.defaultSort, '', '', {
+        idManager: this.currentUser._id,
+      });
+    } else if (this.currentUser.role === 'admin') {
+      this.setParams(0, this.defaultPageSize, '', this.defaultSort, '', '');
+    }
+
     this.getBreeders();
     this.getFeedingDiaries();
 
@@ -79,6 +94,13 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   applyFilter() {
     const { from, to } = this.dateRange.value;
     let filterQuery: { [k: string]: any } = {};
+    if (this.currentUser.role === 'admin') {
+      filterQuery = {};
+    } else {
+      filterQuery = {
+        idManager: this.currentUser._id,
+      };
+    }
     let formQuery = !!from ? moment(from).format('YYYY-MM-DD') : '';
     let toQuery = !!to ? moment(to).format('YYYY-MM-DD') : '';
     if (this.selectedBreeder) {
@@ -95,7 +117,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       if ('isCorrect' in filterQuery) {
         delete filterQuery.isCorrect;
-      };
+      }
     }
 
     this.setParams(
@@ -154,10 +176,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.loading = true;
     this.feedingDiaryService
       .fetchFeedingDiaries(this.params)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        delay(500)
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), delay(500))
       .subscribe((res) => {
         const { status, data } = res;
         if (!status) {
@@ -173,22 +192,45 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getBreeders() {
     this.loadingFilter = true;
-    this.userService
-      .fetchBreeders()
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
-      )
-      .subscribe((res) => {
-        const { status, data } = res;
-        if (!status) {
-          this.loading = false;
-          return;
-        }
+    if (this.currentUser.role === 'admin') {
+      const filter = {
+        role: 'breeder',
+      };
 
-        this.breeders = data.items;
-        this.loadingFilter = false;
-      });
+      this.userService
+        .fetchUsers({ filter })
+        .pipe(
+          takeUntil(this.ngUnsubscribe),
+          catchError((_) => this.router.navigate(['not-found']))
+        )
+        .subscribe((res) => {
+          const { status, data } = res;
+          if (!status) {
+            this.loading = false;
+            return;
+          }
+
+          this.breeders = data.items;
+          this.loadingFilter = false;
+        });
+    } else if (this.currentUser.role === 'manager') {
+      this.userService
+        .fetchBreeders()
+        .pipe(
+          takeUntil(this.ngUnsubscribe),
+          catchError((_) => this.router.navigate(['not-found']))
+        )
+        .subscribe((res) => {
+          const { status, data } = res;
+          if (!status) {
+            this.loading = false;
+            return;
+          }
+
+          this.breeders = data.items;
+          this.loadingFilter = false;
+        });
+    }
   }
 
   showDetail(feedingDiary: any) {
@@ -213,13 +255,28 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
           undefined,
           this.defaultPageSize,
           undefined,
-          this.defaultSort
+          this.defaultSort,
+          undefined,
+          undefined,
+          {
+            idManager: this.currentUser._id,
+          }
         );
-        this.getBreeders();
+        this.getFeedingDiaries();
         return;
       }
 
-      this.setParams(undefined, this.defaultPageSize, input, this.defaultSort);
+      this.setParams(
+        undefined,
+        this.defaultPageSize,
+        input,
+        this.defaultSort,
+        undefined,
+        undefined,
+        {
+          idManager: this.currentUser._id,
+        }
+      );
       this.getFeedingDiaries();
     }, 500);
   }
@@ -235,11 +292,18 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
         undefined,
         this.defaultPageSize,
         undefined,
-        this.defaultSort
+        this.defaultSort,
+        undefined,
+        undefined,
+        {
+          idManager: this.currentUser._id,
+        }
       );
     } else {
       const sortQuery = `${active} ${direction}`;
-      this.setParams(skip, limit, undefined, sortQuery);
+      this.setParams(skip, limit, undefined, sortQuery, undefined, undefined, {
+        idManager: this.currentUser._id,
+      });
     }
     this.getFeedingDiaries();
   }
@@ -249,7 +313,9 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     const skip = event.pageIndex * limit;
     const { active, direction } = this.sort;
     let sortQuery = active ? `${active} ${direction}` : this.defaultSort;
-    this.setParams(skip, limit, undefined, sortQuery);
+    this.setParams(skip, limit, undefined, sortQuery, undefined, undefined, {
+      idManager: this.currentUser._id,
+    });
     this.getFeedingDiaries();
   }
 
