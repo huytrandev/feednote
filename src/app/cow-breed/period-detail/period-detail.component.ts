@@ -9,10 +9,12 @@ import {
   CommonService,
   CowBreedService,
   MealService,
+  AuthService,
 } from 'src/app/core/services';
 import { DialogComponent } from 'src/app/shared';
 import { CreateStandardMealDialogComponent } from '../create-standard-meal-dialog/create-standard-meal-dialog.component';
 import { CreateUpdatePeriodDialogComponent } from '../create-update-period-dialog/create-update-period-dialog.component';
+import { PreviewStandardMealDialogComponent } from '../preview-standard-meal-dialog/preview-standard-meal-dialog.component';
 import { UpdateNutritionDialogComponent } from '../update-nutrition-dialog/update-nutrition-dialog.component';
 
 @Component({
@@ -23,7 +25,7 @@ import { UpdateNutritionDialogComponent } from '../update-nutrition-dialog/updat
 export class PeriodDetailComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   nutritionColumns = ['id', 'name', 'amountNutrition'];
-  mealColumns = ['id', 'name', 'amount', 'actions'];
+  mealColumns = ['id', 'foodName', 'foodType', 'foodRatio', 'foodAmount'];
   periodId!: string;
   cowBreedId!: string;
   period!: any;
@@ -34,6 +36,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
 
   isEditing: boolean = false;
   mealEachArea: any[] = [];
+  currentUser!: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,10 +44,12 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
     private cowBreedService: CowBreedService,
     private mealService: MealService,
     private commonService: CommonService,
+    private authService: AuthService,
     public dialog: MatDialog
   ) {
     this.periodId = this.route.snapshot.paramMap.get('id')!;
     this.cowBreedId = this.route.snapshot.paramMap.get('idCowBreed')!;
+    this.currentUser = this.authService.getUserInfo();
   }
 
   ngOnInit(): void {
@@ -61,9 +66,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.cowBreedService
       .fetchPeriod(this.periodId)
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res: any) => {
         const { status, data } = res;
         if (!status) {
@@ -95,12 +98,20 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
         }
         const areas: any[] = [];
         this.meals = data.items;
-        [...data.items].forEach((m) => {
-          if (!areas.find((a) => a === m.idArea)) {
-            areas.push(m.idArea);
-            this.mealEachArea.push(m);
-          }
-        });
+        this.mealEachArea = [];
+        if (this.currentUser.role === 'admin') {
+          [...data.items].forEach((m) => {
+            if (!areas.find((a) => a === m.idArea)) {
+              areas.push(m.idArea);
+              this.mealEachArea.push(m);
+            }
+          });
+        } else {
+          this.mealEachArea = [...data.items]
+            .filter((item) => item.idArea === this.currentUser.idArea)
+            .slice(0, 1);
+        }
+
         this.loading = false;
       });
   }
@@ -155,7 +166,6 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
 
   onDeleteFoodOfMeal(mealId: string, foodId: string) {
     const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
-    console.log(mealId, foodId);
 
     dialogRef.afterClosed().subscribe((result) => {
       const { action } = result;
@@ -236,13 +246,68 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
       },
     });
 
-    dialogRef.afterClosed().subscribe(data => {
-      if (data.status === 'fail') {
-        this.commonService.openAlert('Thêm mới khẩu ăn chuẩn phần thất bại', 'danger');
-      } else if (data.status === 'success') {
-        this.commonService.openAlert('Thêm mới khẩu ăn chuẩn phần thành công', 'success');
-        this.getMeals();
+    dialogRef.afterClosed().subscribe((res) => {
+      const { status } = res;
+      if (status === 'fail') {
+        //
+      } else if (status === 'success') {
+        const { data } = res;
+        const previewMealDialog = this.dialog.open(
+          PreviewStandardMealDialogComponent,
+          {
+            ...CREATE_UPDATE_DIALOG_CONFIG,
+            width: '50%',
+            maxWidth: '700px',
+            data: {
+              ...data,
+              idPeriod: this.period._id,
+            },
+          }
+        );
+
+        previewMealDialog.afterClosed().subscribe((res) => {
+          if (res.status === 'fail') {
+            this.commonService.openAlert(
+              'Lưu khẩu phần ăn chuẩn thất bại',
+              'danger'
+            );
+          } else if (res.status === 'success') {
+            this.commonService.openAlert(
+              'Lưu khẩu phần ăn chuẩn thành công',
+              'success'
+            );
+            this.getMeals();
+          }
+        });
       }
-    })
+    });
+  }
+
+  getTypeName(type: any) {
+    const localType = Number(type);
+    switch (localType) {
+      case 0:
+        return 'Thức ăn thô';
+      case 1:
+        return 'Thức ăn tinh';
+      default:
+        return 'Không xác định';
+    }
+  }
+
+  updateStandardMeal(meal: any) {
+    const { idArea, areaName, foods } = meal;
+    const dialogRef = this.dialog.open(PreviewStandardMealDialogComponent, {
+      ...CREATE_UPDATE_DIALOG_CONFIG,
+      width: '50%',
+      maxWidth: '700px',
+      data: {
+        idArea,
+        areaName,
+        idPeriod: this.period._id,
+        foods,
+        type: 'edit',
+      },
+    });
   }
 }

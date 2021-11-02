@@ -125,7 +125,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         const type = String(food[propertyName]);
         this.form.controls[propertyName].patchValue(type);
       }
-      
+
       if (propertyName === 'ingredient') {
         if (!!food[propertyName]) {
           this.setPeriodsForm(food[propertyName]);
@@ -171,10 +171,16 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     if (!this.form.valid) return;
 
     this.submitted = true;
+    const ingredient = [...this.form.value.ingredient].map((item) => {
+      return {
+        ...item,
+        amount: Number(item.amount),
+      };
+    });
     const food = {
       ...this.form.value,
       name: this.capitalizeFirstLetter(this.form.value.name.trim()),
-      type: Number(this.form.value.type),
+      ingredient
     };
 
     if (!this.food) {

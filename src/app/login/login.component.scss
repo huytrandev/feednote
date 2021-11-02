@@ -2,7 +2,10 @@
 
 .login-wrapper {
   min-height: 100vh;
-  background: url('/assets/images/background.jpg') no-repeat center center fixed;
+  // background: url('/assets/images/background.jpg') no-repeat center center fixed;
+  background: $brown-primary;
+  box-sizing: border-box;
+  // clip-path: ellipse(84% 100% at 25.52% 0%);
   // background: #f0f2f5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -24,6 +27,7 @@
   z-index: 5;
   width: 100%;
   max-width: 350px;
+  box-shadow: 0 0px 25px rgb(0 0 0 / 40%) !important;
 
   & .header {
     & .title {
@@ -41,6 +45,7 @@
   min-width: 100%;
   max-width: 300px;
   width: 100%;
+  z-index: 999;
 }
 .login-wrapper .login-full-width,
 .login-wrapper .btn-login {

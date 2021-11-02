@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
-// @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
 
 @import "./variable";
 @import "~@angular/material/theming";
@@ -69,7 +68,7 @@ mat-form-field {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 7px;
 }
 ::-webkit-scrollbar-track {
   border-radius: $border-radius;
@@ -80,8 +79,7 @@ mat-form-field {
 }
 
 .mat-sidenav-content {
-  background-color: #f0f2f5;
-  // overflow: auto;
+  background-color: #f5f5f5;
 }
 
 .mat-menu-panel {
@@ -232,10 +230,22 @@ mat-form-field {
 
 .rounded {
   border-radius: $border-radius;
+  &-top {
+    &-left {
+      border-top-left-radius: $border-radius;
+    }
+    &-right {
+      border-top-right-radius: $border-radius;
+    }
+  }
 }
 
 .border {
   border: 1px solid #d9d9d9;
+  &-bottom,
+  &-top {
+    border-bottom: 1px solid #d9d9d9;
+  }
 }
 
 .shadow {
@@ -287,6 +297,9 @@ mat-form-field {
     &-0 {
       margin-bottom: 0;
     }
+    &-5 {
+      margin-bottom: 5px;
+    }
     &-10 {
       margin-bottom: 10px;
     }
@@ -302,6 +315,9 @@ mat-form-field {
   }
 
   &-top {
+    &-5 {
+      margin-top: 5px;
+    }
     &-10 {
       margin-top: 10px;
     }
@@ -317,6 +333,9 @@ mat-form-field {
   }
 
   &-left {
+    &-5 {
+      margin-left: 5px;
+    }
     &-10 {
       margin-left: 10px;
     }
@@ -332,6 +351,9 @@ mat-form-field {
   }
 
   &-right {
+    &-5 {
+      margin-right: 5px;
+    }
     &-10 {
       margin-right: 10px;
     }

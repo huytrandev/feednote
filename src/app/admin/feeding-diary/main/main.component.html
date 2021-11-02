@@ -155,14 +155,18 @@
         </ng-container>
 
         <ng-container matColumnDef="incorrect">
-          <th mat-header-cell *matHeaderCellDef>Không đúng quy định</th>
+          <th mat-header-cell *matHeaderCellDef>Đúng quy định</th>
           <td mat-cell *matCellDef="let element">
-            <mat-checkbox
-              color="primary"
-              [checked]="element.isCorrect === false"
-              [disableRipple]="true"
-              (click)="$event.preventDefault(); $event.stopPropagation()"
-            ></mat-checkbox>
+            <app-icon
+              *ngIf="element.isCorrect !== false"
+              [iconName]="'done'"
+              [customClasses]="['color-green']"
+            ></app-icon>
+            <app-icon
+              *ngIf="element.isCorrect === false"
+              [iconName]="'close'"
+              [customClasses]="['color-red']"
+            ></app-icon>
           </td>
         </ng-container>
 

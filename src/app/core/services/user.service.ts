@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment as env } from 'src/environments/environment';
-import { FilterDto } from '../models';
+import { AdvancedFilter, FilterDto } from '../models';
 
 import { User } from '../models';
 
@@ -13,12 +13,13 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   // User
-  fetchUsers(filter?: FilterDto) {
+  fetchUsers(input?: AdvancedFilter) {
     const params = new HttpParams()
-      .set('skip', filter?.skip ? String(filter?.skip) : '')
-      .set('limit', filter?.limit ? String(filter?.limit) : '')
-      .set('search', filter?.search ? String(filter?.search) : '')
-      .set('sort', filter?.sort ? String(filter?.sort) : '');
+      .set('skip', input?.skip ? String(input?.skip) : '')
+      .set('limit', input?.limit ? String(input?.limit) : '')
+      .set('search', input?.search ? String(input?.search) : '')
+      .set('sort', input?.sort ? String(input?.sort) : '')
+      .set('filter', input?.filter ? JSON.stringify(input.filter) : '');
 
     return this.http.get<any>(`${env.apiUrl}/admin/user`, { params });
   }
@@ -46,12 +47,13 @@ export class UserService {
   }
 
   // Breeder
-  fetchBreeders(filter?: FilterDto) {
+  fetchBreeders(input?: AdvancedFilter) {
     const params = new HttpParams()
-      .set('skip', filter?.skip ? String(filter?.skip) : '')
-      .set('limit', filter?.limit ? String(filter?.limit) : '')
-      .set('search', filter?.search ? String(filter?.search) : '')
-      .set('sort', filter?.sort ? String(filter?.sort) : '');
+      .set('skip', input?.skip ? String(input?.skip) : '')
+      .set('limit', input?.limit ? String(input?.limit) : '')
+      .set('search', input?.search ? String(input?.search) : '')
+      .set('sort', input?.sort ? String(input?.sort) : '')
+      .set('filter', input?.filter ? JSON.stringify(input.filter) : '');
 
     return this.http.get<any>(`${env.apiUrl}/user/getAllBreeder`, { params });
   }

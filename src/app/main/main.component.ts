@@ -13,7 +13,7 @@ export class MainComponent implements OnInit {
   managerNav = [
     {
       path: 'qtv',
-      title: 'Quản lý chung',
+      title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
     {
@@ -41,7 +41,7 @@ export class MainComponent implements OnInit {
   adminNav = [
     {
       path: 'qtv',
-      title: 'Quản lý chung',
+      title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
     {

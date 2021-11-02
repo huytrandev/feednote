@@ -35,12 +35,27 @@ export class MealService {
       responseType: 'blob' as 'json',
       params,
     };
-    
+
     return this.http.get<any>(`${env.apiUrl}/meal/file`, options);
   }
 
+  generateMealDataFile(meal: any) {
+    const options = {
+      responseType: 'blob' as 'json',
+    };
+
+    return this.http.post<any>(
+      `${env.apiUrl}/meal/file`,
+      JSON.stringify(meal),
+      options
+    );
+  }
+
   createMeal(meal: any) {
-    return this.http.post<any>(`${env.apiUrl}/meal/create`, JSON.stringify(meal));
+    return this.http.post<any>(
+      `${env.apiUrl}/meal/create`,
+      JSON.stringify(meal)
+    );
   }
 
   createFoodOfMeal(mealId: string, foods: Food) {

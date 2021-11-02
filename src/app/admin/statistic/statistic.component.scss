@@ -1,5 +1,43 @@
 @import "../../../variable";
 
+ul.tree,
+ul.tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.tree {
+  & ul {
+    margin-left: 2rem;
+  }
+  & li {
+    margin: 0;
+    padding: 0 15px;
+    line-height: 2rem;
+    border-left: 1px solid #d9d9d9;
+    &:last-child {
+      border-left: none;
+      &::before {
+        border-left: 1px solid #d9d9d9;
+        border-bottom-left-radius: $border-radius;
+      }
+    }
+    &::before {
+      position: relative;
+      top: -0.3em;
+      height: 1em;
+      width: 22px;
+      color: white;
+      border-bottom: 1px solid #d9d9d9;
+      content: "";
+      display: inline-block;
+      left: -15px;
+      border-bottom-left-radius: $border-radius;
+    }
+  }
+}
+
 .wrapper {
   margin-bottom: 50px;
   position: relative;
@@ -9,9 +47,6 @@
   padding: 15px 30px;
   & > div > div {
     padding: 0px 15px;
-    &:not(:first-child) {
-      // border-left: 1px solid #d9d9d9;
-    }
     & .total-user__header span,
     .total-cow-breed__header span,
     .total-food__header span {
@@ -41,4 +76,30 @@
     // height: 40vh;
     width: 100%;
   }
+}
+
+table {
+  width: 100%;
+}
+
+tr.app-element-row:not(.app-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.app-element-row:not(.app-expanded-row):active {
+  background: #efefef;
+}
+.mat-column-id {
+  width: 80px !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 80px !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }

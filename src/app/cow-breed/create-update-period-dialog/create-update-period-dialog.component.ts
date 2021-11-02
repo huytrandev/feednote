@@ -60,10 +60,6 @@ export class CreateUpdatePeriodDialogComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
-  // get nutrition(): FormArray {
-  //   return this.form.get('nutrition') as FormArray;
-  // }
-
   get canSubmitForm() {
     return this.form.valid && this.form.dirty && !this.submitted;
   }
@@ -101,25 +97,8 @@ export class CreateUpdatePeriodDialogComponent implements OnInit, OnDestroy {
   setValueForForm(period: any) {
     for (let propertyName in this.form.controls) {
       this.form.controls[propertyName].patchValue(period[propertyName]);
-      // if (propertyName === 'nutrition') {
-      //   if (!!period[propertyName]) {
-      //     this.setNutritionFormValue(period[propertyName]);
-      //   } else {
-      //     this.nutrition.clear();
-      //   }
-      // }
     }
   }
-
-  // setNutritionFormValue(nutrition: any) {
-  //   this.nutrition.clear();
-  //   const nutritionClone = [...nutrition];
-  //   nutritionClone.forEach((element) => {
-  //     let nu: FormGroup = this.createNutrition();
-  //     nu.patchValue(element);
-  //     this.nutrition.push(nu);
-  //   });
-  // }
 
   createNutrition() {
     return this.fb.group({
@@ -154,7 +133,6 @@ export class CreateUpdatePeriodDialogComponent implements OnInit, OnDestroy {
 
     this.submitted = true;
     if (!this.period) {
-      // this.cowBreedService.create
     } else {
       this.cowBreedService
         .updatePeriod(this.periodId, this.form.value)

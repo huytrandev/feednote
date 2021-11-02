@@ -1,7 +1,7 @@
 <app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading">
   <header fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
-    <h2>Thêm mới khẩu phần thức ăn chuẩn</h2>
+    <h2>Tạo khẩu phần thức ăn chuẩn</h2>
     <app-button-icon
       [iconName]="'close'"
       matTooltip="Đóng"
@@ -11,7 +11,11 @@
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <main mat-dialog-content>
-      <mat-form-field appearance="outline" style="width: 100%">
+      <mat-form-field
+        *ngIf="form.get('idArea')"
+        appearance="outline"
+        style="width: 100%"
+      >
         <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
         <mat-select
           formControlName="idArea"
@@ -29,17 +33,18 @@
 
       <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Thức ăn <span class="color-red">(*)</span></mat-label>
-        <mat-select multiple formControlName="idsFood">
-          <ng-container *ngIf="foods.length === 0">
-            <mat-option disabled>Khu vực chưa có thức ăn</mat-option>
-          </ng-container>
-          <ng-container *ngIf="foods.length > 0">
-            <mat-option *ngFor="let food of foods" [value]="food._id">
-              {{ getTypeName(food.type) + ' - ' + food.name }}
+        <mat-select multiple formControlName="idsFood" #select (selectionChange)="onFoodChange($event)">
+          <mat-optgroup *ngFor="let food of foods" [label]="food.type">
+            <ng-container *ngIf="food.items.length === 0">
+              <mat-option disabled>Chưa có thức ăn</mat-option>
+            </ng-container>
+            <mat-option *ngFor="let item of food.items" [value]="item">
+              {{ item.name }}
             </mat-option>
-          </ng-container>
+          </mat-optgroup>
         </mat-select>
-        <mat-error *ngIf="form.get('foodField')?.errors?.required"
+        <mat-hint>Vui lòng chọn 2 loại thức ăn thô và 1 loại thức ăn tinh.</mat-hint>
+        <mat-error *ngIf="form.get('idsFood')?.errors?.required"
           >Vui lòng chọn thức ăn.</mat-error
         >
       </mat-form-field>
@@ -55,13 +60,14 @@
         [buttonContent]="'Thêm mới'"
         [customClasses]="['app-button-brown']"
         [showSpinner]="submitted"
-        [disabledCondition]="!form.valid || submitted"
+        [disabledCondition]="!form.valid || submitted || !isValidFood"
         [buttonType]="'submit'"
       ></app-button>
 
       <app-button
         [buttonContent]="'Huỷ bỏ'"
         [customClasses]="['app-button-grey']"
+        (click)="onClose()"
       ></app-button>
     </footer>
   </form>

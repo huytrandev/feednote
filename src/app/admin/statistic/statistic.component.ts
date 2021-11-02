@@ -78,13 +78,21 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   diaries!: any;
   currentUser: any;
   todayDiaries: number = 0;
-
+  statisticDataByPeriod!: any;
+  statisticDataByFood!: any;
+  statisticDataByPeriodColumns: string[] = [
+    'id',
+    'periodName',
+    'cowSerial',
+    'weightDiary',
+  ];
   userTypes: UserTypes = {
     totalUser: 0,
     totalAdmin: 0,
     totalBreeder: 0,
     totalManager: 0,
   };
+  groupBy: string = 'food';
 
   constructor(
     private router: Router,
@@ -112,7 +120,6 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.fetchCowBreeds();
     this.fetchFoods();
-    // this.fetchFeedingDiaries();
   }
 
   ngAfterViewInit() {
@@ -122,30 +129,6 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  countTodayDiaries(diaries: Array<any>) {
-    let count = 0;
-    let breederCompletedDiary: any[] = [];
-    diaries.forEach((d) => {
-      let createdAtDate = moment(d.createdAt);
-      let isSameDay = createdAtDate.isSame(moment(1634665228659), 'day');
-      if (isSameDay) {
-        count += 1;
-        let isAlreadyInArray = breederCompletedDiary.find(
-          (item) => item === d.idBreeder
-        );
-        if (!isAlreadyInArray) {
-          breederCompletedDiary.push(d.idBreeder);
-        }
-      }
-    });
-
-    console.log(Math.round(breederCompletedDiary.length / 7 * 100));
-    return {
-      numOfDiariesToday: count,
-      numOfBreederCompletedDiaries: breederCompletedDiary.length,
-    };
   }
 
   applyFilter() {
@@ -158,7 +141,8 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
       idUserQuery,
       idCowBreedQuery,
       fromQuery,
-      toQuery
+      toQuery,
+      this.groupBy
     );
     this.fetchCowIndicatorsStatistic();
   }
@@ -167,7 +151,8 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
     idUser: string,
     idCowBreed: string,
     from?: string,
-    to?: string
+    to?: string,
+    groupBy?: string
   ) {
     this.queryForCowIndicatorsStatistic = {
       filter: {
@@ -176,28 +161,8 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       from,
       to,
+      groupBy,
     };
-  }
-
-  fetchFeedingDiaries() {
-    this.loading = true;
-    this.feedingDiaryService
-      .fetchFeedingDiaries()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res) => {
-        const { status, data } = res;
-        if (!status) {
-          this.loading = false;
-          return;
-        }
-
-        this.diaries = data;
-
-        this.todayDiaries = this.countTodayDiaries(
-          data.items
-        ).numOfDiariesToday;
-        this.loading = false;
-      });
   }
 
   fetchUsers() {
@@ -214,6 +179,9 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.users = data;
+        this.breeders = {
+          items: []
+        };
         this.userTypes.totalUser = data.totalCount;
         [...data.items].forEach((user) => {
           switch (user.role) {
@@ -225,6 +193,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
               break;
             case 'breeder':
               this.userTypes.totalBreeder += 1;
+              this.breeders.items.push(user);
               break;
           }
         });
@@ -286,7 +255,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   fetchCowIndicatorsStatistic() {
     this.loading = true;
     this.statisticService
-      .fetchCowIndicatorsStatistic(this.queryForCowIndicatorsStatistic)
+      .fetchCowStatistic(this.queryForCowIndicatorsStatistic)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const { data, status } = res;
@@ -304,6 +273,13 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
           dataChart.push(item.cows.length);
         });
         this.generateCowBreedChart(labels, dataChart);
+        if (this.groupBy === 'food') {
+          this.statisticDataByPeriod = null;
+          this.statisticDataByFood = data;
+        } else {
+          this.statisticDataByFood = null;
+          this.statisticDataByPeriod = data;
+        }
         this.loading = false;
       });
   }

@@ -15,6 +15,7 @@ import { CreateUpdatePeriodDialogComponent } from './create-update-period-dialog
 import { DownloadStandardServingDialogComponent } from './download-standard-serving-dialog/download-standard-serving-dialog.component';
 import { CreateStandardMealDialogComponent } from './create-standard-meal-dialog/create-standard-meal-dialog.component';
 import { UpdateNutritionDialogComponent } from './update-nutrition-dialog/update-nutrition-dialog.component';
+import { PreviewStandardMealDialogComponent } from './preview-standard-meal-dialog/preview-standard-meal-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { UpdateNutritionDialogComponent } from './update-nutrition-dialog/update
     CreateUpdatePeriodDialogComponent,
     DownloadStandardServingDialogComponent,
     CreateStandardMealDialogComponent,
+    PreviewStandardMealDialogComponent,
   ],
   imports: [
     CommonModule,

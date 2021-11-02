@@ -1,7 +1,7 @@
 export const INITIAL_FOOD_INGREDIENT = [
   {
     name: 'DM',
-    unit: 'kg/kg',
+    unit: 'kg/ngày',
     amount: 0,
   },
   {
@@ -28,9 +28,9 @@ export const INITIAL_FOOD_INGREDIENT = [
 
 export const INITIAL_PERIOD_NUTRITION = [
   {
-    name: 'ADG',
+    name: 'DM',
     amount: 0,
-    unit: 'kg/day',
+    unit: 'kg/ngày',
   },
   {
     name: 'DMI',
@@ -48,7 +48,7 @@ export const INITIAL_PERIOD_NUTRITION = [
     unit: 'g',
   },
   {
-    name: 'CA',
+    name: 'Ca',
     amount: 0,
     unit: 'g',
   },
