@@ -25,7 +25,7 @@
             [matTooltipPosition]="'right'"
             routerLinkActive="active"
             [routerLinkActiveOptions]="
-              nav.path === 'qtv' ? { exact: true } : { exact: false }
+              nav.path === '/qtv' ? { exact: true } : { exact: false }
             "
             *ngFor="
               let nav of currentUser.role === 'admin' ? adminNav : managerNav

@@ -5,11 +5,17 @@
   [type]="buttonType"
   [disabled]="disabledCondition"
   [autofocus]="false"
-  [style]="!!buttonContent ? 'min-width: 90px' : ''"
+  [ngStyle]="{
+    'min-width': buttonContent ? '90px' : '',
+    cursor: disabledCondition ? 'not-allowed' : 'pointer'
+  }"
 >
-  <mat-icon *ngIf="!!iconName" class="material-icons-outlined app-icon" style="margin-right: 5px;">{{
-    iconName
-  }}</mat-icon>
+  <mat-icon
+    *ngIf="!!iconName"
+    class="material-icons-outlined app-icon"
+    style="margin-right: 5px"
+    >{{ iconName }}</mat-icon
+  >
   <mat-spinner
     diameter="16"
     style="display: inline-flex; margin-right: 10px"

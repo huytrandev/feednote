@@ -13,16 +13,19 @@ export const INITIAL_FOOD_INGREDIENT = [
     name: 'CP',
     unit: 'g',
     amount: 0,
+    description: 'Protein thô'
   },
   {
     name: 'Ca',
     unit: 'g',
     amount: 0,
+    description: 'Canxi'
   },
   {
     name: 'P',
     unit: 'g',
     amount: 0,
+    description: 'Phot-pho'
   },
 ];
 

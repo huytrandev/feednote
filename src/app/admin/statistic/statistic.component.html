@@ -235,7 +235,8 @@
                   <span>{{ "Bò số " + cow.serial }}</span>
                   <ul>
                     <li *ngFor="let food of cow.foods">
-                      <span>{{ food._id + ": " + food.total + " kg" }}</span>
+                      <span class="m-right-20">{{ food.name + ":" }}</span>
+                      <span>{{ food.total + " " + food.unit }}</span>
                     </li>
                   </ul>
                 </li>
@@ -251,9 +252,10 @@
                   <span>{{ "Bò số " + cow.serial }}</span>
                   <ul>
                     <li *ngFor="let _weight of cow.weight">
-                      <span>{{
-                        "Tuần " + _weight.week + ": " + _weight.weight + " kg"
+                      <span class="m-right-20">{{
+                        "Tuần " + _weight.week + ":"
                       }}</span>
+                      <span>{{ _weight.weight + " kg" }}</span>
                     </li>
                   </ul>
                 </li>

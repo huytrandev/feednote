@@ -1,10 +1,8 @@
 import {
   AfterViewInit,
   Component,
-  HostListener,
   OnDestroy,
   OnInit,
-  Renderer2,
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,8 +13,8 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
-import { CommonService, FoodService } from 'src/app/core/services';
-import { FilterDto } from 'src/app/core/models';
+import { AuthService, CommonService, FoodService } from 'src/app/core/services';
+import { AdvancedFilter } from 'src/app/core/models';
 import { DialogComponent } from 'src/app/shared';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
@@ -36,18 +34,21 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'areaName', 'actions'];
   dataTableSource: MatTableDataSource<any>;
   resultLength = 0;
-  paramsGetFoods = {} as FilterDto;
+  paramsGetFoods = {} as AdvancedFilter;
   defaultPageSize = 10;
   defaultSort = 'createdAt desc';
   totalCount: number;
   timeOutInput!: any;
+  currentUser!: any;
 
   constructor(
     private router: Router,
     private foodService: FoodService,
+    private authService: AuthService,
     private commonService: CommonService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
+    this.currentUser = authService.getUserInfo();
   }
 
   ngOnInit(): void {}
@@ -61,7 +62,6 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-
 
   getFoods() {
     this.loading = true;
@@ -85,6 +85,9 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
       limit,
       search,
       sort,
+      filter: {
+        idArea: this.currentUser.idArea,
+      },
     };
   }
 
@@ -158,10 +161,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     const dialogRef = this.dialog.open(CreateUpdateComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
-        food
-      }
+        food,
+      },
     });
-    
+
     dialogRef.afterClosed().subscribe((res) => {
       const { type, status, isModified } = res;
       if (type === 'create' && status === 'success') {

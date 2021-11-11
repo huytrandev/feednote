@@ -1,0 +1,167 @@
+<app-progress-bar *ngIf="fetching"></app-progress-bar>
+<div class="filter">
+  <button
+    mat-icon-button
+    class="meal-filter-button"
+    (click)="onShowFilter()"
+    [disabled]="fetchingFilter"
+  >
+    <mat-icon class="material-icons-outlined app-icon">search</mat-icon>
+  </button>
+  <div
+    class="bg-white rounded shadow filter-options"
+    [ngClass]="{ hide: isShowFilter }"
+  >
+    <mat-form-field
+      appearance="outline"
+      style="width: 100%"
+      floatLabel="never"
+      class="m-bottom-0"
+    >
+      <mat-label>Giống bò</mat-label>
+      <mat-select
+        [(ngModel)]="selectedCowBreed"
+        (selectionChange)="onCowBreedChange()"
+        [disabled]="selectedArea"
+      >
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let cowBreed of cowBreeds" [value]="cowBreed._id">
+          {{ cowBreed.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      style="width: 100%"
+      floatLabel="never"
+      class="m-bottom-0"
+    >
+      <mat-label>Giai đoạn sinh trưởng</mat-label>
+      <mat-select
+        [(ngModel)]="selectedCowBreedPeriod"
+        [disabled]="!selectedCowBreed || selectedArea"
+        (selectionChange)="onCowBreedPeriodChange()"
+      >
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let period of periods" [value]="period._id">
+          {{ period.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      style="width: 100%"
+      floatLabel="never"
+      class="m-bottom-0"
+    >
+      <mat-label>Khu vực</mat-label>
+      <mat-select
+        [(ngModel)]="selectedArea"
+        (selectionChange)="onAreaChange()"
+        [disabled]="selectedCowBreed"
+      >
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let area of areas" [value]="area._id">
+          {{ area.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div class="wrapper">
+  <div class="meal-container">
+    <div
+      class="meal-item bg-white rounded shadow"
+      *ngFor="let meal of mealList"
+    >
+      <div fxLayout="row" fxLayoutAlign="start center" class="m-bottom-15">
+        <span fxFlex="20" class="font-weight-bold">Giống bò</span>
+        <span fxFlex>{{ meal.cowBreedName }}</span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" class="m-bottom-15">
+        <span fxFlex="20" class="font-weight-bold">Giai đoạn</span>
+        <span fxFlex>{{ meal.periodName }}</span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" class="m-bottom-15">
+        <span fxFlex="20" class="font-weight-bold">Khu vực</span>
+        <span fxFlex>{{ meal.areaName }}</span>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-15">
+        <table mat-table [dataSource]="meal.foods">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>STT</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="foodName">
+            <th mat-header-cell *matHeaderCellDef>Tên thức ăn</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="foodType">
+            <th mat-header-cell *matHeaderCellDef>Loại thức ăn</th>
+            <td mat-cell *matCellDef="let element">
+              {{ getTypeFoodName(element.type) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="foodRatio">
+            <th mat-header-cell *matHeaderCellDef>Tỉ lệ</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.ratio + "%" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="foodAmount">
+            <th mat-header-cell *matHeaderCellDef>Số lượng</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.amount + " " + element.unit }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="mealColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let element; columns: mealColumns"
+            style="cursor: pointer"
+            class="app-element-row"
+          ></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="5">Chưa có dữ liệu</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="meal-item bg-white rounded shadow" *ngIf="!mealList">
+      <span style="text-align: center; display: block"
+        >Chọn bộ lọc bên trái để tìm khẩu phần ăn chuẩn.</span
+      >
+    </div>
+
+    <div
+      class="meal-item bg-white rounded shadow"
+      *ngIf="mealList && mealList.length === 0"
+    >
+      <span style="text-align: center; display: block"
+        >Chưa có khẩu phần ăn chuẩn với bộ lọc hiện tại.</span
+      >
+    </div>
+
+    <!-- <div>
+      <app-button
+        [buttonContent]="'Xem thêm'"
+        [showSpinner]="false"
+        [disabledCondition]="false"
+        [customClasses]="['app-button-grey']"
+      ></app-button>
+    </div> -->
+  </div>
+</div>

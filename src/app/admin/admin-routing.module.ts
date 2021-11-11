@@ -7,7 +7,7 @@ const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./statistic/statistic.module').then((m) => m.StatisticModule),
-    pathMatch: 'prefix'
+    pathMatch: 'prefix',
   },
   {
     path: 'ho-chan-nuoi',

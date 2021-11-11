@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit, Optional, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatOption } from '@angular/material/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -20,7 +19,6 @@ import {
   styleUrls: ['./create-standard-meal-dialog.component.scss'],
 })
 export class CreateStandardMealDialogComponent implements OnInit {
-  @ViewChild('select') private select: MatOption;
   loading: boolean = false;
   form: FormGroup = new FormGroup({
     idArea: new FormControl('', [Validators.required]),
@@ -52,7 +50,7 @@ export class CreateStandardMealDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.currentUser.role === 'manager') {
-      this.fetchAreas();
+      // this.fetchAreas();
       this.form.removeControl('idArea');
       this.form.controls['idsFood'].enable();
 
@@ -80,6 +78,9 @@ export class CreateStandardMealDialogComponent implements OnInit {
         ];
         this.fetching = false;
       });
+    } else {
+      this.fetchAreas();
+      
     }
   }
 

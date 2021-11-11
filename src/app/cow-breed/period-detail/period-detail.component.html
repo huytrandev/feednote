@@ -147,11 +147,6 @@
               <span class="font-weight-bold">Khu vực: </span>
               <span>{{ meal.areaName }}</span>
             </div>
-            <!-- <app-button-icon
-              [iconName]="'edit'"
-              matTooltip="Cập nhật"
-              (click)="updateStandardMeal(meal)"
-            ></app-button-icon> -->
           </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-15">
@@ -223,7 +218,10 @@
           <app-button
             [buttonContent]="'Thêm mới'"
             [customClasses]="['app-button-green']"
+            [disabledCondition]="!allowCreateMeal"
             (click)="onCreateMeal(period)"
+            [matTooltip]="!allowCreateMeal ? 'Nhu cầu dinh dưỡng chưa hợp lệ' : ''"
+            [matTooltipPosition]="'right'"
           >
           </app-button>
         </div>

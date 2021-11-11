@@ -3,7 +3,7 @@
 .login-wrapper {
   min-height: 100vh;
   // background: url('/assets/images/background.jpg') no-repeat center center fixed;
-  background: $brown-primary;
+  background: #f3f4f6;
   box-sizing: border-box;
   // clip-path: ellipse(84% 100% at 25.52% 0%);
   // background: #f0f2f5;
@@ -27,7 +27,7 @@
   z-index: 5;
   width: 100%;
   max-width: 350px;
-  box-shadow: 0 0px 25px rgb(0 0 0 / 40%) !important;
+  box-shadow: 0 0px 25px rgb(0 0 0 / 20%) !important;
 
   & .header {
     & .title {
@@ -81,6 +81,18 @@
   // border: 1px solid;
   font-weight: 500;
   background-color: $light-red;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.text-warning {
+  color: $orange;
+  border: 1px solid $orange;
+  position: relative;
+  border-radius: $border-radius;
+  // border: 1px solid;
+  font-weight: 500;
+  background-color: $light-orange;
   padding: 12px;
   margin-bottom: 10px;
 }

@@ -39,6 +39,12 @@ export class AuthService {
           }
 
           const userData = { ...data };
+          if (userData.role === 'breeder') {
+            return {
+              status: false,
+              message: 'is breeder',
+            };
+          }
           const token = userData.token.replace('Bearer ', '');
           this.currentTokenSubject.next(token);
           localStorage.setItem('token', token);
@@ -59,7 +65,7 @@ export class AuthService {
   }
 
   changePassword(password: string) {
-    return this.http.put<any>(`${env.apiUrl}/auth/changePassword`, {
+    return this.http.put<any>(`${env.apiUrl}/user/changePassword`, {
       password,
     });
   }

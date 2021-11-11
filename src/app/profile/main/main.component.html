@@ -107,6 +107,7 @@
               <form
                 [formGroup]="changePasswordForm"
                 (ngSubmit)="changePassword()"
+                autocomplete="off"
               >
                 <!-- New password -->
                 <mat-form-field appearance="outline">
@@ -115,12 +116,10 @@
                     [type]="showPassword ? 'text' : 'password'"
                     matInput
                     formControlName="newPassword"
+                    autocomplete="off"
                   />
                   <mat-icon
                     matSuffix
-                    [matTooltip]="
-                      showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
-                    "
                     class="material-icons-outlined app-icon"
                     style="cursor: pointer"
                     (click)="showPassword = !showPassword"
@@ -140,20 +139,18 @@
                 <mat-form-field appearance="outline">
                   <mat-label>Nhập lại mật khẩu</mat-label>
                   <input
-                    [type]="showPassword ? 'text' : 'password'"
+                    [type]="showConfirmPassword ? 'text' : 'password'"
                     matInput
                     formControlName="confirmPassword"
+                    autocomplete="off"
                   />
                   <mat-icon
                     matSuffix
-                    [matTooltip]="
-                      showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
-                    "
                     class="material-icons-outlined app-icon"
                     style="cursor: pointer"
-                    (click)="showPassword = !showPassword"
+                    (click)="showConfirmPassword = !showConfirmPassword"
                     >{{
-                      showPassword ? "visibility_off" : "visibility"
+                      showConfirmPassword ? "visibility_off" : "visibility"
                     }}</mat-icon
                   >
                   <mat-error *ngIf="f2.confirmPassword.errors?.required"
