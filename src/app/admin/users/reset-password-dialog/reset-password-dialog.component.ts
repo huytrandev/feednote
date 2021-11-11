@@ -12,6 +12,7 @@ export class ResetPasswordDialogComponent implements OnInit {
   showPassword: boolean = false;
   loading: boolean = false;
   user!: any;
+  isCopied: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -39,10 +40,16 @@ export class ResetPasswordDialogComponent implements OnInit {
       const { data } = res;
       this.password = data;
       this.loading = false;
+      this.commonService.openAlert('Khởi tạo mật khẩu mới thành công', 'success');
     });
   }
 
   onClose() {
     this.dialogRef.close({ type: 'close', status: null });
+  }
+
+  onCopyToClipBoard(): void {
+    if (this.password.length === 0) return;
+    this.commonService.openAlert('Đã sao chép vào bộ nhớ tạm', 'success');
   }
 }

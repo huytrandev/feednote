@@ -2,19 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { MainComponent } from './main/main.component';
+import { StandardMealRoutingModule } from './standar-meal-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared';
 import { MaterialModule } from '../material';
-import { BreederComponent } from './breeder.component';
-import { BreederRoutingModule } from './breeder-routing.module';
 
 @NgModule({
-  declarations: [BreederComponent],
+  declarations: [MainComponent],
   imports: [
     CommonModule,
+    StandardMealRoutingModule,
     FlexLayoutModule,
     SharedModule,
     MaterialModule,
-    BreederRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
 })
-export class BreederModule {}
+export class StandardMealModule {}

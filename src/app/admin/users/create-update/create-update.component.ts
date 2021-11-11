@@ -13,13 +13,12 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 import {
   AreaService,
   UserService,
-  CommonService,
 } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
 import { Vietnamese } from 'src/app/core/validations';

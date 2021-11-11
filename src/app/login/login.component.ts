@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   loading: boolean = false;
   submitted: boolean = false;
   showPassword: boolean = false;
+  isBreeder: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -53,11 +54,15 @@ export class LoginComponent implements OnInit {
       .login(this.f.username.value, this.f.password.value)
       .subscribe(
         (response) => {
-          const { status } = response;
+          const { status, message } = response;
           if (Object.keys(response).length === 0 || status === false) {
+            if (!message) {
+              this.loginError = true;
+            } else {
+              this.isBreeder = true;
+            }
             this.loading = false;
             this.submitted = false;
-            this.loginError = true;
             this.loginForm.reset();
             this.formGroupDirective.resetForm();
             return;

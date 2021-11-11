@@ -33,7 +33,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   meals!: any;
   loading: boolean = true;
   isModified: boolean = false;
-
+  allowCreateMeal: boolean = true;
   isEditing: boolean = false;
   mealEachArea: any[] = [];
   currentUser!: any;
@@ -75,6 +75,8 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
         }
 
         this.period = data;
+        const nutritionValueZero = [...this.period.nutrition].find(item => item.amount === 0);
+        this.allowCreateMeal = nutritionValueZero ? false : true;
         this.loading = false;
       });
   }
@@ -239,6 +241,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   }
 
   onCreateMeal(period: any) {
+    if (!this.allowCreateMeal) return;
     const dialogRef = this.dialog.open(CreateStandardMealDialogComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
@@ -293,21 +296,5 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
       default:
         return 'Không xác định';
     }
-  }
-
-  updateStandardMeal(meal: any) {
-    const { idArea, areaName, foods } = meal;
-    const dialogRef = this.dialog.open(PreviewStandardMealDialogComponent, {
-      ...CREATE_UPDATE_DIALOG_CONFIG,
-      width: '50%',
-      maxWidth: '700px',
-      data: {
-        idArea,
-        areaName,
-        idPeriod: this.period._id,
-        foods,
-        type: 'edit',
-      },
-    });
   }
 }

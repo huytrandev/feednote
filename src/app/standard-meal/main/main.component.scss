@@ -1,0 +1,48 @@
+@import "../../../variable";
+
+table {
+  width: 100%;
+}
+
+.wrapper {
+  margin-bottom: 50px;
+}
+
+.meal {
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &-item {
+    width: 50%;
+    max-width: 700px;
+    padding: 25px 30px;
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+
+  &-filter-button {
+    background: #fff;
+    position: fixed;
+    top: 20px;
+    box-shadow: $box-shadow;
+  }
+}
+
+.filter {
+  position: relative;
+
+  &-options {
+    padding: 10px;
+    width: 300px;
+    position: fixed;
+    top: 75px;
+  }
+}
+
+.hide {
+  display: none;
+}

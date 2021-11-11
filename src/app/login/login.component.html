@@ -13,6 +13,12 @@
         >
           Thông tin tài khoản không hợp lệ.
         </div>
+        <div
+          *ngIf="isBreeder"
+          class="text-warning"
+        >
+          Ứng dụng chưa hỗ trợ cho hộ chăn nuôi.
+        </div>
         <mat-form-field
           class="login-full-width"
           appearance="outline"

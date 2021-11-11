@@ -16,21 +16,12 @@ const routes: Routes = [
       import('./not-found/not-found.module').then((m) => m.NotFoundModule),
   },
   {
-    path: 'ho-chan-nuoi',
-    canActivate: [AuthGuard, RoleGuard],
-    data: {
-      expectedRole: ['breeder'],
-    },
-    loadChildren: () =>
-      import('./breeder/breeder.module').then((m) => m.BreederModule),
-  },
-  {
     path: '',
     component: MainComponent,
-    canActivate: [AuthGuard],
-    // data: {
-    //   expectedRole: ['admin', 'manager'],
-    // },
+    canActivate: [AuthGuard, RoleGuard],
+    data: {
+      expectedRole: ['admin', 'manager'],
+    },
     children: [
       {
         path: '',
@@ -51,6 +42,13 @@ const routes: Routes = [
         path: 'thuc-an',
         loadChildren: () =>
           import('./food/food.module').then((m) => m.FoodModule),
+      },
+      {
+        path: 'khau-phan-an-chuan',
+        loadChildren: () =>
+          import('./standard-meal/standard-meal.module').then(
+            (m) => m.StandardMealModule
+          ),
       },
       {
         path: 'giong-bo',

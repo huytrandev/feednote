@@ -29,6 +29,7 @@ export class MainComponent implements OnInit, OnDestroy {
   currentUser!: any;
   submitted: boolean = false;
   showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -134,10 +135,7 @@ export class MainComponent implements OnInit, OnDestroy {
         if (resData.status === true) {
           this.commonService.openAlert('Cập nhật thành công', 'success');
           this.submitted = false;
-          setTimeout(() => {
-            // this.commonService.reloadComponent();
-            window.location.reload();
-          }, 2000);
+          this.getUser();
         } else {
           this.commonService.openAlert('Cập nhật không thành công', 'danger');
           this.resetUserInfo();
@@ -153,8 +151,9 @@ export class MainComponent implements OnInit, OnDestroy {
     if (!this.changePasswordForm.valid) return;
 
     this.submitted = true;
+    const password = this.changePasswordForm.controls.newPassword.value;
     this.authService
-      .changePassword(this.changePasswordForm.controls.newPassword.value)
+      .changePassword(password)
       .subscribe((data) => {
         const resData = { ...data };
         if (resData.status === true) {

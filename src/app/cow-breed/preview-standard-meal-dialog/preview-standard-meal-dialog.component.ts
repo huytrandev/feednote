@@ -25,6 +25,7 @@ export class PreviewStandardMealDialogComponent implements OnInit {
   ];
   mealData!: any;
   submitting: boolean = false;
+  isEdit: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -34,6 +35,7 @@ export class PreviewStandardMealDialogComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.mealData = data;
+    this.isEdit = data.isEdit;
   }
 
   get f() {
@@ -46,7 +48,11 @@ export class PreviewStandardMealDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
-    this.setFoodForm(this.mealData.items[0].foods);
+    if (!this.isEdit) {
+      this.setFoodForm(this.mealData.items[0].foods);
+    } else {
+      this.setFoodForm(this.mealData.foods);
+    }
   }
 
   onClose(): void {

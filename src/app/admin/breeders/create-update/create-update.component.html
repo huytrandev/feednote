@@ -117,20 +117,6 @@
           >Email không đúng định dạng.</mat-error
         >
       </mat-form-field>
-
-      <mat-form-field appearance="outline" style="width: 100%">
-        <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
-        <mat-select formControlName="idArea">
-          <mat-option>--</mat-option>
-          <mat-option *ngFor="let area of areas" [value]="area._id">
-            {{ area.name }}
-          </mat-option>
-        </mat-select>
-
-        <mat-error *ngIf="f.idArea.errors?.required"
-          >Vui lòng chọn khu vực.</mat-error
-        >
-      </mat-form-field>
     </div>
     <div class="button-group" mat-dialog-actions>
       <app-button

@@ -12,45 +12,55 @@ export class MainComponent implements OnInit {
   currentUser!: any;
   managerNav = [
     {
-      path: 'qtv',
+      path: '/qtv',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
     {
-      path: 'qtv/nhat-ky-cho-an',
+      path: '/qtv/nhat-ky-cho-an',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: 'qtv/ho-chan-nuoi',
+      path: '/khau-phan-an-chuan',
+      title: 'Khẩu phần ăn chuẩn',
+      icon: 'assets/icons/standard-meal.svg',
+    },
+    {
+      path: '/qtv/ho-chan-nuoi',
       title: 'Hộ chăn nuôi',
       icon: 'assets/icons/farmer.svg',
     },
     {
-      path: 'giong-bo',
+      path: '/giong-bo',
       title: 'Giống bò',
       icon: 'assets/icons/cow.svg',
     },
     {
-      path: 'thuc-an',
-      title: 'Thức ăn',
+      path: '/thuc-an',
+      title: 'Nguồn thức ăn',
       icon: 'assets/icons/grass.svg',
-    }
+    },
   ];
 
   adminNav = [
     {
-      path: 'qtv',
+      path: '/qtv',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
     {
-      path: 'qtv/nhat-ky-cho-an',
+      path: '/qtv/nhat-ky-cho-an',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: 'qtv/nguoi-dung',
+      path: '/khau-phan-an-chuan',
+      title: 'Khẩu phần ăn chuẩn',
+      icon: 'assets/icons/standard-meal.svg',
+    },
+    {
+      path: '/qtv/nguoi-dung',
       title: 'Người dùng',
       icon: 'assets/icons/user-management.svg',
     },
@@ -60,20 +70,20 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/map.svg',
     },
     {
-      path: 'giong-bo',
+      path: '/giong-bo',
       title: 'Giống bò',
       icon: 'assets/icons/cow.svg',
     },
     {
-      path: 'thuc-an',
-      title: 'Thức ăn',
+      path: '/thuc-an',
+      title: 'Nguồn thức ăn',
       icon: 'assets/icons/grass.svg',
     },
   ];
 
   constructor(
     private authService: AuthService,
-    private userService: UserService,
+    private userService: UserService
   ) {
     this.loading = true;
     this.userService.fetchPersonalInfo().subscribe((res) => {

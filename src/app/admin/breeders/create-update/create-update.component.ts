@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, delay, map, takeUntil } from 'rxjs/operators';
 
-import { AreaService, CommonService, UserService } from 'src/app/core/services';
+import { AreaService, AuthService, CommonService, UserService } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
 import { Vietnamese } from 'src/app/core/validations';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -37,16 +37,19 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   areas: Area[] = [];
   breeders: User[] = [];
   showPassword: boolean = false;
+  currentUser!: any;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private authService: AuthService,
     private userService: UserService,
     private areaService: AreaService,
     public dialogRef: MatDialogRef<CreateUpdateComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.breeder = data.breeder;
+    this.currentUser = authService.getUserInfo();
   }
 
   get f() {
@@ -136,7 +139,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           [
             Validators.required,
             Validators.minLength(5),
-            Validators.pattern(/^[\w\s]+$/),
+            Validators.pattern(/^[\w\s.]+$/),
           ],
           this.validateUsernameExist.bind(this),
         ],
@@ -144,7 +147,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         name: ['', [Validators.required, Validators.minLength(5)]],
         phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
         email: ['', [Validators.email]],
-        idArea: ['', [Validators.required]],
       },
       {
         validator: [Vietnamese('name')],
@@ -160,8 +162,14 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (!this.form.valid) return;
     this.submitted = true;
+    
+    const breeder = {
+      ...this.form.value,
+      idArea: this.currentUser.idArea
+    }
+
     if (!this.breeder) {
-      this.userService.createBreeder(this.form.value).subscribe((res) => {
+      this.userService.createBreeder(breeder).subscribe((res) => {
         const { status } = res;
         if (!status) {
           this.submitted = false;
@@ -180,7 +188,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       });
     } else {
       this.userService
-        .updateBreeder(this.breeder._id, this.form.value)
+        .updateBreeder(this.breeder._id, breeder)
         .subscribe((res) => {
           const { status } = res;
           if (!status) {
