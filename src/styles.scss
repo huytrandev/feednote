@@ -81,6 +81,13 @@ mat-form-field {
 .mat-sidenav-content {
   background-color: #f3f4f6;
 }
+.mat-list-item {
+  transition: all 350ms ease !important;
+
+  &:hover {
+    background: #f1f1f1 !important;
+  }
+}
 
 .mat-menu-panel {
   border-radius: $border-radius !important;

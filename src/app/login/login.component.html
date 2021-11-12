@@ -1,7 +1,7 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
-  <div fxFlex="35" class="right" fxLayoutAlign="center center">
-    <mat-card class="box">
+<div class="login-wrapper" fxLayout="column" fxLayoutAlign="center center">
+  <div fxLayout="row" class="right" fxLayoutAlign="center center">
+    <mat-card class="box shadow rounded border bg-white">
       <div fxLayout="column" fxLayoutGap="10px" class="header m-bottom-25">
         <span class="title">FeedN<span class="color-brown">o</span>te</span>
         <span class="caption">Ứng dụng theo dõi, tính toán khẩu phần ăn cho đàn gia súc</span>
@@ -69,20 +69,15 @@
           >
         </mat-form-field>
 
-        <!-- <app-button
-          [disabledCondition]="submitted"
-          [customClasses]="['app-button-brown']"
-          [buttonContent]="'Đăng nhập'"
-          [buttonType]="'submit'"
-        ></app-button> -->
         <button
           mat-flat-button
-          [disabled]="submitted"
+          [disabled]="submitted || !loginForm.valid"
           class="btn-login app-button app-button-brown"
           type="submit"
         >
           Đăng nhập
         </button>
+
       </form>
     </mat-card>
   </div>
