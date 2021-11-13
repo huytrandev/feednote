@@ -151,7 +151,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       } else if (type === 'update' && status === 'failure') {
         this.commonService.openAlert(
           'Cập nhật giai đoạn sinh trưởng thất bại',
-          'dnager'
+          'danger'
         );
       } else if (type === 'close' && isModified) {
         this.getCowBreed();

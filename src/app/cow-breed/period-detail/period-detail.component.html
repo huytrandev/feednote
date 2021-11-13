@@ -218,10 +218,7 @@
           <app-button
             [buttonContent]="'Thêm mới'"
             [customClasses]="['app-button-green']"
-            [disabledCondition]="!allowCreateMeal"
             (click)="onCreateMeal(period)"
-            [matTooltip]="!allowCreateMeal ? 'Nhu cầu dinh dưỡng chưa hợp lệ' : ''"
-            [matTooltipPosition]="'right'"
           >
           </app-button>
         </div>

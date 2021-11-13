@@ -261,20 +261,32 @@ mat-form-field {
 
 .alert {
   &-success {
-    background: $green;
-    border-radius: $border-radius;
+    background: #fff;
+    color: #333;
+    border-left: 5px solid $green;
     display: flex !important;
     align-items: center;
-    height: 52px !important;
-    color: #fff;
   }
   &-failure {
-    border-radius: $border-radius;
+    background: #fff;
+    color: #333;
+    border-left: 5px solid $red;
     display: flex !important;
     align-items: center;
-    height: 52px !important;
-    background: $red !important;
-    color: #fff;
+  }
+  &-warning {
+    background: #fff;
+    color: #333;
+    border-left: 5px solid $yellow;
+    display: flex !important;
+    align-items: center;
+  }
+  &-info {
+    background: #fff;
+    color: #333;
+    border-left: 5px solid $blue;
+    display: flex !important;
+    align-items: center;
   }
 }
 
