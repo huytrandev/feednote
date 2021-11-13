@@ -7,22 +7,36 @@ import { Router } from '@angular/router';
 })
 export class CommonService {
   snackBarConfiguration = {
-    duration: 2700,
+    duration: 3000,
     horizontalPosition: 'end',
     verticalPosition: 'top',
   };
 
   constructor(private snackBar: MatSnackBar, private router: Router) {}
 
-  openAlert(message: string, type: string, action?: string) {
+  openAlert(
+    message: string,
+    type: 'success' | 'danger' | 'warning' | 'info',
+    action?: string
+  ) {
     let config = new MatSnackBarConfig();
     Object.assign(config, this.snackBarConfiguration);
-    config.panelClass =
-      type === 'success'
-        ? ['alert-success']
-        : type === 'danger'
-        ? ['alert-failure']
-        : '';
+    switch (type) {
+      case 'success':
+        config.panelClass = ['alert-success'];
+        break;
+      case 'danger':
+        config.panelClass = ['alert-failure'];
+        break;
+      case 'warning':
+        config.panelClass = ['alert-warning'];
+        break;
+      case 'info':
+        config.panelClass = ['alert-info'];
+        break;
+      default:
+      //
+    }
 
     this.snackBar.open(message, action, config);
   }

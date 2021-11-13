@@ -241,7 +241,10 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   }
 
   onCreateMeal(period: any) {
-    if (!this.allowCreateMeal) return;
+    if (!this.allowCreateMeal) {
+      this.commonService.openAlert('Nhu cầu dinh dưỡng chưa phù hợp', 'warning');
+      return;
+    };
     const dialogRef = this.dialog.open(CreateStandardMealDialogComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {
