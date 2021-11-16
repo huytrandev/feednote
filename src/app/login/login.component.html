@@ -1,10 +1,10 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <div class="login-wrapper" fxLayout="column" fxLayoutAlign="center center">
-  <div fxLayout="row" class="right" fxLayoutAlign="center center">
-    <mat-card class="box shadow rounded border bg-white">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box rounded border bg-white">
       <div fxLayout="column" fxLayoutGap="10px" class="header m-bottom-25">
         <span class="title">FeedN<span class="color-brown">o</span>te</span>
-        <span class="caption">Ứng dụng theo dõi, tính toán khẩu phần ăn cho đàn gia súc</span>
+        <span class="caption">Ứng dụng hỗ trợ tính toán khẩu phần ăn cho đàn gia súc</span>
       </div>
       <form class="login-form" [formGroup]="loginForm" (ngSubmit)="submit()">
         <div
@@ -81,4 +81,5 @@
       </form>
     </mat-card>
   </div>
+  <div class="curve"></div>
 </div>

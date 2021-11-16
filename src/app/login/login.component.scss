@@ -1,16 +1,29 @@
 @import "../../variable";
 
 .login-wrapper {
-  min-height: 100vh;
+  height: 100vh;
   // background: url('/assets/images/background.jpg') no-repeat center center fixed;
   background: #f3f4f6;
   box-sizing: border-box;
-  // clip-path: ellipse(84% 100% at 25.52% 0%);
-  // background: #f0f2f5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+.curve {
+  position: absolute;
+  bottom: 0;
+  height: 55vh;
+  width: 100%;
+  display: block;
+  background: rgb(199, 104, 67);
+  background: linear-gradient(
+    90deg,
+    rgba(199, 104, 67, 1) 5%,
+    rgba(204, 117, 82, 1) 43%,
+    rgba(209, 130, 99, 1) 90%
+  );
+  clip-path: ellipse(80% 100% at 40% 100%);
 }
 .box {
   position: relative;
@@ -26,7 +39,7 @@
   z-index: 5;
   width: 100%;
   max-width: 350px;
-  // box-shadow: 0 0px 25px rgb(0 0 0 / 20%) !important;
+  box-shadow: 0 0px 10px rgb(0 0 0 / 15%) !important;
 
   & .header {
     & .title {
