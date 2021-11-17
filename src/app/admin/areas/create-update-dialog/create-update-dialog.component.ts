@@ -48,7 +48,7 @@ export class CreateUpdateDialogComponent implements OnInit {
     if (!this.form.valid) return;
 
     this.isSubmitting = true;
-    if (this.area) {
+    if (!this.area) {
       this.areaService.createArea(this.form.value).subscribe((res) => {
         const { status } = res;
         if (!status) {
