@@ -75,10 +75,8 @@ export class MainComponent implements OnInit, OnDestroy {
   onPagination(e: any) {
     const limit = e.pageSize;
     const skip = e.pageIndex * limit;
-    const { active, direction } = this.sort;
-    let sortQuery = active ? `${active} ${direction}` : this.defaultSort;
+    let sortQuery = this.defaultSort;
     this.setParams(skip, limit, undefined, sortQuery);
-    this.loading = true;
     this.getAreas();
   }
 
