@@ -16,6 +16,7 @@ import { DialogComponent } from 'src/app/shared';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
 import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
+import { formatDate } from 'src/app/core/helpers/functions';
 
 @Component({
   selector: 'app-detail',
@@ -69,13 +70,13 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
         catchError((_) => this.router.navigate(['not-found']))
       )
       .subscribe((val) => {
-        this.breeder = val;
+        const breeder = {
+          ...val,
+          createdAt: formatDate(val.createdAt)
+        }
+        this.breeder = breeder;
         this.loading = false;
       });
-  }
-
-  transformDate(date: number) {
-    return moment(date).locale('vi').format('L');
   }
 
   onDelete() {

@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
+import { formatDate, getTypeFoodName } from 'src/app/core/helpers/functions';
 import {
   CommonService,
   CowBreedService,
@@ -99,18 +100,31 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
           return;
         }
         const areas: any[] = [];
-        this.meals = data.items;
+        const meals = data.items.map((m: any) => {
+          const foods = m.foods.map((f: any) => {
+            return {
+              ...f,
+              type: getTypeFoodName(f.type)
+            }
+          })
+          return {
+            ...m,
+            foods,
+            createdAt: formatDate(m.createdAt)
+          }
+        })
+        this.meals = meals;
         this.mealEachArea = [];
         if (this.currentUser.role === 'admin') {
-          [...data.items].forEach((m) => {
+          meals.forEach((m: any) => {
             if (!areas.find((a) => a === m.idArea)) {
               areas.push(m.idArea);
               this.mealEachArea.push(m);
             }
           });
         } else {
-          this.mealEachArea = [...data.items]
-            .filter((item) => item.idArea === this.currentUser.idArea)
+          this.mealEachArea = meals
+            .filter((item: any) => item.idArea === this.currentUser.idArea)
             .slice(0, 1);
         }
 
@@ -287,17 +301,5 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
-
-  getTypeName(type: any) {
-    const localType = Number(type);
-    switch (localType) {
-      case 0:
-        return 'Thức ăn thô';
-      case 1:
-        return 'Thức ăn tinh';
-      default:
-        return 'Không xác định';
-    }
   }
 }

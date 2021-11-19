@@ -46,7 +46,7 @@
       <ng-container matColumnDef="role">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Vị trí</th>
         <td mat-cell *matCellDef="let element">
-          {{ transformRole(element.role) }}
+          {{ element.role }}
         </td>
       </ng-container>
 
@@ -55,7 +55,7 @@
           Thời gian tham gia
         </th>
         <td mat-cell *matCellDef="let element">
-          {{ transformDate(element.createdAt) }}
+          {{ element.createdAt }}
         </td>
       </ng-container>
 

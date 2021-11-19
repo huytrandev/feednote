@@ -88,6 +88,10 @@
         <span fxFlex="20" class="font-weight-bold">Khu vực</span>
         <span fxFlex>{{ meal.areaName }}</span>
       </div>
+      <div fxLayout="row" fxLayoutAlign="start center" class="m-bottom-15">
+        <span fxFlex="20" class="font-weight-bold">Thời gian tạo</span>
+        <span fxFlex>{{ meal.createdAt }}</span>
+      </div>
 
       <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-15">
         <table mat-table [dataSource]="meal.foods">
@@ -108,7 +112,7 @@
           <ng-container matColumnDef="foodType">
             <th mat-header-cell *matHeaderCellDef>Loại thức ăn</th>
             <td mat-cell *matCellDef="let element">
-              {{ getTypeFoodName(element.type) }}
+              {{ element.type }}
             </td>
           </ng-container>
 

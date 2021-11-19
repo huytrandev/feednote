@@ -21,6 +21,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { formatDate } from 'src/app/core/helpers/functions';
 
 @Component({
   selector: 'app-main',
@@ -185,7 +186,13 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.totalCount = data.totalCount;
-        this.dataTableSource = new MatTableDataSource(data.items);
+        const diaries = data.items.map((item: any) => {
+          return {
+            ...item,
+            createdAt: formatDate(item.createdAt)
+          }
+        })
+        this.dataTableSource = new MatTableDataSource(diaries);
         this.loading = false;
       });
   }
@@ -317,9 +324,5 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       idManager: this.currentUser._id,
     });
     this.getFeedingDiaries();
-  }
-
-  transformDate(date: number) {
-    return moment(new Date(date)).locale('vi').format('L');
   }
 }

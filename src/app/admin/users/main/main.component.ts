@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,6 +13,7 @@ import { CreateUpdateComponent } from '../create-update/create-update.component'
 import { ResetPasswordDialogComponent } from '../reset-password-dialog/reset-password-dialog.component';
 import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
+import { formatDate, getRoleName } from 'src/app/core/helpers/functions';
 
 @Component({
   selector: 'app-main',
@@ -78,8 +78,15 @@ export class MainComponent implements OnInit, OnDestroy {
           return;
         }
         this.totalCount = data.totalCount;
+        const users = data.items.map((u: any) => {
+          return {
+            ...u,
+            role: getRoleName(u.role),
+            createdAt: formatDate(u.createdAt)
+          }
+        })
 
-        this.dataTableSource = new MatTableDataSource(data.items);
+        this.dataTableSource = new MatTableDataSource(users);
         this.loading = false;
       });
   }
@@ -155,16 +162,6 @@ export class MainComponent implements OnInit, OnDestroy {
     });
   }
 
-  transformRole(role: string) {
-    if (role === 'admin') {
-      return 'Quản trị viên';
-    } else if (role === 'manager') {
-      return 'Cán bộ thú y';
-    } else {
-      return 'Hộ nông dân';
-    }
-  }
-
   createUpdateUser(user?: any) {
     const dialogRef = this.dialog.open(CreateUpdateComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
@@ -197,9 +194,5 @@ export class MainComponent implements OnInit, OnDestroy {
         user
       },
     });
-  }
-
-  transformDate(date: number) {
-    return moment(new Date(date)).locale('vi').format('L');
   }
 }
