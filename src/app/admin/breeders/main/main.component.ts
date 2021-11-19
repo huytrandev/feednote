@@ -20,6 +20,7 @@ import { DialogComponent } from 'src/app/shared';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { formatDate } from 'src/app/core/helpers/functions';
 
 @Component({
   selector: 'app-main',
@@ -90,7 +91,13 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
           return;
         }
         this.totalCount = data.totalCount;
-        this.dataTableSource = new MatTableDataSource(data.items);
+        const breeders = data.items.map((b: any) => {
+          return {
+            ...b,
+            createdAt: formatDate(b.createdAt)
+          }
+        })
+        this.dataTableSource = new MatTableDataSource(breeders);
         this.loading = false;
       });
   }
@@ -182,9 +189,5 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
         this.commonService.openAlert('Cập nhật hộ chăn nuôi thất bại', 'danger');
       }
     });
-  }
-
-  transformDate(date: number) {
-    return moment(new Date(date)).locale('vi').format('L');
   }
 }

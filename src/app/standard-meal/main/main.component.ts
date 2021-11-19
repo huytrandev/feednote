@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { AdvancedFilter } from 'src/app/core/models';
 import {
   AreaService,
+  CommonService,
   CowBreedService,
   MealService,
 } from 'src/app/core/services';
+import { getTypeFoodName, formatDate } from 'src/app/core/helpers/functions'
 
 @Component({
   selector: 'app-main',
@@ -51,8 +53,9 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(
     private mealService: MealService,
     private cowBreedService: CowBreedService,
-    private areaService: AreaService
-  ) {}
+    private areaService: AreaService,
+    private commonService: CommonService
+  ) { }
 
   ngOnInit(): void {
     this.getCowBreeds();
@@ -90,7 +93,14 @@ export class MainComponent implements OnInit, OnDestroy {
 
     this.mealService
       .fetchMeals(query)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError(err => {
+          this.fetching = false;
+          this.commonService.openAlert('Giống bò chưa có nhu cầu dinh dưỡng', 'danger');
+          return err;
+        })
+      )
       .subscribe((res: any) => {
         const { status, data } = res;
         if (!status) {
@@ -110,10 +120,24 @@ export class MainComponent implements OnInit, OnDestroy {
         //     idPeriodList.push(item.idPeriod);
         //   }
         //   if (idPeriodList.includes(item.idPeriod)) {
-            
+
         //   }
         // });
-        this.mealList = [...data.items];
+        const meal = data.items.map((item: any) => {
+          const foods = item.foods.map((food: any) => {
+            return {
+              ...food,
+              type: getTypeFoodName(food.type)
+            }
+          })
+
+          return {
+            ...item,
+            foods,
+            createdAt: formatDate(item.createdAt)
+          }
+        })
+        this.mealList = meal;
         this.fetching = false;
       });
   }
@@ -181,17 +205,5 @@ export class MainComponent implements OnInit, OnDestroy {
 
   onShowFilter(): void {
     this.isShowFilter = !this.isShowFilter;
-  }
-
-  getTypeFoodName(type: any): string {
-    const typeTemp = Number(type);
-    switch (typeTemp) {
-      case 0:
-        return 'Thức ăn thô';
-      case 1:
-        return 'Thức ăn tinh';
-      default:
-        return 'Không xác định';
-    }
   }
 }

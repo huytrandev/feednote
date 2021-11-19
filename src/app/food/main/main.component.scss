@@ -41,7 +41,20 @@ table {
   width: 40% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-word;
 
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-type {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 200px !important;
+  width: 200px !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   word-break: break-word;
 
   -ms-hyphens: auto;
@@ -52,8 +65,8 @@ table {
 .mat-column-areaName {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 calc(100% - 40% - 200px) !important;
-  width: calc(100% - 40% - 200px) !important;
+  flex: 0 0 calc(100% - 40% - 400px) !important;
+  width: calc(100% - 40% - 400px) !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 

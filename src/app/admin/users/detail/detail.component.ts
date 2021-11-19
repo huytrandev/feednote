@@ -11,6 +11,7 @@ import { CreateUpdateComponent } from '../create-update/create-update.component'
 import { ResetPasswordDialogComponent } from '../reset-password-dialog/reset-password-dialog.component';
 import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
+import { formatDate, getRoleName } from 'src/app/core/helpers/functions';
 
 @Component({
   selector: 'app-detail',
@@ -65,7 +66,12 @@ export class DetailComponent implements OnInit, OnDestroy {
         let data = { ...res.data };
         this.area$ = this.areaService.fetchArea(data.idArea);
         this.manager$ = this.userService.fetchUser(data.idManager);
-        this.user = data;
+        const user = {
+          ...data,
+          role: getRoleName(data.role),
+          createdAt: formatDate(data.createdAt)
+        }
+        this.user = user;
         this.loading = false;
       });
   }
@@ -91,23 +97,6 @@ export class DetailComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
-
-  transformDate(date: number) {
-    return moment(date).locale('vi').format('L');
-  }
-
-  transformRoleName(role: string) {
-    switch (role) {
-      case 'admin':
-        return 'Quản trị viên';
-      case 'manager':
-        return 'Cán bộ thú y';
-      case 'breeder':
-        return 'Hộ nông dân';
-      default:
-        return 'Hộ nông dân';
-    }
   }
 
   updateUser(user: any) {

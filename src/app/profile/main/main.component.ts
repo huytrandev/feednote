@@ -12,6 +12,7 @@ import {
 } from 'src/app/core/services';
 import { User, Area } from 'src/app/core/models';
 import { Vietnamese, MustMatch } from 'src/app/core/validations';
+import { getRoleName, formatDate } from 'src/app/core/helpers/functions'
 
 @Component({
   selector: 'app-main',
@@ -74,8 +75,13 @@ export class MainComponent implements OnInit, OnDestroy {
         if (status === false) {
           return this.authService.logout();
         }
-        this.user = data;
-        this.setValueForForm({ ...this.user });
+        const userData = {
+          ...data,
+          role: getRoleName(data.role),
+          createdAt: formatDate(data.createdAt)
+        }
+        this.user = userData;
+        this.setValueForForm({ ...userData });
         this.loading = false;
       });
   }
@@ -170,22 +176,5 @@ export class MainComponent implements OnInit, OnDestroy {
           this.changePasswordForm.reset();
         }
       });
-  }
-
-  transformDate(date: number) {
-    return moment(date).locale('vi').format('L');
-  }
-
-  transformRoleName(role: string) {
-    switch (role) {
-      case 'admin':
-        return 'Quản trị viên';
-      case 'manager':
-        return 'Cán bộ thú y';
-      case 'breeder':
-        return 'Hộ nông dân';
-      default:
-        return 'Hộ nông dân';
-    }
   }
 }

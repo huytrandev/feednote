@@ -210,7 +210,7 @@
         <img src="assets/images/avatar.png" alt="User avatar" />
       </div>
       <div class="user-info__description">
-        <p class="user-info__role">{{ transformRoleName(user.role) }}</p>
+        <p class="user-info__role">{{ user.role }}</p>
         <p class="user-info__name">{{ user.name }}</p>
         <div class="user-info__contact">
           <p class="user-info__phone">
@@ -227,7 +227,7 @@
           </p>
           <p class="user-info__joined">
             <span>Ngày tham gia</span>
-            <span>{{ transformDate(user.createdAt) }}</span>
+            <span>{{ user.createdAt }}</span>
           </p>
         </div>
       </div>

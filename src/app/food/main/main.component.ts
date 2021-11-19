@@ -19,6 +19,7 @@ import { DialogComponent } from 'src/app/shared';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { getTypeFoodName } from 'src/app/core/helpers/functions';
 
 @Component({
   selector: 'app-main',
@@ -31,7 +32,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   loading: boolean = true;
   foods: any = {};
-  displayedColumns: string[] = ['id', 'name', 'areaName', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'type', 'areaName', 'actions'];
   dataTableSource: MatTableDataSource<any>;
   resultLength = 0;
   paramsGetFoods = {} as AdvancedFilter;
@@ -48,7 +49,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     private commonService: CommonService,
     public dialog: MatDialog
   ) {
-    this.currentUser = authService.getUserInfo();
+    this.currentUser = this.authService.getUserInfo();
   }
 
   ngOnInit(): void {}
@@ -74,7 +75,13 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((res) => {
         const { data } = res;
         this.totalCount = data.totalCount;
-        this.dataTableSource = new MatTableDataSource(data.items);
+        const foods = data.items.map((food: any) => {
+          return {
+            ...food,
+            type: getTypeFoodName(food.type)
+          }
+        })
+        this.dataTableSource = new MatTableDataSource(foods);
         this.loading = false;
       });
   }

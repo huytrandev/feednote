@@ -6,6 +6,7 @@ import { catchError, takeUntil } from 'rxjs/operators';
 import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 import { CommonService, FoodService } from 'src/app/core/services';
+import { getTypeFoodName } from 'src/app/core/helpers/functions';
 import { DialogComponent } from 'src/app/shared';
 import { CreateUpdateComponent } from '../create-update/create-update.component';
 
@@ -57,21 +58,13 @@ export class DetailComponent implements OnInit, OnDestroy {
           return;
         }
         const { data } = response;
-        this.food = data;
+        const food = {
+          ...data,
+          type: getTypeFoodName(data.type)
+        }
+        this.food = food;
         this.loading = false;
       });
-  }
-
-  getTypeName(type: any): string {
-    const localType = Number(type);
-    switch (localType) {
-      case 0:
-        return 'Thức ăn thô';
-      case 1:
-        return 'Thức ăn tinh';
-      default:
-        return 'Không xác định';
-    }
   }
 
   onDelete() {
