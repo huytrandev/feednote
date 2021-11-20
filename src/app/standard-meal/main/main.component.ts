@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { AdvancedFilter } from 'src/app/core/models';

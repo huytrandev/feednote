@@ -3,7 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import {
+  DELETE_DIALOG_CONFIG,
+  INITIAL_PERIOD_NUTRITION,
+} from 'src/app/core/constant';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 import { formatDate, getTypeFoodName } from 'src/app/core/helpers/functions';
 import {
@@ -75,8 +78,24 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.period = data;
-        const nutritionValueZero = [...this.period.nutrition].find(item => item.amount === 0);
+        const nutrition = data.nutrition.map((n: any) => {
+          const description = INITIAL_PERIOD_NUTRITION.find(
+            (field: any) => field.name === n.name
+          )?.description;
+          return {
+            ...n,
+            description,
+          };
+        });
+
+        const period = {
+          ...data,
+          nutrition
+        }
+        this.period = period;
+        const nutritionValueZero = period.nutrition.find(
+          (item: any) => item.amount === 0
+        );
         this.allowCreateMeal = nutritionValueZero ? false : true;
         this.loading = false;
       });
@@ -96,7 +115,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         const { status, data } = res;
         if (!status) {
-          this.router.navigate(['/not-found']);
+          this.router.navigate(['/404']);
           return;
         }
         const areas: any[] = [];
@@ -104,15 +123,15 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
           const foods = m.foods.map((f: any) => {
             return {
               ...f,
-              type: getTypeFoodName(f.type)
-            }
-          })
+              type: getTypeFoodName(f.type),
+            };
+          });
           return {
             ...m,
             foods,
-            createdAt: formatDate(m.createdAt)
-          }
-        })
+            createdAt: formatDate(m.createdAt),
+          };
+        });
         this.meals = meals;
         this.mealEachArea = [];
         if (this.currentUser.role === 'admin') {
@@ -143,7 +162,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
           const { status } = res;
           if (status === true) {
             this.commonService.openAlert('Xoá giai đoạn thành công', 'success');
-            this.router.navigate(['/cow-breeds']);
+            this.router.navigate(['/giong-bo', this.cowBreedId]);
           } else {
             this.commonService.openAlert('Xoá giai đoạn thất bại', 'danger');
           }
@@ -256,9 +275,12 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
 
   onCreateMeal(period: any) {
     if (!this.allowCreateMeal) {
-      this.commonService.openAlert('Nhu cầu dinh dưỡng chưa phù hợp', 'warning');
+      this.commonService.openAlert(
+        'Nhu cầu dinh dưỡng chưa phù hợp',
+        'warning'
+      );
       return;
-    };
+    }
     const dialogRef = this.dialog.open(CreateStandardMealDialogComponent, {
       ...CREATE_UPDATE_DIALOG_CONFIG,
       data: {

@@ -105,7 +105,7 @@
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Tên</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.name }}
+                <span [matTooltip]="element.description" matTooltipPosition="after">{{ element.name }}</span>
               </td>
             </ng-container>
 
@@ -132,8 +132,19 @@
     </div>
 
     <div class="food">
-      <div fxLayout="row" fxLayoutAlign="center center" class="food-header">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        class="food-header"
+      >
+        <div></div>
         <span class="font-weight-bold">Khẩu phần ăn tiêu chuẩn</span>
+        <app-button-icon
+          [iconName]="'library_add'"
+          matTooltip="Thêm mới"
+          (click)="onCreateMeal(period)"
+        >
+        </app-button-icon>
       </div>
 
       <div *ngFor="let meal of mealEachArea" class="food-content m-bottom-20">
@@ -143,7 +154,7 @@
           class="m-bottom-10 m-top-15"
         >
           <div fxFlex="95" fxLayout="row" fxLayoutAlign="start center">
-            <span fxFlex="20" class="font-weight-bold">Khu vực: </span>
+            <span fxFlex="20" class="font-weight-bold">Khu vực</span>
             <span fxFlex>{{ meal.areaName }}</span>
           </div>
         </div>
@@ -168,7 +179,12 @@
 
             <ng-container matColumnDef="foodName">
               <th mat-header-cell *matHeaderCellDef>Tên thức ăn</th>
-              <td mat-cell *matCellDef="let element">
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [routerLink]="['/thuc-an', element._id]"
+                class="text-underline-hover cursor-pointer"
+              >
                 {{ element.name }}
               </td>
             </ng-container>
@@ -183,14 +199,14 @@
             <ng-container matColumnDef="foodRatio">
               <th mat-header-cell *matHeaderCellDef>Tỉ lệ</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.ratio + "%" }}
+                {{ element.ratio }}%
               </td>
             </ng-container>
 
             <ng-container matColumnDef="foodAmount">
               <th mat-header-cell *matHeaderCellDef>Số lượng</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.amount + " " + element.unit }}
+                {{ element.amount }} {{ element.unit }}
               </td>
             </ng-container>
 
@@ -221,7 +237,7 @@
         </div>
       </div>
 
-      <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-20">
+      <!-- <div fxLayout="row" fxLayoutAlign="center center" class="m-bottom-20">
         <div fxFlex="95">
           <app-button
             [buttonContent]="'Thêm mới'"
@@ -230,7 +246,7 @@
           >
           </app-button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

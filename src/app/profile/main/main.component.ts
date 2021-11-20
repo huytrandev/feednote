@@ -77,8 +77,8 @@ export class MainComponent implements OnInit, OnDestroy {
         }
         const userData = {
           ...data,
-          role: getRoleName(data.role),
-          createdAt: formatDate(data.createdAt)
+          roleName: getRoleName(data.role),
+          joinedDate: formatDate(data.createdAt)
         }
         this.user = userData;
         this.setValueForForm({ ...userData });

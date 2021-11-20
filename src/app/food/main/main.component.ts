@@ -78,7 +78,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
         const foods = data.items.map((food: any) => {
           return {
             ...food,
-            type: getTypeFoodName(food.type)
+            typeName: getTypeFoodName(food.type)
           }
         })
         this.dataTableSource = new MatTableDataSource(foods);

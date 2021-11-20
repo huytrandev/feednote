@@ -5,9 +5,12 @@ table {
 }
 
 .wrapper {
-  margin-bottom: 30px;
+  margin: 0 auto 30px;
   padding: 20px 15px;
   position: relative;
+  width: 60%;
+  min-width: 700px;
+  max-width: 960px;
 }
 
 .table-container {

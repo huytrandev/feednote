@@ -12,7 +12,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import * as moment from 'moment';
 
 import { CommonService, UserService } from 'src/app/core/services';
 import { FilterDto, User } from 'src/app/core/models';
@@ -94,7 +93,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
         const breeders = data.items.map((b: any) => {
           return {
             ...b,
-            createdAt: formatDate(b.createdAt)
+            joinedDate: formatDate(b.createdAt)
           }
         })
         this.dataTableSource = new MatTableDataSource(breeders);

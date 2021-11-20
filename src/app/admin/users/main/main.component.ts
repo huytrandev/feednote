@@ -81,8 +81,8 @@ export class MainComponent implements OnInit, OnDestroy {
         const users = data.items.map((u: any) => {
           return {
             ...u,
-            role: getRoleName(u.role),
-            createdAt: formatDate(u.createdAt)
+            roleName: getRoleName(u.role),
+            joinedDate: formatDate(u.createdAt)
           }
         })
 

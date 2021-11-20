@@ -82,9 +82,18 @@
             <div fxLayout="row" fxLayoutAlign="center" class="m-bottom-20">
               <div fxLayout="row" fxLayoutAlign="center" fxFlex="90">
                 <span fxFlex="30" class="font-weight-bold"
-                  >Tên thành phần:</span
+                  >Tên thành phần</span
                 >
                 <span fxFlex>{{ _ingredient.get("name")?.value }}</span>
+              </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="center" class="m-bottom-20">
+              <div fxLayout="row" fxLayoutAlign="center" fxFlex="90">
+                <span fxFlex="30" class="font-weight-bold"
+                  >Mô tả</span
+                >
+                <span fxFlex>{{ getDescription(_ingredient.get("name")?.value) }}</span>
               </div>
             </div>
 
