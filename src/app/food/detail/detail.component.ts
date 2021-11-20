@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { DELETE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { DELETE_DIALOG_CONFIG, INITIAL_FOOD_INGREDIENT } from 'src/app/core/constant';
 import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant/create-update-dialog.config';
 import { CommonService, FoodService } from 'src/app/core/services';
 import { getTypeFoodName } from 'src/app/core/helpers/functions';
@@ -58,8 +58,15 @@ export class DetailComponent implements OnInit, OnDestroy {
           return;
         }
         const { data } = response;
+        const ingredient = data.ingredient.map((i: any) => {
+          return {
+            ...i,
+            description: INITIAL_FOOD_INGREDIENT.find((field: any) => field.name === i.name)?.description
+          }
+        })
         const food = {
           ...data,
+          ingredient,
           type: getTypeFoodName(data.type)
         }
         this.food = food;

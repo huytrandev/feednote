@@ -57,6 +57,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   canvas: any;
   ctx: any;
   loading: boolean = true;
+  fetchingStatistic: boolean = false;
   dateRange = new FormGroup({
     from: new FormControl({ value: '', disabled: false }),
     to: new FormControl({ value: '', disabled: false }),
@@ -100,7 +101,6 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
     private statisticService: StatisticService,
     private userService: UserService,
     private cowBreedService: CowBreedService,
-    private feedingDiaryService: FeedingDiaryService,
     private foodService: FoodService
   ) {
     this.currentUser = this.authService.getUserInfo();
@@ -232,6 +232,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.cowBreeds = data;
+        this.loading = false;
       });
   }
 
@@ -249,11 +250,12 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.foods = data;
+        this.loading = false;
       });
   }
 
   fetchCowIndicatorsStatistic() {
-    this.loading = true;
+    this.fetchingStatistic = true;
     this.statisticService
       .fetchCowStatistic(this.queryForCowIndicatorsStatistic)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -280,7 +282,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
           this.statisticDataByFood = null;
           this.statisticDataByPeriod = data;
         }
-        this.loading = false;
+        this.fetchingStatistic = false;
       });
   }
 

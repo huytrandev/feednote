@@ -247,11 +247,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   onClearDiary() {
     this.selectedDiary = null;
   }
-
-  transformDateForDetail(date: number) {
-    return moment(date).locale('vi').format('LT, LL');
-  }
-
+  
   onSearch(e: any) {
     clearTimeout(this.timeOutInput);
     const input = e.target.value;

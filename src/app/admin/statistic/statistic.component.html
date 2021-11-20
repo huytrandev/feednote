@@ -1,3 +1,4 @@
+<app-progress-bar *ngIf="loading"></app-progress-bar>
 <div class="wrapper">
   <div
     fxLayout="column"
@@ -199,8 +200,9 @@
         <app-button
           [buttonContent]="'Xem thông tin'"
           [customClasses]="['app-button-brown']"
+          [showSpinner]="fetchingStatistic"
           (click)="applyFilter()"
-          [disabledCondition]="!canViewChart"
+          [disabledCondition]="!canViewChart || fetchingStatistic"
         ></app-button>
         <small class="text-muted"
           >Chọn đầy đủ "Hộ chăn nuôi" và "Giống bò" để xem thông tin</small
@@ -226,8 +228,8 @@
         >
       </div>
       <div class="body p-bottom-20">
-        <div fxLayout="row" fxLayoutAlign="center center">
-          <ul fxFlex="90" *ngIf="statisticDataByFood" class="tree">
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="statisticDataByFood">
+          <ul fxFlex="90" class="tree" *ngIf="statisticDataByFood.length > 0">
             <li *ngFor="let element of statisticDataByFood">
               <span class="font-weight-bold">{{ element.name }}</span>
               <ul>
@@ -243,8 +245,10 @@
               </ul>
             </li>
           </ul>
-
-          <ul fxFlex="90" *ngIf="statisticDataByPeriod" class="tree">
+          <span class="m-top-20" *ngIf="statisticDataByFood.length === 0">Chưa có dữ liệu</span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="statisticDataByPeriod">
+          <ul fxFlex="90" class="tree" *ngIf="statisticDataByPeriod.length > 0">
             <li *ngFor="let element of statisticDataByPeriod">
               <span class="font-weight-bold">{{ element.name }}</span>
               <ul>
@@ -262,6 +266,7 @@
               </ul>
             </li>
           </ul>
+          <span class="m-top-20" *ngIf="statisticDataByPeriod.length === 0">Chưa có dữ liệu</span>
         </div>
       </div>
     </div>

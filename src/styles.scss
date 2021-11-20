@@ -233,6 +233,23 @@ mat-form-field {
   &-muted {
     color: grey;
   }
+  &-underline {
+    text-decoration: underline;
+    &-hover {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.cursor {
+  &-default {
+    cursor: default;
+  }
+  &-pointer {
+    cursor: pointer;
+  }
 }
 
 .rounded {
@@ -261,30 +278,26 @@ mat-form-field {
 
 .alert {
   &-success {
-    background: #fff;
-    color: #333;
-    border-left: 5px solid $green;
+    background: $green;
+    color: #fff;
     display: flex !important;
     align-items: center;
   }
   &-failure {
-    background: #fff;
-    color: #333;
-    border-left: 5px solid $red;
+    background: $red;
+    color: #fff;
     display: flex !important;
     align-items: center;
   }
   &-warning {
-    background: #fff;
-    color: #333;
-    border-left: 5px solid $yellow;
+    background: $yellow;
+    color: #fff;
     display: flex !important;
     align-items: center;
   }
   &-info {
-    background: #fff;
-    color: #333;
-    border-left: 5px solid $blue;
+    background: $blue;
+    color: #fff;
     display: flex !important;
     align-items: center;
   }

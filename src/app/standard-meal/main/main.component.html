@@ -78,11 +78,24 @@
     >
       <div fxLayout="row" fxLayoutAlign="start center" class="m-bottom-15">
         <span fxFlex="20" class="font-weight-bold">Giống bò</span>
-        <span fxFlex>{{ meal.cowBreedName }}</span>
+        <span
+          class="text-underline-hover cursor-pointer"
+          [routerLink]="['/giong-bo', meal.idCowBreed]"
+          >{{ meal.cowBreedName }}</span
+        >
       </div>
       <div fxLayout="row" fxLayoutAlign="start center" class="m-bottom-15">
         <span fxFlex="20" class="font-weight-bold">Giai đoạn</span>
-        <span fxFlex>{{ meal.periodName }}</span>
+        <span
+          class="text-underline-hover cursor-pointer"
+          [routerLink]="[
+            '/giong-bo',
+            meal.idCowBreed,
+            'giai-doan',
+            meal.idPeriod
+          ]"
+          >{{ meal.periodName }}</span
+        >
       </div>
       <div fxLayout="row" fxLayoutAlign="start center" class="m-bottom-15">
         <span fxFlex="20" class="font-weight-bold">Khu vực</span>
@@ -104,7 +117,12 @@
 
           <ng-container matColumnDef="foodName">
             <th mat-header-cell *matHeaderCellDef>Tên thức ăn</th>
-            <td mat-cell *matCellDef="let element">
+            <td
+              mat-cell
+              *matCellDef="let element"
+              [routerLink]="['/thuc-an', element._id]"
+              class="text-underline-hover cursor-pointer"
+            >
               {{ element.name }}
             </td>
           </ng-container>

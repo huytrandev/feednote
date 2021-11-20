@@ -13,7 +13,7 @@ export class NotFoundComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.timeOut = setTimeout(() => {
       this.router.navigate(['/']);
-    }, 10000);
+    }, 5000);
   }
 
   ngOnDestroy(): void {

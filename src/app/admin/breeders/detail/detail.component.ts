@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
-import * as moment from 'moment';
 
 import { AreaService, CommonService, UserService } from 'src/app/core/services';
 import { User } from 'src/app/core/models';
@@ -72,7 +71,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((val) => {
         const breeder = {
           ...val,
-          createdAt: formatDate(val.createdAt)
+          joinedDate: formatDate(val.createdAt)
         }
         this.breeder = breeder;
         this.loading = false;

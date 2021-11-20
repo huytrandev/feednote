@@ -173,3 +173,8 @@ tr.app-element-row {
   background: $light-red;
   padding: 0 10px;
 }
+.food-name {
+  &:hover {
+    text-decoration: underline;
+  }
+}

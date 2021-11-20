@@ -259,4 +259,8 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   onClose() {
     this.dialogRef.close({ type: 'close', isModified: this.isModified });
   }
+
+  getDescription(name: string) {
+    return INITIAL_FOOD_INGREDIENT.find((field: any) => field.name === name)?.description;
+  }
 }

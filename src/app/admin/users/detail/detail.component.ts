@@ -68,8 +68,8 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.manager$ = this.userService.fetchUser(data.idManager);
         const user = {
           ...data,
-          role: getRoleName(data.role),
-          createdAt: formatDate(data.createdAt)
+          roleName: getRoleName(data.role),
+          joinedDate: formatDate(data.createdAt)
         }
         this.user = user;
         this.loading = false;

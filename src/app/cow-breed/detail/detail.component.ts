@@ -61,7 +61,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           const { data } = res;
           return { data };
         }),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/404']))
       )
       .subscribe((value: any) => {
         this.cowBreed = value.data;
@@ -89,7 +89,7 @@ export class DetailComponent implements OnInit, OnDestroy {
                 'Xoá giống bò thành công',
                 'success'
               );
-              this.router.navigate(['/cow-breeds']);
+              this.router.navigate(['/giong-bo']);
             } else {
               this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
             }
