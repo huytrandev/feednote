@@ -37,7 +37,7 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/grass.svg',
     },
     {
-      path: '/qtv',
+      path: '/qtv/thong-ke',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
@@ -75,7 +75,7 @@ export class MainComponent implements OnInit {
       icon: 'assets/icons/grass.svg',
     },
     {
-      path: '/qtv',
+      path: '/qtv/thong-ke',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
