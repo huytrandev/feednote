@@ -4,10 +4,9 @@ import { RoleGuard } from '../core/guards';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'thong-ke',
     loadChildren: () =>
       import('./statistic/statistic.module').then((m) => m.StatisticModule),
-    pathMatch: 'prefix',
   },
   {
     path: 'ho-chan-nuoi',
@@ -43,6 +42,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./areas/areas.module').then((m) => m.AreasModule),
   },
+  {
+    path: '',
+    redirectTo: 'nhat-ky-cho-an',
+    pathMatch: 'prefix',
+  }
 ];
 
 @NgModule({
