@@ -12,11 +12,6 @@ export class MainComponent implements OnInit {
   currentUser!: any;
   managerNav = [
     {
-      path: '/qtv',
-      title: 'Thống kê',
-      icon: 'assets/icons/statistics.svg',
-    },
-    {
       path: '/qtv/nhat-ky-cho-an',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
@@ -38,17 +33,17 @@ export class MainComponent implements OnInit {
     },
     {
       path: '/thuc-an',
-      title: 'Nguồn thức ăn',
+      title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
     },
-  ];
-
-  adminNav = [
     {
       path: '/qtv',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
+  ];
+
+  adminNav = [
     {
       path: '/qtv/nhat-ky-cho-an',
       title: 'Nhật ký cho ăn',
@@ -76,8 +71,13 @@ export class MainComponent implements OnInit {
     },
     {
       path: '/thuc-an',
-      title: 'Nguồn thức ăn',
+      title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
+    },
+    {
+      path: '/qtv',
+      title: 'Thống kê',
+      icon: 'assets/icons/statistics.svg',
     },
   ];
 
