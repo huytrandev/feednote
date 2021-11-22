@@ -39,7 +39,6 @@ export class CreateStandardMealDialogComponent implements OnInit {
     private foodService: FoodService,
     private areaService: AreaService,
     private authService: AuthService,
-    private commonService: CommonService,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CreateStandardMealDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
@@ -172,7 +171,6 @@ export class CreateStandardMealDialogComponent implements OnInit {
     this.mealService.createMeal(meal).subscribe((res) => {
       const { status, data } = res;
       if (!status) {
-        this.commonService.openAlert('Tạo khẩu phần ăn thất bại', 'danger');
         this.dialogRef.close({
           status: 'fail',
         });
@@ -180,9 +178,6 @@ export class CreateStandardMealDialogComponent implements OnInit {
         return;
       }
       this.submitted = false;
-
-      this.commonService.openAlert('Tạo khẩu phần ăn thành công', 'success');
-
       this.dialogRef.close({
         status: 'success',
         data,

@@ -95,6 +95,7 @@
       <app-button
         [buttonContent]="'Lưu lại'"
         [customClasses]="['app-button-brown']"
+        [showSpinner]="submitting"
         [disabledCondition]="!form.valid || submitting"
         [buttonType]="'submit'"
       ></app-button>

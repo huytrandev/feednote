@@ -33,6 +33,9 @@
         <mat-error *ngIf="f.unit.errors?.required"
           >Đơn vị đo không được trống.</mat-error
         >
+        <mat-error *ngIf="f.unit.errors?.pattern"
+          >Đơn vị đo không hợp lệ.</mat-error
+        >
       </mat-form-field>
 
       <mat-radio-group
