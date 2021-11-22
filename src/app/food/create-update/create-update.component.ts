@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { INITIAL_FOOD_INGREDIENT } from 'src/app/core/constant';
-import { IS_DECIMAL } from 'src/app/core/helpers';
+import { IS_DECIMAL, IS_STRING } from 'src/app/core/helpers';
 import { AreaService, AuthService, FoodService } from 'src/app/core/services';
 import { Vietnamese } from 'src/app/core/validations';
 
@@ -107,7 +107,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     this.form = this.fb.group(
       {
         name: ['', [Validators.required]],
-        unit: ['', [Validators.required]],
+        unit: ['', [Validators.required, Validators.pattern(IS_STRING)]],
         idArea: ['', [Validators.required]],
         type: ['0', [Validators.required]],
         ingredient: this.fb.array([]),

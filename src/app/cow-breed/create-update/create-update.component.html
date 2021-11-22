@@ -18,6 +18,9 @@
         <mat-error *ngIf="f.name.errors?.required"
           >Tên giống bò không được trống.</mat-error
         >
+        <mat-error *ngIf="f.name.errors?.minlength"
+          >Tên giống bò ít nhất 3 ký tự.</mat-error
+        >
         <mat-error *ngIf="f.name.errors?.inValid"
           >Tên giống bò không hợp lệ.</mat-error
         >

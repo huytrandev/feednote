@@ -92,7 +92,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   buildForm(): void {
     this.form = this.fb.group(
       {
-        name: ['', [Validators.required]],
+        name: ['', [Validators.required, Validators.minLength(3)]],
         farmingTime: ['', [Validators.required, Validators.min(10), Validators.pattern(IS_NUMBER)]],
         periods: this.fb.array([]),
       },
