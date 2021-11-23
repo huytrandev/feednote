@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { INITIAL_PERIOD_NUTRITION } from 'src/app/core/constant';
 import { IS_DECIMAL } from 'src/app/core/helpers';
 import { CowBreedService } from 'src/app/core/services';
 
@@ -60,7 +61,6 @@ export class UpdateNutritionDialogComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.min(0),
           Validators.pattern(IS_DECIMAL),
         ],
       ],
@@ -126,5 +126,9 @@ export class UpdateNutritionDialogComponent implements OnInit {
       type: 'close',
       status: null,
     });
+  }
+
+  getDescription(name: string) {
+    return INITIAL_PERIOD_NUTRITION.find((field: any) => field.name === name)?.description;
   }
 }

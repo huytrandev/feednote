@@ -25,7 +25,7 @@
             fxLayoutAlign="center center"
             class="nutrition-list-item-header"
           >
-            <span class="font-weight-bold">Chất dinh dưỡng {{ i + 1 }}</span>
+            <span class="font-weight-bold">Nhu cầu dinh dưỡng {{ i + 1 }}</span>
           </div>
 
           <div [formGroupName]="i">
@@ -35,6 +35,15 @@
                   >Tên chất dinh dưỡng</span
                 >
                 <span fxFlex>{{ _nutrition.get("name")?.value }}</span>
+              </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="center" class="m-bottom-15">
+              <div fxFlex="90">
+                <span fxFlex="40" class="font-weight-bold"
+                  >Mô tả</span
+                >
+                <span fxFlex>{{ getDescription(_nutrition.get("name")?.value) }}</span>
               </div>
             </div>
 
