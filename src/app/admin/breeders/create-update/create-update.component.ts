@@ -17,10 +17,11 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { catchError, delay, map, takeUntil } from 'rxjs/operators';
 
-import { AreaService, AuthService, CommonService, UserService } from 'src/app/core/services';
+import { AreaService, AuthService, UserService } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
 import { Vietnamese } from 'src/app/core/validations';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { VIETNAMESE_PHONE_NUMBER, USERNAME } from 'src/app/core/helpers/regex-regular';
 
 @Component({
   selector: 'app-create-update',
@@ -49,7 +50,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.breeder = data.breeder;
-    this.currentUser = authService.getUserInfo();
+    this.currentUser = this.authService.getUserInfo();
   }
 
   get f() {
@@ -127,7 +128,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         }
       }),
       takeUntil(this.ngUnsubscribe),
-      catchError((_) => this.router.navigate(['not-found']))
+      catchError((_) => this.router.navigate(['/404']))
     );
   }
 
@@ -139,13 +140,13 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           [
             Validators.required,
             Validators.minLength(5),
-            Validators.pattern(/^[\w\s.]+$/),
+            Validators.pattern(USERNAME),
           ],
           this.validateUsernameExist.bind(this),
         ],
         password: ['', [Validators.required, Validators.minLength(5)]],
         name: ['', [Validators.required, Validators.minLength(5)]],
-        phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
+        phone: ['', [Validators.pattern(VIETNAMESE_PHONE_NUMBER)]],
         email: ['', [Validators.email]],
       },
       {

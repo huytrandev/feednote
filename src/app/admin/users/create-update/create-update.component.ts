@@ -27,6 +27,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { VIETNAMESE_PHONE_NUMBER, USERNAME } from 'src/app/core/helpers/regex-regular';
 
 @Component({
   selector: 'app-create',
@@ -166,7 +167,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           [
             Validators.required,
             Validators.minLength(5),
-            Validators.pattern(/^[\w\s]+$/),
+            Validators.pattern(USERNAME),
           ],
           this.validateUsernameExist.bind(this),
         ],
@@ -174,7 +175,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         isManager: [false],
         idManager: [null, [Validators.required]],
         name: ['', [Validators.required, Validators.minLength(5)]],
-        phone: ['', [Validators.pattern('[- +()0-9]{10}')]],
+        phone: ['', [Validators.pattern(VIETNAMESE_PHONE_NUMBER)]],
         email: ['', [Validators.email]],
         idArea: ['', [Validators.required]],
       },
