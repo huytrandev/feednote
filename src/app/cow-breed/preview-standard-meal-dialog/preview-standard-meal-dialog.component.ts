@@ -49,9 +49,21 @@ export class PreviewStandardMealDialogComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     if (!this.isEdit) {
-      this.setFoodForm(this.mealData.items[0].foods);
+      const meal = this.mealData.items[0].foods.map((item: any) => {
+        return {
+          ...item,
+          ratio: item.ratio * 100
+        }
+      })
+      this.setFoodForm(meal);
     } else {
-      this.setFoodForm(this.mealData.foods);
+      const meal = this.mealData.foods.map((item: any) => {
+        return {
+          ...item,
+          ratio: item.ratio * 100
+        }
+      })
+      this.setFoodForm(meal);
     }
   }
 
@@ -77,7 +89,7 @@ export class PreviewStandardMealDialogComponent implements OnInit {
       return {
         ...item,
         idFood: item._id,
-        ratio: Number(item.ratio),
+        ratio: Number(item.ratio) / 100,
         amount: Number(item.amount),
       };
     });

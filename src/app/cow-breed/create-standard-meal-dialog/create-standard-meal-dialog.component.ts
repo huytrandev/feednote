@@ -8,7 +8,6 @@ import {
 import {
   AreaService,
   AuthService,
-  CommonService,
   FoodService,
   MealService,
 } from 'src/app/core/services';
@@ -49,7 +48,7 @@ export class CreateStandardMealDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.currentUser.role === 'manager') {
-      // this.fetchAreas();
+      this.fetching = true;
       this.form.removeControl('idArea');
       this.form.controls['idsFood'].enable();
 
@@ -79,7 +78,6 @@ export class CreateStandardMealDialogComponent implements OnInit {
       });
     } else {
       this.fetchAreas();
-      
     }
   }
 
