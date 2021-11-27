@@ -1,10 +1,23 @@
 # FeThesis
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.1.
+## Tech
 
-## Install
-Run `npm install` to install necessary packages.
+- [Angular](https://angular.io/)
+- [Angular Material](https://material.angular.io/)
+- [Chart.js](https://www.chartjs.org/)
 
-## Development server
+## Installation
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Requirement Angular CLI
+
+```sh
+npm install -g @angular/cli
+```
+
+Install the dependencies and start the server
+
+```sh
+cd fe-thesis
+npm i
+npm run dev
+```
