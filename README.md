@@ -1,4 +1,4 @@
-# FeThesis
+# FeedNote - Front-end Project
 
 ## Tech
 

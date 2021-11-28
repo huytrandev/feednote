@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { AdvancedFilter } from 'src/app/core/models';
@@ -19,20 +19,6 @@ export class MainComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   fetching: boolean = false;
   fetchingFilter: boolean = false;
-  array: any[] = [
-    {
-      key: 1,
-      value: 'item 1',
-    },
-    {
-      key: 2,
-      value: 'item 2',
-    },
-    {
-      key: 3,
-      value: 'item 3',
-    },
-  ];
   mealColumns: string[] = [
     'id',
     'foodName',
@@ -60,7 +46,6 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCowBreeds();
     this.getAreas();
-    // this.getMeals();
   }
 
   ngOnDestroy(): void {
@@ -108,25 +93,13 @@ export class MainComponent implements OnInit, OnDestroy {
           return;
         }
 
-        let areaList: string[] = [];
-        let idPeriodList: string[] = [];
-        let groupByPeriod!: { idPeriod: string; meals: any[] }[];
-        let mealListTemp: any[] = [];
-        // [...data.items].forEach((item: any) => {
-        //   if (!areaList.includes(item.idArea)) {
-        //     areaList.push(item.idArea);
-        //   }
-        //   if (!idPeriodList.includes(item.idPeriod)) {
-        //     idPeriodList.push(item.idPeriod);
-        //   }
-        //   if (idPeriodList.includes(item.idPeriod)) {
 
-        //   }
-        // });
         const meal = data.items.map((item: any) => {
           const foods = item.foods.map((food: any) => {
+            const ratio = food.ratio ? (food.ratio * 100).toFixed(2) : 0
             return {
               ...food,
+              ratio,
               type: getTypeFoodName(food.type)
             }
           })
@@ -137,7 +110,18 @@ export class MainComponent implements OnInit, OnDestroy {
             createdAt: formatDate(item.createdAt)
           }
         })
-        this.mealList = meal;
+
+        let mealAfterGroupByPeriod = meal.reduce((r: any, a: any) => {
+          r[a.idPeriod] = r[a.idPeriod] || [];
+          r[a.idPeriod].push(a);
+          return r;
+        }, Object.create(null));
+        
+        let mealFinal: any[] = []
+        for (let key in mealAfterGroupByPeriod) {
+          mealFinal = [...mealFinal, ...mealAfterGroupByPeriod[key]]
+        }
+        this.mealList = mealFinal;
         this.fetching = false;
       });
   }
