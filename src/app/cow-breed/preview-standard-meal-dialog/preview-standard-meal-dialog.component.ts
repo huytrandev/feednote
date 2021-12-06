@@ -53,15 +53,16 @@ export class PreviewStandardMealDialogComponent implements OnInit {
         const ratio = (item.ratio * 100).toFixed(2);
         return {
           ...item,
-          ratio
+          ratio: Number(ratio)
         }
       })
       this.setFoodForm(meal);
     } else {
       const meal = this.mealData.foods.map((item: any) => {
+        const ratio = (item.ratio * 100).toFixed(2)
         return {
           ...item,
-          ratio: Number(item.ratio.toFixed(2)) * 100
+          ratio: Number(ratio)
         }
       })
       this.setFoodForm(meal);
@@ -91,7 +92,7 @@ export class PreviewStandardMealDialogComponent implements OnInit {
       return {
         ...item,
         idFood: item._id,
-        ratio,
+        ratio: Number(ratio),
         amount: Number(item.amount),
       };
     });
