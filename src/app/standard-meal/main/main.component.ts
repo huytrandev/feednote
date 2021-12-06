@@ -99,7 +99,7 @@ export class MainComponent implements OnInit, OnDestroy {
             const ratio = food.ratio ? (food.ratio * 100).toFixed(2) : 0
             return {
               ...food,
-              ratio,
+              ratio: Number(ratio),
               type: getTypeFoodName(food.type)
             }
           })

@@ -134,17 +134,44 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
         });
         this.meals = meals;
         this.mealEachArea = [];
+        let meal: any[] = [];
         if (this.currentUser.role === 'admin') {
           meals.forEach((m: any) => {
             if (!areas.find((a) => a === m.idArea)) {
               areas.push(m.idArea);
-              this.mealEachArea.push(m);
+              let localMeal = m
+              let foods = localMeal.foods.map((f: any) => {
+                const ratio = (Number(f.ratio) * 100).toFixed(2)
+                return {
+                  ...f,
+                  ratio: Number(ratio)
+                }
+              })
+              localMeal = {
+                ...localMeal,
+                foods
+              }
+              this.mealEachArea.push(localMeal);
             }
           });
         } else {
-          this.mealEachArea = meals
+          meal = meals
             .filter((item: any) => item.idArea === this.currentUser.idArea)
-            .slice(0, 1);
+            .slice(0, 1)
+          meal = meal.map((m: any) => {
+            const foods = m.foods.map((f: any) => {
+              const ratio = (Number(f.ratio) * 100).toFixed(2)
+              return {
+                ...f,
+                ratio: Number(ratio)
+              }
+            })
+            return {
+              ...m,
+              foods
+            }
+          })
+          this.mealEachArea = meal
         }
 
         this.loading = false;
