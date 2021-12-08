@@ -4,7 +4,7 @@
 @import "./variable";
 @import "~@angular/material/theming";
 $custom-typography: mat-typography-config(
-  $font-family: "Roboto,Oxygen,Helvetica,Arial,sans-serif",
+  $font-family: "Roboto,sans-serif",
   $display-4: mat-typography-level(113px, 113px, 300, $letter-spacing: -0.05em),
   $display-3: mat-typography-level(57px, 57px, 400, $letter-spacing: -0.02em),
   $display-2: mat-typography-level(46px, 47px, 400, $letter-spacing: -0.005em),
