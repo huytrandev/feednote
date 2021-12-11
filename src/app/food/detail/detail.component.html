@@ -1,6 +1,6 @@
 <app-page-loading *ngIf="loading"></app-page-loading>
 <app-progress-bar *ngIf="loading"></app-progress-bar>
-<app-back-button [routerLink]="['/thuc-an']"></app-back-button>
+<app-back-button [routerLink]="['/foods']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="!error">
     <div
@@ -9,7 +9,7 @@
       class="m-bottom-25"
     >
       <div class="app-title">
-        <h2>Chi tiết thức ăn</h2>
+        <h2>Thông tin thức ăn</h2>
       </div>
       <app-button-icon
         [matMenuTriggerFor]="optionsPanel"

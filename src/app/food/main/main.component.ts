@@ -70,7 +70,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
       .fetchFoods(this.paramsGetFoods)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((res) => {
         const { data } = res;

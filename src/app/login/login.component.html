@@ -11,7 +11,7 @@
           *ngIf="loginError && !f.username.dirty && !f.password.dirty"
           class="text-error"
         >
-          Thông tin tài khoản không hợp lệ.
+          Thông tin tài khoản chưa chính xác.
         </div>
         <div
           *ngIf="isBreeder"
@@ -52,14 +52,6 @@
             autocomplete="current-password"
             formControlName="password"
           />
-          <!-- <mat-icon
-            matSuffix
-            [matTooltip]="showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'"
-            class="material-icons-outlined app-icon"
-            style="cursor: pointer"
-            (click)="showPassword = !showPassword"
-            >{{ showPassword ? "visibility_off" : "visibility" }}</mat-icon
-          > -->
 
           <mat-error *ngIf="f.password.errors?.required"
             >Mật khẩu không được trống.</mat-error
@@ -71,7 +63,7 @@
 
         <button
           mat-flat-button
-          [disabled]="submitted || !loginForm.valid"
+          [disabled]="submitted"
           class="btn-login app-button app-button-brown"
           type="submit"
         >

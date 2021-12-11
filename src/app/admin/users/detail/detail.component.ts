@@ -53,7 +53,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       .fetchUser(this.userId)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((res) => {
         const { status } = res;
@@ -90,7 +90,7 @@ export class DetailComponent implements OnInit, OnDestroy {
               'Xoá người dùng thành công',
               'success'
             );
-            this.router.navigate(['/breeders']);
+            this.router.navigate(['/admin/users']);
           } else {
             this.commonService.openAlert('Xoá người dùng thất bại', 'danger');
           }

@@ -204,7 +204,7 @@ export class PreviewStandardMealDialogComponent implements OnInit {
       var downloadURL = window.URL.createObjectURL(res);
       var link = document.createElement('a');
       link.href = downloadURL;
-      link.download = 'khau-phan-an-chuan.pdf';
+      link.download = 'standard-meal.pdf';
       link.click();
     });
   }

@@ -81,7 +81,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       .fetchBreeders(this.paramGetBreeders)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((res) => {
         const { status, data } = res;

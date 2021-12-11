@@ -69,7 +69,7 @@ export class MainComponent implements OnInit, OnDestroy {
       .fetchUsers(this.paramGetUsers)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((res) => {
         const { status, data } = res;

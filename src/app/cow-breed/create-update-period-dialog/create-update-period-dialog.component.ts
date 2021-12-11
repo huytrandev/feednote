@@ -16,6 +16,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
+import { IS_DECIMAL } from 'src/app/core/helpers';
 import { CowBreedService } from 'src/app/core/services';
 import { Vietnamese } from 'src/app/core/validations';
 
@@ -31,7 +32,6 @@ export class CreateUpdatePeriodDialogComponent implements OnInit, OnDestroy {
   period!: any;
   loading: boolean = false;
   periodId!: string;
-  decimalPattern = '^[0-9]+(.[0-9]{0,9})?$';
   isModified: boolean = false;
 
   constructor(
@@ -86,7 +86,6 @@ export class CreateUpdatePeriodDialogComponent implements OnInit, OnDestroy {
         startDay: ['', [Validators.required, Validators.min(0)]],
         endDay: ['', [Validators.required, Validators.min(0)]],
         weight: ['', [Validators.required, Validators.min(0)]],
-        // nutrition: this.fb.array([]),
       },
       {
         validator: [Vietnamese('name')],
@@ -109,7 +108,7 @@ export class CreateUpdatePeriodDialogComponent implements OnInit, OnDestroy {
         [
           Validators.required,
           Validators.min(0),
-          Validators.pattern(this.decimalPattern),
+          Validators.pattern(IS_DECIMAL),
         ],
       ],
       unit: ['', [Validators.required]],

@@ -12,32 +12,32 @@ export class MainComponent implements OnInit {
   currentUser!: any;
   managerNav = [
     {
-      path: '/qtv/nhat-ky-cho-an',
+      path: '/admin/feeding-diaries',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: '/khau-phan-an-chuan',
+      path: '/standard-meals',
       title: 'Khẩu phần ăn chuẩn',
       icon: 'assets/icons/standard-meal.svg',
     },
     {
-      path: '/qtv/ho-chan-nuoi',
+      path: '/admin/farmers',
       title: 'Hộ chăn nuôi',
       icon: 'assets/icons/farmer.svg',
     },
     {
-      path: '/giong-bo',
+      path: '/cow-breeds',
       title: 'Giống bò',
       icon: 'assets/icons/cow.svg',
     },
     {
-      path: '/thuc-an',
+      path: '/foods',
       title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
     },
     {
-      path: '/qtv/thong-ke',
+      path: '/admin/statistic',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },
@@ -45,37 +45,37 @@ export class MainComponent implements OnInit {
 
   adminNav = [
     {
-      path: '/qtv/nhat-ky-cho-an',
+      path: '/admin/feeding-diaries',
       title: 'Nhật ký cho ăn',
       icon: 'assets/icons/notes.svg',
     },
     {
-      path: '/khau-phan-an-chuan',
+      path: '/standard-meals',
       title: 'Khẩu phần ăn chuẩn',
       icon: 'assets/icons/standard-meal.svg',
     },
     {
-      path: '/qtv/nguoi-dung',
+      path: '/admin/users',
       title: 'Người dùng',
       icon: 'assets/icons/user-management.svg',
     },
     {
-      path: '/qtv/khu-vuc',
+      path: '/admin/areas',
       title: 'Khu vực',
       icon: 'assets/icons/map.svg',
     },
     {
-      path: '/giong-bo',
+      path: '/cow-breeds',
       title: 'Giống bò',
       icon: 'assets/icons/cow.svg',
     },
     {
-      path: '/thuc-an',
+      path: '/foods',
       title: 'Thức ăn',
       icon: 'assets/icons/grass.svg',
     },
     {
-      path: '/qtv/thong-ke',
+      path: '/admin/statistic',
       title: 'Thống kê',
       icon: 'assets/icons/statistics.svg',
     },

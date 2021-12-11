@@ -1,6 +1,6 @@
 <app-page-loading *ngIf="loading"></app-page-loading>
 <app-progress-bar *ngIf="loading"></app-progress-bar>
-<app-back-button [routerLink]="['/giong-bo']"></app-back-button>
+<app-back-button [routerLink]="['/cow-breeds']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div
     fxLayout="row"
@@ -105,7 +105,7 @@
               *matRowDef="let element; columns: periodColumns"
               style="cursor: pointer"
               class="app-element-row"
-              [routerLink]="['giai-doan', element._id]"
+              [routerLink]="['period', element._id]"
             ></tr>
             <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="3">Chưa có dữ liệu</td>
