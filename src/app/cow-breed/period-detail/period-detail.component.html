@@ -1,6 +1,6 @@
 <app-page-loading *ngIf="loading"></app-page-loading>
 <app-progress-bar *ngIf="loading"></app-progress-bar>
-<app-back-button [routerLink]="['/giong-bo', cowBreedId]"></app-back-button>
+<app-back-button [routerLink]="['/cow-breeds', cowBreedId]"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div
     fxLayout="row"
@@ -145,6 +145,10 @@
           (click)="onCreateMeal(period)"
         >
         </app-button-icon>
+      </div>
+
+      <div class="food-content" style="min-height: 100px;" *ngIf="fetchingMeal">
+        <app-loading *ngIf="fetchingMeal"></app-loading>
       </div>
 
       <div *ngFor="let meal of mealEachArea" class="food-content m-bottom-20">
