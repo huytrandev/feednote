@@ -4,12 +4,12 @@ import { RoleGuard } from '../core/guards';
 
 const routes: Routes = [
   {
-    path: 'thong-ke',
+    path: 'statistic',
     loadChildren: () =>
       import('./statistic/statistic.module').then((m) => m.StatisticModule),
   },
   {
-    path: 'ho-chan-nuoi',
+    path: 'farmers',
     canActivate: [RoleGuard],
     data: {
       expectedRole: ['manager'],
@@ -18,14 +18,14 @@ const routes: Routes = [
       import('./breeders/breeders.module').then((m) => m.BreedersModule),
   },
   {
-    path: 'nhat-ky-cho-an',
+    path: 'feeding-diaries',
     loadChildren: () =>
       import('./feeding-diary/feeding-diary.module').then(
         (m) => m.FeedingDiaryModule
       ),
   },
   {
-    path: 'nguoi-dung',
+    path: 'users',
     canActivate: [RoleGuard],
     data: {
       expectedRole: ['admin'],
@@ -34,7 +34,7 @@ const routes: Routes = [
       import('./users/users.module').then((m) => m.UsersModule),
   },
   {
-    path: 'khu-vuc',
+    path: 'areas',
     canActivate: [RoleGuard],
     data: {
       expectedRole: ['admin'],
@@ -44,7 +44,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'nhat-ky-cho-an',
+    redirectTo: 'feeding-diaries',
     pathMatch: 'prefix',
   }
 ];

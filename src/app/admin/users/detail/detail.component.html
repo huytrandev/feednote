@@ -1,6 +1,6 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-page-loading *ngIf="loading"></app-page-loading>
-<app-back-button [routerLink]="['/qtv/nguoi-dung']"></app-back-button>
+<app-back-button [routerLink]="['/admin/users']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy người dùng</h2>
@@ -25,7 +25,7 @@
       <mat-menu #optionsPanel="matMenu" xPosition="before">
         <app-menu-item
           [iconName]="'password'"
-          [menuItemContent]="'Thay đổi mật khẩu'"
+          [menuItemContent]="'Đổi mật khẩu'"
           (click)="resetPassword(user)"
         ></app-menu-item>
         <mat-divider></mat-divider>
@@ -77,7 +77,7 @@
           <span class="font-weight-bold">Email</span>
         </div>
         <div fxFlex>
-          <span>{{ !!user.email ? user.email : "..." }}</span>
+          <span>{{ !!user.email ? user.email : "-" }}</span>
         </div>
       </div>
 
@@ -86,7 +86,7 @@
           <span class="font-weight-bold">Số điện thoại</span>
         </div>
         <div fxFlex>
-          <span>{{ !!user.phone ? user.phone : "..." }}</span>
+          <span>{{ !!user.phone ? user.phone : "-" }}</span>
         </div>
       </div>
 

@@ -115,7 +115,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         const { status, data } = res;
         if (!status) {
-          this.router.navigate(['/404']);
+          this.router.navigate(['/not-found']);
           return;
         }
         const areas: any[] = [];
@@ -189,7 +189,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
           const { status } = res;
           if (status === true) {
             this.commonService.openAlert('Xoá giai đoạn thành công', 'success');
-            this.router.navigate(['/giong-bo', this.cowBreedId]);
+            this.router.navigate(['/cow-breeds', this.cowBreedId]);
           } else {
             this.commonService.openAlert('Xoá giai đoạn thất bại', 'danger');
           }

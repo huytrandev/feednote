@@ -66,7 +66,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
             })
           );
         }),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((val) => {
         const breeder = {
@@ -88,10 +88,10 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userService.deleteBreeder(this.breederId).subscribe((res) => {
           const { status } = res;
           if (status === true) {
-            this.commonService.openAlert('Xoá thức ăn thành công', 'success');
-            this.router.navigate(['/breeders']);
+            this.commonService.openAlert('Xoá hộ chăn nuôi thành công', 'success');
+            this.router.navigate(['/admin/farmers']);
           } else {
-            this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
+            this.commonService.openAlert('Xoá hộ chăn nuôi thất bại', 'danger');
           }
         });
       }

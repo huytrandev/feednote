@@ -25,7 +25,7 @@
             [matTooltipPosition]="'right'"
             routerLinkActive="active"
             [routerLinkActiveOptions]="
-              nav.path === '/qtv' ? { exact: true } : { exact: false }
+              nav.path === '/admin' ? { exact: true } : { exact: false }
             "
             *ngFor="
               let nav of currentUser.role === 'admin' ? adminNav : managerNav
@@ -43,7 +43,7 @@
           <mat-nav-list>
             <mat-list-item
               mat-list-item
-              [routerLink]="['/trang-ca-nhan']"
+              [routerLink]="['/profile']"
               routerLinkActive="active"
               [matTooltip]="isExpanded ? '' : 'Trang cá nhân'"
               [matTooltipPosition]="'right'"

@@ -14,7 +14,7 @@ const routes: Routes = [
     component: DetailComponent,
   },
   {
-    path: ':idCowBreed/giai-doan/:id',
+    path: ':idCowBreed/period/:id',
     component: PeriodDetailComponent,
     pathMatch: 'full',
   }

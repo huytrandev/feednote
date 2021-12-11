@@ -15,7 +15,6 @@ import { AdvancedFilter } from 'src/app/core/models';
 import {
   AuthService,
   CowBreedService,
-  FeedingDiaryService,
   FoodService,
   StatisticService,
   UserService,
@@ -174,7 +173,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         const { data, status } = res;
 
         if (!status) {
-          this.router.navigate(['/404']);
+          this.router.navigate(['/not-found']);
           return;
         }
 
@@ -210,7 +209,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         const { data, status } = res;
 
         if (!status) {
-          this.router.navigate(['/404']);
+          this.router.navigate(['/not-found']);
           return;
         }
 
@@ -227,7 +226,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         const { data, status } = res;
 
         if (!status) {
-          this.router.navigate(['/404']);
+          this.router.navigate(['/not-found']);
           return;
         }
 
@@ -245,7 +244,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         const { data, status } = res;
 
         if (!status) {
-          this.router.navigate(['/404']);
+          this.router.navigate(['/not-found']);
           return;
         }
 
@@ -263,7 +262,7 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
         const { data, status } = res;
 
         if (!status) {
-          this.router.navigate(['/404']);
+          this.router.navigate(['/not-found']);
           return;
         }
 

@@ -61,7 +61,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           const { data } = res;
           return { data };
         }),
-        catchError((_) => this.router.navigate(['/404']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((value: any) => {
         this.cowBreed = value.data;
@@ -89,7 +89,7 @@ export class DetailComponent implements OnInit, OnDestroy {
                 'Xoá giống bò thành công',
                 'success'
               );
-              this.router.navigate(['/giong-bo']);
+              this.router.navigate(['/cow-breeds']);
             } else {
               this.commonService.openAlert('Xoá giống bò thất bại', 'danger');
             }
@@ -99,12 +99,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   onDeleteNutrition(periodId: string, nutritionId: string) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false,
-    });
+    const dialogRef = this.dialog.open(DialogComponent, DELETE_DIALOG_CONFIG);
 
     dialogRef.afterClosed().subscribe((result) => {
       const { action } = result;

@@ -5,12 +5,12 @@ import { AuthGuard, RoleGuard } from './core/guards';
 
 const routes: Routes = [
   {
-    path: 'dang-nhap',
+    path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginModule),
   },
   {
-    path: '404',
+    path: 'not-found',
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('./not-found/not-found.module').then((m) => m.NotFoundModule),
@@ -25,33 +25,33 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'qtv',
+        redirectTo: 'admin',
         pathMatch: 'full',
       },
       {
-        path: 'qtv',
+        path: 'admin',
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
       },
       {
-        path: 'trang-ca-nhan',
+        path: 'profile',
         loadChildren: () =>
           import('./profile/profile.module').then((m) => m.ProfileModule),
       },
       {
-        path: 'thuc-an',
+        path: 'foods',
         loadChildren: () =>
           import('./food/food.module').then((m) => m.FoodModule),
       },
       {
-        path: 'khau-phan-an-chuan',
+        path: 'standard-meals',
         loadChildren: () =>
           import('./standard-meal/standard-meal.module').then(
             (m) => m.StandardMealModule
           ),
       },
       {
-        path: 'giong-bo',
+        path: 'cow-breeds',
         loadChildren: () =>
           import('./cow-breed/cow-breed.module').then((m) => m.CowBreedModule),
       },
@@ -59,7 +59,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '404',
+    redirectTo: 'not-found',
     pathMatch: 'full',
   },
 ];

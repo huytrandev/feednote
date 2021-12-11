@@ -48,7 +48,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       .fetchFood(this.foodIdParam)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((response) => {
         const { status } = response;
@@ -85,7 +85,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           const { status } = res;
           if (status === true) {
             this.commonService.openAlert('Xoá thức ăn thành công', 'success');
-            this.router.navigate(['/thuc-an']);
+            this.router.navigate(['/foods']);
           } else {
             this.commonService.openAlert('Xoá thức ăn thất bại', 'danger');
           }

@@ -89,7 +89,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       .fetchAreas()
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((res) => {
         const { status } = res;
@@ -108,7 +108,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       .fetchUsers()
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((res) => {
         const { status } = res;
@@ -127,7 +127,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       .fetchManagers()
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((res) => {
         const { status } = res;
@@ -145,7 +145,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       .fetchUsers()
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .pipe(
         map((res) => {

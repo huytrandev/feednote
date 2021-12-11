@@ -86,7 +86,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           const { data } = res;
           return [...data.items];
         }),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((data: any) => {
         this.areas = data;
@@ -108,7 +108,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           const { data } = res;
           return [...data.items];
         }),
-        catchError((_) => this.router.navigate(['not-found']))
+        catchError((_) => this.router.navigate(['/not-found']))
       )
       .subscribe((data: any) => {
         this.breeders = data;
@@ -128,7 +128,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
         }
       }),
       takeUntil(this.ngUnsubscribe),
-      catchError((_) => this.router.navigate(['/404']))
+      catchError((_) => this.router.navigate(['/not-found']))
     );
   }
 

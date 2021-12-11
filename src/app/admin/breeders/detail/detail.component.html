@@ -1,6 +1,6 @@
 <app-progress-bar *ngIf="loading"></app-progress-bar>
 <app-page-loading *ngIf="loading"></app-page-loading>
-<app-back-button [routerLink]="['/qtv/ho-chan-nuoi']"></app-back-button>
+<app-back-button [routerLink]="['/admin/farmers']"></app-back-button>
 <div *ngIf="!loading" class="wrapper bg-white rounded shadow">
   <div *ngIf="error">
     <h2>Không thể tìm thấy hộ dân</h2>
@@ -38,7 +38,7 @@
     <div class="content">
       <div fxLayout="row" class="m-bottom-15">
         <div fxFlex="25">
-          <span class="font-weight-bold">Tên hộ dân</span>
+          <span class="font-weight-bold">Tên chăn nuôi</span>
         </div>
         <div fxFlex>
           <span>{{ breeder.name }}</span>
@@ -50,7 +50,7 @@
           <span class="font-weight-bold">Email</span>
         </div>
         <div fxFlex>
-          <span>{{ !!breeder.email ? breeder.email : "..." }}</span>
+          <span>{{ !!breeder.email ? breeder.email : "-" }}</span>
         </div>
       </div>
 
@@ -59,7 +59,7 @@
           <span class="font-weight-bold">Số điện thoại</span>
         </div>
         <div fxFlex>
-          <span>{{ !!breeder.phone ? breeder.phone : "..." }}</span>
+          <span>{{ !!breeder.phone ? breeder.phone : "-" }}</span>
         </div>
       </div>
 
@@ -84,7 +84,7 @@
 
       <div fxLayout="row" class="m-bottom-15">
         <div fxFlex="25">
-          <span class="font-weight-bold">Tham gia vào</span>
+          <span class="font-weight-bold">Ngày tham gia</span>
         </div>
         <div fxFlex>
           <span>{{ breeder.joinedDate }}</span>

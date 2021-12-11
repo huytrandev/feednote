@@ -12,7 +12,7 @@
   <div class="update-user" fxFlex="55%" fxLayout="center center">
     <mat-card fxLayout="center center">
       <div class="update-user__banner">
-        <span>Chỉnh sửa tài khoản</span>
+        <span>Chỉnh sửa thông tin tài khoản</span>
       </div>
 
       <mat-tab-group dynamicHeight>
@@ -34,9 +34,6 @@
                   >
                   <mat-error *ngIf="f1.name.errors?.inValid"
                     >Họ tên không hợp lệ.</mat-error
-                  >
-                  <mat-error *ngIf="f1.name.errors?.minlength"
-                    >Tên phải ít nhất 3 ký tự.</mat-error
                   >
                 </mat-form-field>
 
@@ -215,11 +212,11 @@
         <div class="user-info__contact">
           <p class="user-info__phone">
             <span>Số điện thoại</span>
-            <span>{{ !!user.phone ? user.phone : "[...]" }}</span>
+            <span>{{ !!user.phone ? user.phone : "-" }}</span>
           </p>
           <p class="user-info__mail">
             <span>Email</span>
-            <span>{{ !!user.email ? user.email : "[...]" }}</span>
+            <span>{{ !!user.email ? user.email : "-" }}</span>
           </p>
           <p class="user-info__address">
             <span>Khu vực</span>
