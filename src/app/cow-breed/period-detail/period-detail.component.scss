@@ -166,8 +166,11 @@ tr.app-element-row:not(.app-expanded-row):active {
     padding: 0 15px;
   }
 
-  &-content:not(:last-child) {
-    border-bottom: 1px solid #d9d9d9;
-    margin-bottom: 20px;
+  &-content {
+    position: relative;
+    &:not(:last-child) {
+      border-bottom: 1px solid #d9d9d9;
+      margin-bottom: 20px;
+    }
   }
 }

@@ -41,6 +41,7 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   isEditing: boolean = false;
   mealEachArea: any[] = [];
   currentUser!: any;
+  fetchingMeal: boolean = true
 
   constructor(
     private route: ActivatedRoute,
@@ -102,13 +103,12 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
   }
 
   getMeals() {
-    this.loading = true;
     const query = {
       filter: {
         idPeriod: this.periodId,
       },
     };
-
+    this.fetchingMeal = true
     this.mealService
       .fetchMeals(query)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -173,9 +173,8 @@ export class PeriodDetailComponent implements OnInit, OnDestroy {
           })
           this.mealEachArea = meal
         }
-
-        this.loading = false;
       });
+      this.fetchingMeal = false
   }
 
   onDeletePeriod() {
