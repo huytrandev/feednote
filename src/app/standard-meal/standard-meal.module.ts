@@ -7,9 +7,11 @@ import { StandardMealRoutingModule } from './standar-meal-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared';
 import { MaterialModule } from '../material';
+import { DownloadComponent } from './download/download.component';
+import { CreateMealComponent } from './create-meal/create-meal.component';
 
 @NgModule({
-  declarations: [MainComponent],
+  declarations: [MainComponent, DownloadComponent, CreateMealComponent],
   imports: [
     CommonModule,
     StandardMealRoutingModule,

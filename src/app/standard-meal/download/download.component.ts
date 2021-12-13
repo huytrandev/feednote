@@ -1,54 +1,58 @@
-import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { AreaService, CommonService, MealService } from 'src/app/core/services';
+import { AreaService, CommonService, CowBreedService, MealService } from 'src/app/core/services';
 
 @Component({
-  selector: 'app-download-standard-serving-dialog',
-  templateUrl: './download-standard-serving-dialog.component.html',
-  styleUrls: ['./download-standard-serving-dialog.component.scss'],
+  selector: 'app-download',
+  templateUrl: './download.component.html',
+  styleUrls: ['./download.component.scss']
 })
-export class DownloadStandardServingDialogComponent
-  implements OnInit, OnDestroy {
-  protected ngUnsubscribe: Subject<void> = new Subject<void>();
+export class DownloadComponent implements OnInit, OnDestroy {
+  protected ngUnsubscribe: Subject<void> = new Subject<void>()
   form = new FormGroup({
+    idCowBreed: new FormControl('', [Validators.required]),
     idArea: new FormControl('', [Validators.required]),
   });
+
   loading: boolean = false;
   submitted: boolean = false;
   selectedArea!: string;
-  cowBreed!: any;
+  selectedCowBreed!: string;
 
+  cowBreeds: any[] = []
   areas: any[] = [];
 
   constructor(
     public dialog: MatDialog,
-    public dialogRef: MatDialogRef<DownloadStandardServingDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<DownloadComponent>,
     private areaService: AreaService,
+    private cowBreedService: CowBreedService,
     private mealService: MealService,
     private commonService: CommonService
-  ) {
-    this.cowBreed = data.cowBreed;
-  }
+  ) { }
 
   ngOnInit(): void {
-    this.fetchAreas();
+    this.fetchCowBreeds()
+    this.fetchAreas()
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  fetchCowBreeds() {
+    this.loading = true;
+    this.cowBreedService
+      .fetchCowBreeds()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        this.cowBreeds = res.data.items;
+        this.loading = false;
+      });
   }
 
   fetchAreas() {
@@ -74,7 +78,7 @@ export class DownloadStandardServingDialogComponent
     this.submitted = true;
 
     const params = {
-      idCowBreed: this.cowBreed._id,
+      idCowBreed: this.form.get('idCowBreed')?.value,
       idArea: this.form.get('idArea')?.value,
     };
 

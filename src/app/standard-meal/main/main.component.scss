@@ -30,6 +30,20 @@ table {
     top: 20px;
     box-shadow: $box-shadow;
   }
+
+  &-download-button {
+    background: #fff;
+    position: fixed;
+    top: 130px;
+    box-shadow: $box-shadow;
+  }
+
+  &-create-button {
+    background: #fff;
+    position: fixed;
+    top: 75px;
+    box-shadow: $box-shadow;
+  }
 }
 
 .filter {

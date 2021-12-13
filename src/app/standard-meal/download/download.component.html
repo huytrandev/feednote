@@ -1,0 +1,64 @@
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <div fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
+    <h2>Tải xuống khẩu phần ăn chuẩn</h2>
+    <app-button-icon
+      [iconName]="'close'"
+      matTooltip="Đóng"
+      (click)="onClose()"
+    ></app-button-icon>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content>
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Giống bò <span class="color-red">(*)</span></mat-label>
+        <mat-select formControlName="idCowBreed">
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let cowBreed of cowBreeds" [value]="cowBreed._id">
+            {{ cowBreed.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('idCowBreed')?.errors?.required"
+          >Vui lòng chọn giống bò.</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
+        <mat-select formControlName="idArea">
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let area of areas" [value]="area._id">
+            {{ area.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('idArea')?.errors?.required"
+          >Vui lòng chọn khu vực.</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <div
+      class="button-group"
+      mat-dialog-actions
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxLayoutGap="10px"
+    >
+      <app-button
+        [buttonType]="'submit'"
+        [customClasses]="['app-button-brown']"
+        [disabledCondition]="!form.valid || submitted"
+        [showSpinner]="submitted"
+        [buttonContent]="'Tải xuống'"
+      ></app-button>
+
+      <app-button
+        [buttonType]="'button'"
+        [customClasses]="['app-button-grey']"
+        [buttonContent]="'Huỷ bỏ'"
+        (click)="onClose()"
+      ></app-button>
+    </div>
+  </form>
+</div>
