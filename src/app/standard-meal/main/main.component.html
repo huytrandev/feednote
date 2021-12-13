@@ -2,12 +2,35 @@
 <div class="filter">
   <button
     mat-icon-button
+    matTooltip="Tìm kiếm"
+    [matTooltipPosition]="'right'"
     class="meal-filter-button"
     (click)="onShowFilter()"
     [disabled]="fetchingFilter"
   >
     <mat-icon class="material-icons-outlined app-icon">search</mat-icon>
   </button>
+
+  <button
+    mat-icon-button
+    matTooltip="Thêm mới"
+    [matTooltipPosition]="'right'"
+    class="meal-create-button"
+    (click)="onCreateMeal()"
+  >
+    <mat-icon class="material-icons-outlined app-icon">add</mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    matTooltip="Tải xuống"
+    [matTooltipPosition]="'right'"
+    class="meal-download-button"
+    (click)="onDownloadStandardMeal()"
+  >
+    <mat-icon class="material-icons-outlined app-icon">file_download</mat-icon>
+  </button>
+
   <div
     class="bg-white rounded shadow filter-options"
     [ngClass]="{ hide: isShowFilter }"
@@ -70,6 +93,7 @@
     </mat-form-field>
   </div>
 </div>
+
 <div class="wrapper">
   <div class="meal-container">
     <div

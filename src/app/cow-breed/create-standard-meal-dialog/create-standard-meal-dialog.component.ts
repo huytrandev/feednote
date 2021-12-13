@@ -142,7 +142,8 @@ export class CreateStandardMealDialogComponent implements OnInit {
 
   onSubmit() {
     if (!this.form.valid) return;
-
+    
+    this.submitted = true;
     const foods = [...this.form.get('idsFood')?.value].map((item) => {
       return {
         idFood: item._id,
@@ -165,7 +166,6 @@ export class CreateStandardMealDialogComponent implements OnInit {
       };
     }
 
-    this.submitted = true;
     this.mealService.createMeal(meal).subscribe((res) => {
       const { status, data } = res;
       if (!status) {

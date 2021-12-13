@@ -9,6 +9,11 @@ import {
   MealService,
 } from 'src/app/core/services';
 import { getTypeFoodName, formatDate } from 'src/app/core/helpers/functions'
+import { MatDialog } from '@angular/material/dialog';
+import { CREATE_UPDATE_DIALOG_CONFIG } from 'src/app/core/constant';
+import { DownloadComponent } from '../download/download.component';
+import { CreateMealComponent } from '../create-meal/create-meal.component';
+import { PreviewStandardMealDialogComponent } from 'src/app/cow-breed/preview-standard-meal-dialog/preview-standard-meal-dialog.component';
 
 @Component({
   selector: 'app-main',
@@ -40,7 +45,8 @@ export class MainComponent implements OnInit, OnDestroy {
     private mealService: MealService,
     private cowBreedService: CowBreedService,
     private areaService: AreaService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -189,5 +195,50 @@ export class MainComponent implements OnInit, OnDestroy {
 
   onShowFilter(): void {
     this.isShowFilter = !this.isShowFilter;
+  }
+
+  onDownloadStandardMeal () {
+    this.dialog.open(DownloadComponent, CREATE_UPDATE_DIALOG_CONFIG)
+  }
+  
+  onCreateMeal () {
+    const dialog = this.dialog.open(CreateMealComponent, CREATE_UPDATE_DIALOG_CONFIG)
+
+    dialog.afterClosed().subscribe((res) => {
+      const { status } = res;
+      if (status === 'fail') {
+        //
+      } else if (status === 'success') {
+        const { data, periodId } = res;
+        this.selectedCowBreedPeriod = periodId
+        const previewMealDialog = this.dialog.open(
+          PreviewStandardMealDialogComponent,
+          {
+            ...CREATE_UPDATE_DIALOG_CONFIG,
+            width: '50%',
+            maxWidth: '700px',
+            data: {
+              ...data,
+              idPeriod: periodId,
+            },
+          }
+        );
+
+        previewMealDialog.afterClosed().subscribe((res) => {
+          if (res.status === 'fail') {
+            this.commonService.openAlert(
+              'Lưu khẩu phần ăn chuẩn thất bại',
+              'danger'
+            );
+          } else if (res.status === 'success') {
+            this.commonService.openAlert(
+              'Lưu khẩu phần ăn chuẩn thành công',
+              'success'
+            );
+            this.getMeals();
+          }
+        });
+      }
+    });
   }
 }
