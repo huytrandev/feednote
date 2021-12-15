@@ -1,5 +1,8 @@
 # FeedNote - Front-end Project
 
+## Production
+-- https://feednote-38ab8.firebaseapp.com/
+
 ## Tech
 
 - [Angular](https://angular.io/)
