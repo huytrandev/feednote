@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { environment as env } from 'src/environments/environment';
-import { AdvancedFilter, FilterDto } from '../models';
+import { environment } from 'src/environments/environment';
+import { AdvancedFilter } from '../models';
 
 import { User } from '../models';
 
@@ -10,6 +10,8 @@ import { User } from '../models';
   providedIn: 'root',
 })
 export class UserService {
+  private API_URL = environment.API_URL
+
   constructor(private http: HttpClient) {}
 
   // User
@@ -21,29 +23,29 @@ export class UserService {
       .set('sort', input?.sort ? String(input?.sort) : '')
       .set('filter', input?.filter ? JSON.stringify(input.filter) : '');
 
-    return this.http.get<any>(`${env.apiUrl}/admin/user`, { params });
+    return this.http.get<any>(`${this.API_URL}/admin/user`, { params });
   }
 
   fetchUser(id: string) {
-    return this.http.get<any>(`${env.apiUrl}/admin/user/${id}`);
+    return this.http.get<any>(`${this.API_URL}/admin/user/${id}`);
   }
 
   createUser(user: User) {
     return this.http.post<any>(
-      `${env.apiUrl}/admin/user`,
+      `${this.API_URL}/admin/user`,
       JSON.stringify(user)
     );
   }
 
   updateUser(userId: string, user: User) {
     return this.http.put<any>(
-      `${env.apiUrl}/admin/user/${userId}`,
+      `${this.API_URL}/admin/user/${userId}`,
       JSON.stringify(user)
     );
   }
 
   deleteUser(userId: string) {
-    return this.http.delete<any>(`${env.apiUrl}/admin/user/${userId}`);
+    return this.http.delete<any>(`${this.API_URL}/admin/user/${userId}`);
   }
 
   // Breeder
@@ -55,26 +57,26 @@ export class UserService {
       .set('sort', input?.sort ? String(input?.sort) : '')
       .set('filter', input?.filter ? JSON.stringify(input.filter) : '');
 
-    return this.http.get<any>(`${env.apiUrl}/user/getAllBreeder`, { params });
+    return this.http.get<any>(`${this.API_URL}/user/getAllBreeder`, { params });
   }
 
   fetchBreeder(breederId: string) {
-    return this.http.get<any>(`${env.apiUrl}/user/${breederId}`);
+    return this.http.get<any>(`${this.API_URL}/user/${breederId}`);
   }
 
   createBreeder(breeder: User) {
-    return this.http.post<any>(`${env.apiUrl}/user`, JSON.stringify(breeder));
+    return this.http.post<any>(`${this.API_URL}/user`, JSON.stringify(breeder));
   }
 
   updateBreeder(breederId: string, breeder: User) {
     return this.http.put<any>(
-      `${env.apiUrl}/user/${breederId}`,
+      `${this.API_URL}/user/${breederId}`,
       JSON.stringify(breeder)
     );
   }
 
   deleteBreeder(breederId: string) {
-    return this.http.delete<any>(`${env.apiUrl}/user/${breederId}`);
+    return this.http.delete<any>(`${this.API_URL}/user/${breederId}`);
   }
 
   // Manager
@@ -84,17 +86,17 @@ export class UserService {
       JSON.stringify({ role: 'manager' })
     );
 
-    return this.http.get<any>(`${env.apiUrl}/admin/user`, { params });
+    return this.http.get<any>(`${this.API_URL}/admin/user`, { params });
   }
 
   // Personal
   fetchPersonalInfo() {
-    return this.http.get<any>(`${env.apiUrl}/user/info`);
+    return this.http.get<any>(`${this.API_URL}/user/info`);
   }
 
   updatePersonalInfo(input: any) {
     return this.http.put<any>(
-      `${env.apiUrl}/user/update`,
+      `${this.API_URL}/user/update`,
       JSON.stringify(input)
     );
   }

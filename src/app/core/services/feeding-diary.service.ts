@@ -1,13 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { environment as env } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 import { AdvancedFilter } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FeedingDiaryService {
+  private API_URL = environment.API_URL
+  
   constructor(private http: HttpClient) {}
 
   fetchFeedingDiaries(inputParams?: AdvancedFilter) {
@@ -20,10 +22,10 @@ export class FeedingDiaryService {
       .set('to', inputParams?.to ? String(inputParams?.to) : '')
       .set('filter', inputParams?.filter ? JSON.stringify(inputParams?.filter) : '');
 
-    return this.http.get<any>(`${env.apiUrl}/diaryFeed`, { params });
+    return this.http.get<any>(`${this.API_URL}/diaryFeed`, { params });
   }
 
   fetchFeedingDiaryById(feedingDiaryId: string) {
-    return this.http.get<any>(`${env.apiUrl}/diaryFeed/${feedingDiaryId}`);
+    return this.http.get<any>(`${this.API_URL}/diaryFeed/${feedingDiaryId}`);
   }
 }

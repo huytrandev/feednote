@@ -1,13 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { environment as env } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 import { AdvancedFilter } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StatisticService {
+  private API_URL = environment.API_URL
+
   constructor(private http: HttpClient) {}
 
   fetchCowStatistic(query: AdvancedFilter) {
@@ -17,6 +19,6 @@ export class StatisticService {
       .set('to', query.to ? String(query.to) : '')
       .set('groupBy', query.groupBy ? String(query.groupBy) : '');
 
-    return this.http.get<any>(`${env.apiUrl}/cow/statistic`, { params });
+    return this.http.get<any>(`${this.API_URL}/cow/statistic`, { params });
   }
 }

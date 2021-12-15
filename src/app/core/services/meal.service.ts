@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment as env } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 import { AdvancedFilter, Food } from '../models';
 
 export interface ParamsForMealFile {
@@ -12,6 +12,8 @@ export interface ParamsForMealFile {
   providedIn: 'root',
 })
 export class MealService {
+  private API_URL = environment.API_URL
+  
   constructor(private http: HttpClient) {}
 
   fetchMeals(input?: AdvancedFilter) {
@@ -22,11 +24,11 @@ export class MealService {
       .set('search', input?.search ? String(input.search) : '')
       .set('sort', input?.sort ? String(input.sort) : '');
 
-    return this.http.get<any>(`${env.apiUrl}/meal`, { params });
+    return this.http.get<any>(`${this.API_URL}/meal`, { params });
   }
 
   fetchMeal(mealId: string) {
-    return this.http.get<any>(`${env.apiUrl}/meal/${mealId}`);
+    return this.http.get<any>(`${this.API_URL}/meal/${mealId}`);
   }
 
   fetchMealDataFile(filter: ParamsForMealFile) {
@@ -36,7 +38,7 @@ export class MealService {
       params,
     };
 
-    return this.http.get<any>(`${env.apiUrl}/meal/file`, options);
+    return this.http.get<any>(`${this.API_URL}/meal/file`, options);
   }
 
   generateMealDataFile(meal: any) {
@@ -45,7 +47,7 @@ export class MealService {
     };
 
     return this.http.post<any>(
-      `${env.apiUrl}/meal/file`,
+      `${this.API_URL}/meal/file`,
       JSON.stringify(meal),
       options
     );
@@ -53,34 +55,34 @@ export class MealService {
 
   createMeal(meal: any) {
     return this.http.post<any>(
-      `${env.apiUrl}/meal/create`,
+      `${this.API_URL}/meal/create`,
       JSON.stringify(meal)
     );
   }
 
   createFoodOfMeal(mealId: string, foods: Food) {
     return this.http.post<any>(
-      `${env.apiUrl}/meal/${mealId}/food`,
+      `${this.API_URL}/meal/${mealId}/food`,
       JSON.stringify(foods)
     );
   }
 
   saveMeal(meal: any) {
-    return this.http.post<any>(`${env.apiUrl}/meal`, JSON.stringify(meal));
+    return this.http.post<any>(`${this.API_URL}/meal`, JSON.stringify(meal));
   }
 
   updateFoodOfMeal(mealId: string, foodId: string, foods: Food) {
     return this.http.put<any>(
-      `${env.apiUrl}/meal/${mealId}/food/${foodId}`,
+      `${this.API_URL}/meal/${mealId}/food/${foodId}`,
       JSON.stringify(foods)
     );
   }
 
   deleteMeal(mealId: string) {
-    return this.http.delete<any>(`${env.apiUrl}/meal/${mealId}`);
+    return this.http.delete<any>(`${this.API_URL}/meal/${mealId}`);
   }
 
   deleteFood(mealId: string, foodId: string) {
-    return this.http.delete<any>(`${env.apiUrl}/meal/${mealId}/food/${foodId}`);
+    return this.http.delete<any>(`${this.API_URL}/meal/${mealId}/food/${foodId}`);
   }
 }
