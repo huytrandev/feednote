@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  // API_URL: 'https://cow-management-service.herokuapp.com/api',
   API_URL: 'http://localhost:3000/api'
 };
 
