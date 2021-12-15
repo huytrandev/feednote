@@ -4,13 +4,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 
-import { environment as env } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private API_URL = environment.API_URL
   // private currentUserSubject: BehaviorSubject<any>;
   // public currentUser: Observable<any>;
 
@@ -30,7 +31,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http
-      .post<any>(`${env.apiUrl}/auth/login`, { username, password })
+      .post<any>(`${this.API_URL}/auth/login`, { username, password })
       .pipe(
         map((res) => {
           const { status, data } = res;
@@ -61,18 +62,18 @@ export class AuthService {
   }
 
   revokeToken() {
-    return this.http.get<any>(`${env.apiUrl}/auth/logout`);
+    return this.http.get<any>(`${this.API_URL}/auth/logout`);
   }
 
   changePassword(password: string) {
-    return this.http.put<any>(`${env.apiUrl}/user/changePassword`, {
+    return this.http.put<any>(`${this.API_URL}/user/changePassword`, {
       password,
     });
   }
 
   resetPassword(userId: string) {
     return this.http.put<any>(
-      `${env.apiUrl}/admin/user/${userId}/resetPassword`,
+      `${this.API_URL}/admin/user/${userId}/resetPassword`,
       null
     );
   }
