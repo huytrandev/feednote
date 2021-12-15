@@ -1,7 +1,7 @@
 # FeedNote - Front-end Project
 
 ## Production
--- https://feednote-38ab8.firebaseapp.com/
+- https://feednote-38ab8.web.app
 
 ## Tech
 
