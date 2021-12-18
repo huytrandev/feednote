@@ -112,6 +112,12 @@ export class StatisticComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.breeders = {
+      items: []
+    }
+    this.cowBreeds = {
+      items: []
+    }
     if (this.currentUser.role === 'admin') {
       this.fetchUsers();
     } else {
