@@ -174,6 +174,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getFeedingDiaries() {
     this.loading = true;
+    this.diaries = []
     this.feedingDiaryService
       .fetchFeedingDiaries(this.params)
       .pipe(takeUntil(this.ngUnsubscribe), delay(500))
@@ -253,36 +254,76 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   
   onSearch(e: any) {
     clearTimeout(this.timeOutInput);
+    const { from, to } = this.dateRange.value;
     const input = e.target.value;
+    let fromQuery: string = ''
+    let toQuery: string = ''
+
+    if (from || to) {
+      fromQuery = !!from ? moment(from).format('YYYY-MM-DD') : '';
+      toQuery = !!to ? moment(to).format('YYYY-MM-DD') : '';
+    }
 
     this.timeOutInput = setTimeout(() => {
-      if (input === '' || input.length === 0) {
-        this.setParams(
-          undefined,
-          this.defaultPageSize,
-          undefined,
-          this.defaultSort,
-          undefined,
-          undefined,
-          {
-            idManager: this.currentUser._id,
-          }
-        );
+      if (!input) {
+        if (this.isInCorrect) {
+          this.setParams(
+            undefined,
+            this.defaultPageSize,
+            undefined,
+            this.defaultSort,
+            fromQuery,
+            toQuery,
+            {
+              idManager: this.currentUser._id,
+              isCorrect: false
+            }
+          );
+        } else {
+          this.setParams(
+            undefined,
+            this.defaultPageSize,
+            undefined,
+            this.defaultSort,
+            fromQuery,
+            toQuery,
+            {
+              idManager: this.currentUser._id,
+            }
+          );
+        }
+        
         this.getFeedingDiaries();
         return;
       }
 
-      this.setParams(
-        undefined,
-        this.defaultPageSize,
-        input,
-        this.defaultSort,
-        undefined,
-        undefined,
-        {
-          idManager: this.currentUser._id,
-        }
-      );
+      if (this.isInCorrect) {
+        this.setParams(
+          undefined,
+          this.defaultPageSize,
+          input,
+          this.defaultSort,
+          fromQuery,
+          toQuery,
+          {
+            idManager: this.currentUser._id,
+            isCorrect: false
+          }
+        );
+      } else {
+        this.setParams(
+          undefined,
+          this.defaultPageSize,
+          input,
+          this.defaultSort,
+          fromQuery,
+          toQuery,
+          {
+            idManager: this.currentUser._id,
+          }
+        );
+      }
+      
       this.getFeedingDiaries();
     }, 500);
   }
@@ -317,11 +358,40 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   onPagination(event: any) {
     const limit = event.pageSize;
     const skip = event.pageIndex * limit;
+    const { from, to } = this.dateRange.value;
     const { active, direction } = this.sort;
     let sortQuery = active ? `${active} ${direction}` : this.defaultSort;
-    this.setParams(skip, limit, undefined, sortQuery, undefined, undefined, {
-      idManager: this.currentUser._id,
-    });
+    let params: AdvancedFilter = {
+      skip,
+      limit,
+      search: '',
+      sort: sortQuery
+    }
+    if (!this.selectedBreeder) {
+      params.filter = {
+        idManager: this.currentUser._id
+      }
+    } else {
+      params.filter = {
+        idUser: this.selectedBreeder
+      }
+    }
+    if (from || to) {
+      let fromQuery = !!from ? moment(from).format('YYYY-MM-DD') : '';
+      let toQuery = !!to ? moment(to).format('YYYY-MM-DD') : '';
+      params.from = fromQuery
+      params.to = toQuery
+    }
+    
+    if (this.isInCorrect) {
+      let filter = {
+        ...params.filter,
+        isCorrect: false
+      }
+
+      params.filter = filter
+    }
+    this.params = params
     this.getFeedingDiaries();
   }
 }
