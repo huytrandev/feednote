@@ -99,35 +99,39 @@ export class MainComponent implements OnInit, OnDestroy {
           return;
         }
 
-
-        const meal = data.items.map((item: any) => {
-          const foods = item.foods.map((food: any) => {
-            const ratio = food.ratio ? (food.ratio * 100).toFixed(2) : 0
+        let meal: any[] = []
+        if (data && data.items && data.items.length > 0) {
+          meal = data.items.map((item: any) => {
+            const foods = item.foods.map((food: any) => {
+              const ratio = food.ratio ? (food.ratio * 100).toFixed(2) : 0
+              return {
+                ...food,
+                ratio: Number(ratio),
+                type: getTypeFoodName(food.type)
+              }
+            })
+  
             return {
-              ...food,
-              ratio: Number(ratio),
-              type: getTypeFoodName(food.type)
+              ...item,
+              foods,
+              createdAt: formatDate(item.createdAt)
             }
           })
 
-          return {
-            ...item,
-            foods,
-            createdAt: formatDate(item.createdAt)
+          let mealAfterGroupByPeriod = meal.reduce((r: any, a: any) => {
+            r[a.idPeriod] = r[a.idPeriod] || [];
+            r[a.idPeriod].push(a);
+            return r;
+          }, Object.create(null));
+          
+          let mealFinal: any[] = []
+          for (let key in mealAfterGroupByPeriod) {
+            mealFinal = [...mealFinal, ...mealAfterGroupByPeriod[key]]
           }
-        })
-
-        let mealAfterGroupByPeriod = meal.reduce((r: any, a: any) => {
-          r[a.idPeriod] = r[a.idPeriod] || [];
-          r[a.idPeriod].push(a);
-          return r;
-        }, Object.create(null));
-        
-        let mealFinal: any[] = []
-        for (let key in mealAfterGroupByPeriod) {
-          mealFinal = [...mealFinal, ...mealAfterGroupByPeriod[key]]
+          meal = mealFinal
         }
-        this.mealList = mealFinal;
+
+        this.mealList = meal;
         this.fetching = false;
       });
   }

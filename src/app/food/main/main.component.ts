@@ -75,12 +75,16 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((res) => {
         const { data } = res;
         this.totalCount = data.totalCount;
-        const foods = data.items.map((food: any) => {
-          return {
-            ...food,
-            typeName: getTypeFoodName(food.type)
-          }
-        })
+        let foods: any[] = []
+        if (data && data.items && data.items.length > 0) {
+          foods = data.items.map((food: any) => {
+            return {
+              ...food,
+              typeName: getTypeFoodName(food.type)
+            }
+          })
+        }
+
         this.dataTableSource = new MatTableDataSource(foods);
         this.loading = false;
       });
