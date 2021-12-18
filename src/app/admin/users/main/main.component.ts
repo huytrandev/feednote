@@ -77,15 +77,18 @@ export class MainComponent implements OnInit, OnDestroy {
           this.loading = false;
           return;
         }
-        this.totalCount = data.totalCount;
-        const users = data.items.map((u: any) => {
-          return {
-            ...u,
-            roleName: getRoleName(u.role),
-            joinedDate: formatDate(u.createdAt)
-          }
-        })
-
+        this.totalCount = data.totalCount ? data.totalCount : 0
+        let users: any[] = []
+        if (data && data.items && data.items.length > 0) {
+          users = data.items.map((u: any) => {
+            return {
+              ...u,
+              roleName: getRoleName(u.role),
+              joinedDate: formatDate(u.createdAt)
+            }
+          })
+        }
+        
         this.dataTableSource = new MatTableDataSource(users);
         this.loading = false;
       });

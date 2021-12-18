@@ -67,8 +67,12 @@ export class MainComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const { data } = res;
-        this.totalCount = data.totalCount;
-        this.dataTableSource = new MatTableDataSource(data.items);
+        this.totalCount = data.totalCount ? data.totalCount : 0
+        let cowBreeds: any[] = []
+        if (data && data.items && data.items.length > 0) {
+          cowBreeds = data.items
+        }
+        this.dataTableSource = new MatTableDataSource(cowBreeds)
         this.loading = false;
       });
   }

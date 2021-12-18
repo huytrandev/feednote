@@ -89,13 +89,17 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
           this.loading = false;
           return;
         }
-        this.totalCount = data.totalCount;
-        const breeders = data.items.map((b: any) => {
-          return {
-            ...b,
-            joinedDate: formatDate(b.createdAt)
-          }
-        })
+        this.totalCount = data.totalCount ? data.totalCount : 0;
+        let breeders: any[] = []
+        if (data && data.items && data.items.length > 0) {
+          breeders = data.items.map((b: any) => {
+            return {
+              ...b,
+              joinedDate: formatDate(b.createdAt)
+            }
+          })
+        }
+        
         this.dataTableSource = new MatTableDataSource(breeders);
         this.loading = false;
       });

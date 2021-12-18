@@ -244,6 +244,6 @@ export class CreateMealComponent implements OnInit {
           (item: any) => item.amount === 0
         );
         this.allowCreateMeal = nutritionValueZero ? false : true
-      });
+      })
   }
 }

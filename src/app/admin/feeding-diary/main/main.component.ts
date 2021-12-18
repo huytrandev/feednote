@@ -109,16 +109,15 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (this.isInCorrect) {
-      if ('idUser' in filterQuery) {
-        delete filterQuery.idUser;
-      }
-
-      this.selectedBreeder = '';
       filterQuery['isCorrect'] = !this.isInCorrect;
     } else {
       if ('isCorrect' in filterQuery) {
         delete filterQuery.isCorrect;
       }
+    }
+
+    if ('idUser' in filterQuery) {
+      delete filterQuery.idManager;
     }
 
     this.setParams(
@@ -186,12 +185,16 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.totalCount = data.totalCount;
-        const diaries = data.items.map((item: any) => {
-          return {
-            ...item,
-            createdAt: formatDate(item.createdAt)
-          }
-        })
+        let diaries: any[] = []
+        if (data && data.items) {
+          diaries = data.items.map((item: any) => {
+            return {
+              ...item,
+              createdAt: formatDate(item.createdAt)
+            }
+          })
+        }
+        
         this.dataTableSource = new MatTableDataSource(diaries);
         this.loading = false;
       });
