@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
-import { MainModule } from './main/main.module';
+import { MainModule } from './pages/main/main.module';
 
 @NgModule({
   declarations: [AppComponent],
