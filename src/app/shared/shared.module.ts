@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { LoadingComponent } from './loading/loading.component';
 import { DialogComponent } from './dialog/dialog.component';
-import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { PageLoadingComponent } from './page-loading/page-loading.component';
 import { ButtonIconComponent } from './button-icon/button-icon.component';
@@ -17,7 +16,6 @@ import { IconComponent } from './icon/icon.component';
   declarations: [
     LoadingComponent,
     DialogComponent,
-    ScrollToTopComponent,
     ProgressBarComponent,
     PageLoadingComponent,
     ButtonIconComponent,
@@ -33,7 +31,6 @@ import { IconComponent } from './icon/icon.component';
   exports: [
     LoadingComponent,
     DialogComponent,
-    ScrollToTopComponent,
     ProgressBarComponent,
     PageLoadingComponent,
     ButtonIconComponent,
