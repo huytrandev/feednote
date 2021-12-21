@@ -14,10 +14,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
 import {
   AreaService,
+  CommonService,
   UserService,
 } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
@@ -52,6 +53,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private areaService: AreaService,
     public dialog: MatDialog,
+    private commonService: CommonService,
     public dialogRef: MatDialogRef<CreateUpdateComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -140,25 +142,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       });
   }
 
-  validateUsernameExist(control: AbstractControl) {
-    return this.userService
-      .fetchUsers()
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((_) => this.router.navigate(['/not-found']))
-      )
-      .pipe(
-        map((res) => {
-          const users = res.data.items;
-          if (users.some((b: any) => b.username === control.value)) {
-            return { usernameExisted: true };
-          } else {
-            return null;
-          }
-        })
-      );
-  }
-
   buildForm(): void {
     this.form = this.fb.group(
       {
@@ -169,7 +152,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
             Validators.minLength(5),
             Validators.pattern(USERNAME),
           ],
-          this.validateUsernameExist.bind(this),
         ],
         password: ['', [Validators.required, Validators.minLength(5)]],
         isManager: [false],
@@ -209,23 +191,31 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     if (!this.user) {
       this.userService
         .createUser({ ...this.form.value, role })
+        .pipe(
+          catchError(err => of(err))
+        )
         .subscribe((res) => {
-          const { status } = res;
-          if (!status) {
+          if (res === 'username existed') {
+            this.commonService.openAlert('Tên tài khoản đã tồn tại', 'danger')
+            this.submitted = false
+          } else {
+            const { status } = res;
+            if (!status) {
+              this.submitted = false;
+              this.dialogRef.close({
+                type: 'create',
+                status: 'fail',
+              });
+              return;
+            }
+
+            this.formGroupDirective.resetForm();
             this.submitted = false;
             this.dialogRef.close({
               type: 'create',
-              status: 'fail',
+              status: 'success',
             });
-            return;
           }
-
-          this.formGroupDirective.resetForm();
-          this.submitted = false;
-          this.dialogRef.close({
-            type: 'create',
-            status: 'success',
-          });
         });
     } else {
       if (isManager) {

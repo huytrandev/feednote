@@ -14,10 +14,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { catchError, delay, map, takeUntil } from 'rxjs/operators';
 
-import { AreaService, AuthService, UserService } from 'src/app/core/services';
+import { AreaService, AuthService, CommonService, UserService } from 'src/app/core/services';
 import { Area, User } from 'src/app/core/models';
 import { Vietnamese } from 'src/app/core/validations';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -46,6 +46,7 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private areaService: AreaService,
+    private commonService: CommonService,
     public dialogRef: MatDialogRef<CreateUpdateComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -116,22 +117,6 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
       });
   }
 
-  validateUsernameExist(control: AbstractControl) {
-    return this.userService.fetchBreeders().pipe(
-      delay(500),
-      map((res) => {
-        const breeders = res.data.items;
-        if (breeders.some((b: any) => b.username === control.value)) {
-          return { usernameExisted: true };
-        } else {
-          return null;
-        }
-      }),
-      takeUntil(this.ngUnsubscribe),
-      catchError((_) => this.router.navigate(['/not-found']))
-    );
-  }
-
   buildForm(): void {
     this.form = this.fb.group(
       {
@@ -139,10 +124,8 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
           '',
           [
             Validators.required,
-            Validators.minLength(5),
             Validators.pattern(USERNAME),
           ],
-          this.validateUsernameExist.bind(this),
         ],
         password: ['', [Validators.required, Validators.minLength(5)]],
         name: ['', [Validators.required, Validators.minLength(5)]],
@@ -163,30 +146,39 @@ export class CreateUpdateComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (!this.form.valid) return;
     this.submitted = true;
-    
+
     const breeder = {
       ...this.form.value,
       idArea: this.currentUser.idArea
     }
 
     if (!this.breeder) {
-      this.userService.createBreeder(breeder).subscribe((res) => {
-        const { status } = res;
-        if (!status) {
-          this.submitted = false;
-          this.dialogRef.close({
-            type: 'create',
-            status: 'fail',
-          });
-          return;
-        }
+      this.userService.createBreeder(breeder)
+        .pipe(
+          catchError(err => of(err))
+        )
+        .subscribe((res) => {
+          if (res === 'username existed') {
+            this.commonService.openAlert('Tên tài khoản đã tồn tại', 'danger')
+            this.submitted = false
+          } else {
+            const { status } = res;
+            if (!status) {
+              this.submitted = false;
+              this.dialogRef.close({
+                type: 'create',
+                status: 'fail',
+              });
+              return;
+            }
 
-        this.submitted = false;
-        this.dialogRef.close({
-          type: 'create',
-          status: 'success',
+            this.submitted = false;
+            this.dialogRef.close({
+              type: 'create',
+              status: 'success',
+            });
+          }
         });
-      });
     } else {
       this.userService
         .updateBreeder(this.breeder._id, breeder)

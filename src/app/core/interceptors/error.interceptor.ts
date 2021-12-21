@@ -25,7 +25,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.authService.logout();
         }
         
-        this.router.navigate(['/not-found']);
+        // this.router.navigate(['/not-found']);
         const error = err.error.message || err.statusText;
         return throwError(error);
       })
