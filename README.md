@@ -1,4 +1,4 @@
-# FeedNote - Front-end Project
+# FeedNote
 
 ## Production
 - https://feednote-38ab8.web.app
@@ -20,7 +20,6 @@ npm install -g @angular/cli
 Install the dependencies and start the server
 
 ```sh
-cd fe-thesis
 npm i
 npm run dev
 ```
