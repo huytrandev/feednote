@@ -2,11 +2,7 @@
 <div *ngIf="!loading">
   <div fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
     <h2>Tải xuống khẩu phần ăn chuẩn</h2>
-    <app-button-icon
-      [iconName]="'close'"
-      matTooltip="Đóng"
-      (click)="onClose()"
-    ></app-button-icon>
+    <app-button-icon [iconName]="'close'" matTooltip="Đóng" (click)="onClose()"></app-button-icon>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -20,26 +16,18 @@
         </div>
       </div>
       <mat-form-field appearance="outline" style="width: 100%">
-        <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
+        <mat-label>Khu vực</mat-label>
         <mat-select formControlName="idArea">
           <mat-option>--</mat-option>
           <mat-option *ngFor="let area of areas" [value]="area._id">
             {{ area.name }}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="form.get('idArea')?.errors?.required"
-          >Vui lòng chọn khu vực.</mat-error
-        >
+        <mat-error *ngIf="form.get('idArea')?.errors?.required">Vui lòng chọn khu vực.</mat-error>
       </mat-form-field>
     </div>
 
-    <div
-      class="button-group"
-      mat-dialog-actions
-      fxLayout="row"
-      fxLayoutAlign="end center"
-      fxLayoutGap="10px"
-    >
+    <div class="button-group" mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
       <app-button
         [buttonType]="'submit'"
         [customClasses]="['app-button-brown']"
