@@ -4,11 +4,16 @@
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --open",
-    "start": "node server.js",
     "build": "ng build",
     "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huytrandev/feednote.git"
+  },
+  "author": "huytrandev",
+  "license": "ISC",
   "private": true,
   "dependencies": {
     "@angular/animations": "~12.1.1",
