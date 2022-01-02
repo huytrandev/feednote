@@ -19,53 +19,34 @@
         <mat-tab label="Thông tin cá nhân">
           <ng-template matTabContent>
             <div class="update-user__form">
-              <form
-                [formGroup]="updateInfoForm"
-                (ngSubmit)="onUpdateUserInfo()"
-              >
+              <form [formGroup]="updateInfoForm" (ngSubmit)="onUpdateUserInfo()">
                 <!-- Name -->
                 <mat-form-field appearance="outline">
-                  <mat-label
-                    >Họ tên <span class="color-red">(*)</span></mat-label
-                  >
+                  <mat-label>Họ tên</mat-label>
                   <input type="text" matInput formControlName="name" />
-                  <mat-error *ngIf="f1.name.errors?.required"
-                    >Họ tên không được trống.</mat-error
-                  >
-                  <mat-error *ngIf="f1.name.errors?.inValid"
-                    >Họ tên không hợp lệ.</mat-error
-                  >
+                  <mat-error *ngIf="f1.name.errors?.required">Họ tên không được trống.</mat-error>
+                  <mat-error *ngIf="f1.name.errors?.inValid">Họ tên không hợp lệ.</mat-error>
                 </mat-form-field>
 
                 <!-- Phone -->
                 <mat-form-field appearance="outline">
                   <mat-label>Số điện thoại</mat-label>
                   <input type="text" matInput formControlName="phone" />
-                  <mat-error *ngIf="f1.phone.errors?.required"
-                    >Số điện thoại không được trống.</mat-error
-                  >
-                  <mat-error *ngIf="f1.phone.errors?.pattern"
-                    >Số điện thoại không đúng định dạng.</mat-error
-                  >
+                  <mat-error *ngIf="f1.phone.errors?.required">Số điện thoại không được trống.</mat-error>
+                  <mat-error *ngIf="f1.phone.errors?.pattern">Số điện thoại không đúng định dạng.</mat-error>
                 </mat-form-field>
 
                 <!-- Phone -->
                 <mat-form-field appearance="outline">
                   <mat-label>Email</mat-label>
                   <input type="email" matInput formControlName="email" />
-                  <mat-error *ngIf="f1.email.errors?.required"
-                    >Email không được trống.</mat-error
-                  >
-                  <mat-error *ngIf="f1.email.errors?.email"
-                    >Email không đúng định dạng.</mat-error
-                  >
+                  <mat-error *ngIf="f1.email.errors?.required">Email không được trống.</mat-error>
+                  <mat-error *ngIf="f1.email.errors?.email">Email không đúng định dạng.</mat-error>
                 </mat-form-field>
 
                 <!-- Address -->
                 <mat-form-field appearance="outline">
-                  <mat-label
-                    >Khu vực <span class="color-red">(*)</span></mat-label
-                  >
+                  <mat-label>Khu vực</mat-label>
                   <mat-select [(value)]="user.idArea" formControlName="idArea">
                     <mat-option *ngFor="let area of areas" [value]="area._id">
                       {{ area.name }}
@@ -78,11 +59,7 @@
                     [customClasses]="['app-button-brown']"
                     [buttonContent]="'Cập nhật'"
                     [buttonType]="'submit'"
-                    [disabledCondition]="
-                      !updateInfoForm.valid ||
-                      !updateInfoForm.dirty ||
-                      submitted
-                    "
+                    [disabledCondition]="!updateInfoForm.valid || !updateInfoForm.dirty || submitted"
                     [showSpinner]="submitted"
                   ></app-button>
 
@@ -101,11 +78,7 @@
         <mat-tab label="Đổi mật khẩu">
           <ng-template matTabContent>
             <div class="update-user__form">
-              <form
-                [formGroup]="changePasswordForm"
-                (ngSubmit)="changePassword()"
-                autocomplete="off"
-              >
+              <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()" autocomplete="off">
                 <!-- New password -->
                 <mat-form-field appearance="outline">
                   <mat-label>Mật khẩu mới</mat-label>
@@ -120,16 +93,10 @@
                     class="material-icons-outlined app-icon"
                     style="cursor: pointer"
                     (click)="showPassword = !showPassword"
-                    >{{
-                      showPassword ? "visibility_off" : "visibility"
-                    }}</mat-icon
+                    >{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon
                   >
-                  <mat-error *ngIf="f2.newPassword.errors?.required"
-                    >Mật khẩu mới không được trống.</mat-error
-                  >
-                  <mat-error *ngIf="f2.newPassword.errors?.minlength"
-                    >Mật khẩu mới phải có ít nhất 3 ký tự.</mat-error
-                  >
+                  <mat-error *ngIf="f2.newPassword.errors?.required">Mật khẩu mới không được trống.</mat-error>
+                  <mat-error *ngIf="f2.newPassword.errors?.minlength">Mật khẩu mới phải có ít nhất 3 ký tự.</mat-error>
                 </mat-form-field>
 
                 <!-- Confirm password -->
@@ -146,30 +113,20 @@
                     class="material-icons-outlined app-icon"
                     style="cursor: pointer"
                     (click)="showConfirmPassword = !showConfirmPassword"
-                    >{{
-                      showConfirmPassword ? "visibility_off" : "visibility"
-                    }}</mat-icon
+                    >{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon
                   >
-                  <mat-error *ngIf="f2.confirmPassword.errors?.required"
-                    >Nhập lại mật khẩu không được trống.</mat-error
-                  >
+                  <mat-error *ngIf="f2.confirmPassword.errors?.required">Nhập lại mật khẩu không được trống.</mat-error>
                   <mat-error *ngIf="f2.confirmPassword.errors?.minlength"
                     >Nhập lại mật khẩu phải có ít nhất 3 ký tự.
                   </mat-error>
-                  <mat-error *ngIf="f2.confirmPassword.errors?.mustMatch"
-                    >Nhập lại mật khẩu không khớp.</mat-error
-                  >
+                  <mat-error *ngIf="f2.confirmPassword.errors?.mustMatch">Nhập lại mật khẩu không khớp.</mat-error>
                 </mat-form-field>
 
                 <!-- Button group -->
                 <div class="button-group">
                   <app-button
                     [customClasses]="['app-button-brown']"
-                    [disabledCondition]="
-                      !changePasswordForm.valid ||
-                      !changePasswordForm.dirty ||
-                      submitted
-                    "
+                    [disabledCondition]="!changePasswordForm.valid || !changePasswordForm.dirty || submitted"
                     [buttonType]="'submit'"
                     [buttonContent]="'Đổi mật khẩu'"
                     [showSpinner]="submitted"
@@ -212,11 +169,11 @@
         <div class="user-info__contact">
           <p class="user-info__phone">
             <span>Số điện thoại</span>
-            <span>{{ !!user.phone ? user.phone : "-" }}</span>
+            <span>{{ !!user.phone ? user.phone : '-' }}</span>
           </p>
           <p class="user-info__mail">
             <span>Email</span>
-            <span>{{ !!user.email ? user.email : "-" }}</span>
+            <span>{{ !!user.email ? user.email : '-' }}</span>
           </p>
           <p class="user-info__address">
             <span>Khu vực</span>

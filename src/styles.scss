@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./variable";
-@import "~@angular/material/theming";
+@import "@angular/material/theming";
 $custom-typography: mat-typography-config(
   $font-family: "Roboto,sans-serif",
   $display-4: mat-typography-level(113px, 113px, 300, $letter-spacing: -0.05em),

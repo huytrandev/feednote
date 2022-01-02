@@ -2,37 +2,24 @@
 <div *ngIf="!loading">
   <header fxLayout="row" fxLayoutAlign="space-between center" mat-dialog-title>
     <h2>Tạo khẩu phần thức ăn chuẩn</h2>
-    <app-button-icon
-      [iconName]="'close'"
-      matTooltip="Đóng"
-      (click)="onClose()"
-    ></app-button-icon>
+    <app-button-icon [iconName]="'close'" matTooltip="Đóng" (click)="onClose()"></app-button-icon>
   </header>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <main mat-dialog-content>
-      <mat-form-field
-        *ngIf="form.get('idArea')"
-        appearance="outline"
-        style="width: 100%"
-      >
-        <mat-label>Khu vực <span class="color-red">(*)</span></mat-label>
-        <mat-select
-          formControlName="idArea"
-          (selectionChange)="onAreaChange($event)"
-        >
+      <mat-form-field *ngIf="form.get('idArea')" appearance="outline" style="width: 100%">
+        <mat-label>Khu vực</mat-label>
+        <mat-select formControlName="idArea" (selectionChange)="onAreaChange($event)">
           <mat-option>--</mat-option>
           <mat-option *ngFor="let area of areas" [value]="area._id">
             {{ area.name }}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="form.get('idArea')?.errors?.required"
-          >Vui lòng chọn khu vực.</mat-error
-        >
+        <mat-error *ngIf="form.get('idArea')?.errors?.required">Vui lòng chọn khu vực.</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="width: 100%">
-        <mat-label>Thức ăn <span class="color-red">(*)</span></mat-label>
+        <mat-label>Thức ăn</mat-label>
         <mat-select
           multiple
           formControlName="idsFood"
@@ -49,21 +36,12 @@
             </mat-option>
           </mat-optgroup>
         </mat-select>
-        <mat-hint
-          >Vui lòng chọn 2 loại thức ăn thô và 1 loại thức ăn tinh.</mat-hint
-        >
-        <mat-error *ngIf="form.get('idsFood')?.errors?.required"
-          >Vui lòng chọn thức ăn.</mat-error
-        >
+        <mat-hint>Vui lòng chọn 2 loại thức ăn thô và 1 loại thức ăn tinh.</mat-hint>
+        <mat-error *ngIf="form.get('idsFood')?.errors?.required">Vui lòng chọn thức ăn.</mat-error>
       </mat-form-field>
     </main>
 
-    <footer
-      mat-dialog-actions
-      fxLayout="row"
-      fxLayoutAlign="end center"
-      fxLayoutGap="20px"
-    >
+    <footer mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
       <app-button
         [buttonContent]="'Khởi tạo'"
         [customClasses]="['app-button-brown']"
@@ -72,11 +50,7 @@
         [buttonType]="'submit'"
       ></app-button>
 
-      <app-button
-        [buttonContent]="'Huỷ bỏ'"
-        [customClasses]="['app-button-grey']"
-        (click)="onClose()"
-      ></app-button>
+      <app-button [buttonContent]="'Huỷ bỏ'" [customClasses]="['app-button-grey']" (click)="onClose()"></app-button>
     </footer>
   </form>
 </div>
